@@ -1,10 +1,10 @@
 import { Interpreter, interpret } from 'xstate';
 import { MachineOptions, Typestate } from 'xstate/lib/types';
 
-import GameContext from '../game/GameContext';
+import GameContext from '../beans/game/GameContext';
 import GameCreatorService from './GameCreatorService';
-import GameEvent from '../game/GameEvent';
-import GameStateSchema from '../game/GameStateSchema';
+import GameEvent from '../beans/game/GameEvent';
+import GameStateSchema from '../beans/game/GameStateSchema';
 import { Injectable } from '@nestjs/common';
 import SocketService from './SocketService';
 

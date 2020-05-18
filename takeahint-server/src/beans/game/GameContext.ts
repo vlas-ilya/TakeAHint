@@ -1,5 +1,5 @@
 import ActivePlayer from '../player/ActivePlayer';
-import WordSet from '../utils/WordSet';
+import WordSet from '../wordSet/WordSet';
 
 interface GameContext {
   countOfRounds: number;

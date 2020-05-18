@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import WordSet from '../utils/WordSet';
+import WordSet from '../beans/wordSet/WordSet';
 import { pick } from '../utils/stream.utils';
 
 @Injectable()

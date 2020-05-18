@@ -1,19 +1,19 @@
 import { Body, Controller, Param, Post } from '@nestjs/common';
 
-import GameEvent from '../game/GameEvent';
+import GameEvent from '../beans/game/GameEvent';
 import GameService from '../services/GameService';
 import { throwIf } from '../utils/utils';
 
 @Controller('game')
 export class GameController {
   private static readonly VALID_COMMANDS = [
-    'ADD_PLAYER',
     'CREATE',
     'VOTE',
     'INPUT_ASSOCIATION',
     'MARK_AS_VALID',
     'MARK_AS_INVALID',
     'GO_TO_ANSWER',
+    'ANSWER',
   ];
 
   constructor(private readonly gameService: GameService) {}
@@ -30,7 +30,6 @@ export class GameController {
   }
 
   private static commandValid(command: GameEvent): boolean {
-    console.log(command);
     return true; // TODO
   }
 }

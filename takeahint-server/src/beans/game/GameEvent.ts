@@ -1,4 +1,4 @@
-import Association from '../utils/Association';
+import Association from '../wordSet/Association';
 import NextGameReason from './NextGameReason';
 import Player from '../player/Player';
 
@@ -6,7 +6,7 @@ type GameEvent =
   | { type: 'CREATE' }
   | { type: 'ADD_PLAYER'; player: Player }
   | { type: 'REMOVE_PLAYER'; player: Player }
-  | { type: 'VOTE'; index: number }
+  | { type: 'VOTE'; index: number; player: Player }
   | {
       type: 'TRY_CHOOSE_WORD';
       words: Array<string>;
@@ -24,6 +24,7 @@ type GameEvent =
   | { type: 'MARK_AS_VALID'; associationIndex: number }
   | { type: 'MARK_AS_INVALID'; associationIndex: number }
   | { type: 'GO_TO_ANSWER' }
+  | { type: 'ANSWER'; word: string; player: Player }
   | { type: 'NEXT_GAME'; reason: NextGameReason }
   | { type: 'FINISH' };
 
