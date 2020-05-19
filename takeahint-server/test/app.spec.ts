@@ -4,7 +4,7 @@ import ActivePlayer from '../src/beans/player/ActivePlayer';
 import { AppModule } from '../src/app.module';
 import { GameController } from '../src/controllers/GameController';
 import GameService from '../src/services/GameService';
-import Observer from '../src/beans/player/Observer';
+import ObserverPlayer from '../src/beans/player/ObserverPlayer';
 
 describe('Application', () => {
   const GAME_ID = 'TEST';
@@ -51,7 +51,7 @@ describe('Application', () => {
     });
     gameService.sendCommand(GAME_ID, {
       type: 'ADD_PLAYER',
-      player: new Observer(),
+      player: new ObserverPlayer(),
     });
     gameController.onMessage(GAME_ID, {
       type: 'CREATE',

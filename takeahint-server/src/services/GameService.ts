@@ -1,3 +1,4 @@
+import GameEvent from '../beans/game/GameEvent';
 import GameFactory from './GameFactory';
 import { Injectable } from '@nestjs/common';
 
@@ -5,7 +6,7 @@ import { Injectable } from '@nestjs/common';
 export default class GameService {
   constructor(private readonly gameFactory: GameFactory) {}
 
-  sendCommand(gameId, command, game = this.gameFactory.get(gameId)) {
-    game.send(command);
+  send(gameId: string, event: GameEvent, game = this.gameFactory.get(gameId)) {
+    game.send(event);
   }
 }

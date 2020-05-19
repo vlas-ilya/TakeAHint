@@ -20,10 +20,17 @@ export default class GameCreatorService {
     private readonly wordSetsService: WordSetsService,
   ) {}
 
+  private setColor(player: Player): Player {
+    if (player instanceof ActivePlayer) {
+      // TODO: set color to player
+      player.color = '#000000';
+    }
+    return player;
+  }
+
   private addPlayer = assign({
     players: (context: GameContext, event: GameEvent) =>
-      // TODO: set color to player
-      event.type === 'ADD_PLAYER' ? [...context.players, event.player] : context.players,
+      event.type === 'ADD_PLAYER' ? [...context.players, this.setColor(event.player)] : context.players,
   });
 
   private removePlayer = assign({

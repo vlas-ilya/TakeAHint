@@ -16,8 +16,8 @@ export default class SocketService {
   ) {
     console.log(`
       --------- [Game id = ${gameId}, event = onCreateGame] ---------
-      [ event = ${JSON.stringify(event)} ]
-      [ context = ${JSON.stringify(context)} ]
+      [ event = ${JSON.stringify(event.type)} ]
+      [ context = {JSON.stringify(context)} ]
       [ state = ${JSON.stringify(state.value)} ]
     `);
   }
@@ -28,12 +28,15 @@ export default class SocketService {
     event: GameEvent,
     state: State<GameContext, GameEvent, StateSchema<GameContext>, Typestate<GameContext>>,
   ) {
-    console.log(`
-      --------- [Game id = ${gameId}, event = onAddPlayer] ---------
-      [ event = ${JSON.stringify(event)} ]
-      [ context = ${JSON.stringify(context)} ]
-      [ state = ${JSON.stringify(state.value)} ]
-    `);
+    context.players.forEach(player => {
+      player.client.emit('event', {
+        players: context.players.map(({ login, color, id }) => ({
+          login,
+          color,
+          id,
+        })),
+      });
+    });
   }
 
   onRemovePlayer(
@@ -44,8 +47,8 @@ export default class SocketService {
   ) {
     console.log(`
       --------- [Game id = ${gameId}, event = onRemovePlayer] ---------
-      [ event = ${JSON.stringify(event)} ]
-      [ context = ${JSON.stringify(context)} ]
+      [ event = ${JSON.stringify(event.type)} ]
+      [ context = {JSON.stringify(context)} ]
       [ state = ${JSON.stringify(state.value)} ]
     `);
   }
@@ -58,8 +61,8 @@ export default class SocketService {
   ) {
     console.log(`
       --------- [Game id = ${gameId}, event = onPrepareGame] ---------
-      [ event = ${JSON.stringify(event)} ]
-      [ context = ${JSON.stringify(context)} ]
+      [ event = ${JSON.stringify(event.type)} ]
+      [ context = {JSON.stringify(context)} ]
       [ state = ${JSON.stringify(state.value)} ]
     `);
   }
@@ -72,8 +75,8 @@ export default class SocketService {
   ) {
     console.log(`
       --------- [Game id = ${gameId}, event = onStartGame] ---------
-      [ event = ${JSON.stringify(event)} ]
-      [ context = ${JSON.stringify(context)} ]
+      [ event = ${JSON.stringify(event.type)} ]
+      [ context = {JSON.stringify(context)} ]
       [ state = ${JSON.stringify(state.value)} ]
     `);
   }
@@ -86,8 +89,8 @@ export default class SocketService {
   ) {
     console.log(`
       --------- [Game id = ${gameId}, event = onEndGame] ---------
-      [ event = ${JSON.stringify(event)} ]
-      [ context = ${JSON.stringify(context)} ]
+      [ event = ${JSON.stringify(event.type)} ]
+      [ context = {JSON.stringify(context)} ]
       [ state = ${JSON.stringify(state.value)} ]
     `);
   }
@@ -100,8 +103,8 @@ export default class SocketService {
   ) {
     console.log(`
       --------- [Game id = ${gameId}, event = onStartChoiceWord] ---------
-      [ event = ${JSON.stringify(event)} ]
-      [ context = ${JSON.stringify(context)} ]
+      [ event = ${JSON.stringify(event.type)} ]
+      [ context = {JSON.stringify(context)} ]
       [ state = ${JSON.stringify(state.value)} ]
     `);
   }
@@ -114,8 +117,8 @@ export default class SocketService {
   ) {
     console.log(`
       --------- [Game id = ${gameId}, event = onEndChoiceWord] ---------
-      [ event = ${JSON.stringify(event)} ]
-      [ context = ${JSON.stringify(context)} ]
+      [ event = ${JSON.stringify(event.type)} ]
+      [ context = {JSON.stringify(context)} ]
       [ state = ${JSON.stringify(state.value)} ]
     `);
   }
@@ -128,8 +131,8 @@ export default class SocketService {
   ) {
     console.log(`
       --------- [Game id = ${gameId}, event = onStartInputAssociations] ---------
-      [ event = ${JSON.stringify(event)} ]
-      [ context = ${JSON.stringify(context)} ]
+      [ event = ${JSON.stringify(event.type)} ]
+      [ context = {JSON.stringify(context)} ]
       [ state = ${JSON.stringify(state.value)} ]
     `);
   }
@@ -142,8 +145,8 @@ export default class SocketService {
   ) {
     console.log(`
       --------- [Game id = ${gameId}, event = onEndInputAssociations] ---------
-      [ event = ${JSON.stringify(event)} ]
-      [ context = ${JSON.stringify(context)} ]
+      [ event = ${JSON.stringify(event.type)} ]
+      [ context = {JSON.stringify(context)} ]
       [ state = ${JSON.stringify(state.value)} ]
     `);
   }
@@ -156,8 +159,8 @@ export default class SocketService {
   ) {
     console.log(`
       --------- [Game id = ${gameId}, event = onStartFilterAssociations] ---------
-      [ event = ${JSON.stringify(event)} ]
-      [ context = ${JSON.stringify(context)} ]
+      [ event = ${JSON.stringify(event.type)} ]
+      [ context = {JSON.stringify(context)} ]
       [ state = ${JSON.stringify(state.value)} ]
     `);
   }
@@ -170,8 +173,8 @@ export default class SocketService {
   ) {
     console.log(`
       --------- [Game id = ${gameId}, event = onMarkAssociationAsValid] ---------
-      [ event = ${JSON.stringify(event)} ]
-      [ context = ${JSON.stringify(context)} ]
+      [ event = ${JSON.stringify(event.type)} ]
+      [ context = {JSON.stringify(context)} ]
       [ state = ${JSON.stringify(state.value)} ]
     `);
   }
@@ -184,8 +187,8 @@ export default class SocketService {
   ) {
     console.log(`
       --------- [Game id = ${gameId}, event = onMarkAssociationAsInvalid] ---------
-      [ event = ${JSON.stringify(event)} ]
-      [ context = ${JSON.stringify(context)} ]
+      [ event = ${JSON.stringify(event.type)} ]
+      [ context = {JSON.stringify(context)} ]
       [ state = ${JSON.stringify(state.value)} ]
     `);
   }
@@ -198,8 +201,8 @@ export default class SocketService {
   ) {
     console.log(`
       --------- [Game id = ${gameId}, event = onEndFilterAssociations] ---------
-      [ event = ${JSON.stringify(event)} ]
-      [ context = ${JSON.stringify(context)} ]
+      [ event = ${JSON.stringify(event.type)} ]
+      [ context = {JSON.stringify(context)} ]
       [ state = ${JSON.stringify(state.value)} ]
     `);
   }
@@ -212,8 +215,8 @@ export default class SocketService {
   ) {
     console.log(`
       --------- [Game id = ${gameId}, event = onStartAnswering] ---------
-      [ event = ${JSON.stringify(event)} ]
-      [ context = ${JSON.stringify(context)} ]
+      [ event = ${JSON.stringify(event.type)} ]
+      [ context = {JSON.stringify(context)} ]
       [ state = ${JSON.stringify(state.value)} ]
     `);
   }
@@ -226,8 +229,8 @@ export default class SocketService {
   ) {
     console.log(`
       --------- [Game id = ${gameId}, event = onEndAnswering] ---------
-      [ event = ${JSON.stringify(event)} ]
-      [ context = ${JSON.stringify(context)} ]
+      [ event = ${JSON.stringify(event.type)} ]
+      [ context = {JSON.stringify(context)} ]
       [ state = ${JSON.stringify(state.value)} ]
     `);
   }

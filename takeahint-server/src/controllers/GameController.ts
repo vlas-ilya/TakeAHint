@@ -21,15 +21,15 @@ export class GameController {
   @Post(':game-id/command')
   onMessage(
     @Param('game-id') gameId: string,
-    @Body() command: GameEvent
+    @Body() event: GameEvent
   ) {
-    throwIf(!GameController.VALID_COMMANDS.includes(command.type), 'Unsupported');
-    throwIf(!GameController.commandValid(command), 'Invalid');
+    throwIf(!GameController.VALID_COMMANDS.includes(event.type), 'Unsupported');
+    throwIf(!GameController.commandValid(event), 'Invalid');
 
-    this.gameService.sendCommand(gameId, command);
+    this.gameService.send(gameId, event);
   }
 
-  private static commandValid(command: GameEvent): boolean {
+  private static commandValid(event: GameEvent): boolean {
     return true; // TODO
   }
 }
