@@ -8,8 +8,6 @@ import Player from '../beans/player/Player';
 
 @Injectable()
 export default class SocketService {
-  // TODO
-
   onCreateGame(
     gameId: string,
     context: GameContext,
@@ -75,6 +73,8 @@ export default class SocketService {
       player.client.emit('event', {
         type: 'START_GAME',
         isMaster: player.isMaster,
+        countOfWin: context.countOfWin,
+        countOfRounds: context.countOfRounds,
       });
     });
   }
@@ -254,6 +254,8 @@ export default class SocketService {
       words: [],
       word: '',
       associations: [],
+      countOfWin: 0,
+      countOfRounds: 0,
     };
     [
       () => {
@@ -270,6 +272,8 @@ export default class SocketService {
         payload.state = 'START_CHOICE_WORD';
         payload.isMaster = game.state.context.players.find(item => item.id === player.id)?.isMaster;
         payload.words = payload.isMaster === false ? game.state.context.currentWordSet.words : [];
+        payload.countOfWin = game.state.context.countOfWin;
+        payload.countOfRounds = game.state.context.countOfRounds;
         return 'choiceWord';
       },
 

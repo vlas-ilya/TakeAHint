@@ -13,7 +13,9 @@ export const constants = {
     chooseWord: "CHOOSE_WORD",
     inputAssociations: "INPUT_ASSOCIATIONS",
     filterAssociations: "FILTER_ASSOCIATIONS",
-    answering: "ANSWERING"
+    answering: "ANSWERING",
+    countOfWin: 0,
+    countOfRounds: 0
   }
 };
 
@@ -23,7 +25,8 @@ export const application = createSlice({
     page: constants.pages.login,
     playerId: "",
     word: "",
-    isMaster: false
+    isMaster: false,
+    isGaming: false
   },
   reducers: {
     changeWord: (state, action) =>
@@ -52,6 +55,27 @@ export const application = createSlice({
         ? state
         : produce(state, draftState => {
             draftState.isMaster = action.payload;
+          }),
+
+    changeCountOfWin: (state, action) =>
+      state.countOfWin === action.payload
+        ? state
+        : produce(state, draftState => {
+            draftState.countOfWin = action.payload;
+          }),
+
+    changeCountOfRounds: (state, action) =>
+      state.countOfRounds === action.payload
+        ? state
+        : produce(state, draftState => {
+            draftState.countOfRounds = action.payload;
+          }),
+
+    changeIsGaming: (state, action) =>
+      state.isGaming === action.payload
+        ? state
+        : produce(state, draftState => {
+            draftState.isGaming = action.payload;
           })
   }
 });
@@ -60,26 +84,34 @@ export const {
   changePage,
   changePlayerId,
   changeIsMaster,
-  changeWord
+  changeWord,
+  changeCountOfWin,
+  changeCountOfRounds,
+  changeIsGaming
 } = application.actions;
 
 export const connect = () => (dispatch, getState) => {
   const state = getState();
+
   const socket = io("ws://localhost:3003", {
     query: {
       token: "123"
     }
   });
+
   const payload = {
     gameId: state.loginPage.gameId,
     login: state.loginPage.login
   };
+
   const id = localStorage.getItem(
     `${state.loginPage.gameId}/${state.loginPage.login}`
   );
+
   if (id) {
     payload.id = id;
   }
+
   socket.emit("connection", payload);
 
   socket.on("connected", response => {
@@ -91,55 +123,76 @@ export const connect = () => (dispatch, getState) => {
     );
   });
 
+  const addPlayer = response => {
+    dispatch(changePlayers(response.players));
+    return "ADD_PLAYER";
+  };
+
+  const startGame = response => {
+    dispatch(changeIsMaster(response.isMaster));
+    dispatch(changeCountOfWin(response.countOfWin));
+    dispatch(changeCountOfRounds(response.countOfRounds));
+    dispatch(changeIsGaming(true));
+    return "START_GAME";
+  };
+
+  const startChoiceWord = response => {
+    dispatch(changePage(constants.pages.chooseWord));
+    dispatch(changeWords(response.words));
+    return "START_CHOICE_WORD";
+  };
+
+  const startInputAssociation = response => {
+    dispatch(changePage(constants.pages.inputAssociations));
+    dispatch(changeWord(response.word));
+    return "START_INPUT_ASSOCIATION";
+  };
+
+  const startFilterAssociations = response => {
+    dispatch(changePage(constants.pages.filterAssociations));
+    dispatch(changeAssociations(response.associations));
+    return "START_FILTER_ASSOCIATIONS";
+  };
+
+  const startAnswering = response => {
+    dispatch(changePage(constants.pages.answering));
+    dispatch(answeringPageChangeAssociations(response.associations));
+    return "START_ANSWERING";
+  };
+
+  const finish = response => {
+    alert(response.result);
+    return "FINISH";
+  };
+
   socket.on("event", response => {
-    if (response.type === "ADD_PLAYER") {
-      dispatch(changePlayers(response.players));
-    } else if (response.type === "START_GAME") {
-      dispatch(changeIsMaster(response.isMaster));
-    } else if (response.type === "START_CHOICE_WORD") {
-      dispatch(changePage(constants.pages.chooseWord));
-      dispatch(changeWords(response.words));
-    } else if (response.type === "START_INPUT_ASSOCIATION") {
-      dispatch(changePage(constants.pages.inputAssociations));
-      dispatch(changeWord(response.word));
-    } else if (response.type === "START_FILTER_ASSOCIATIONS") {
-      dispatch(changePage(constants.pages.filterAssociations));
-      dispatch(changeAssociations(response.associations));
-    } else if (response.type === "START_ANSWERING") {
-      dispatch(changePage(constants.pages.answering));
-      dispatch(answeringPageChangeAssociations(response.associations));
-    } else if (response.type === "FINISH") {
-      alert(response.result);
-    } else if (response.type === "RECONNECT") {
-      [
-        () => {
-          dispatch(changePlayers(response.players));
-          return "ADD_PLAYER";
-        },
-        () => {
-          dispatch(changePage(constants.pages.chooseWord));
-          dispatch(changeWords(response.words));
-          dispatch(changeIsMaster(response.isMaster));
-          return "START_CHOICE_WORD";
-        },
-        () => {
-          dispatch(changePage(constants.pages.inputAssociations));
-          dispatch(changeWord(response.word));
-          return "START_INPUT_ASSOCIATION";
-        },
-        () => {
-          dispatch(changePage(constants.pages.filterAssociations));
-          dispatch(changeAssociations(response.associations));
-          return "START_FILTER_ASSOCIATIONS";
-        },
-        () => {
-          dispatch(changePage(constants.pages.answering));
-          dispatch(answeringPageChangeAssociations(response.associations));
-          return "START_ANSWERING";
-        }
-      ].find(item => item() === response.state);
-    } else {
-      console.log(response);
+    switch (response.type) {
+      case "ADD_PLAYER":
+        return addPlayer(response);
+      case "START_GAME":
+        return startGame(response);
+      case "START_CHOICE_WORD":
+        return startChoiceWord(response);
+      case "START_INPUT_ASSOCIATION":
+        return startInputAssociation(response);
+      case "START_FILTER_ASSOCIATIONS":
+        return startFilterAssociations(response);
+      case "START_ANSWERING":
+        return startAnswering(response);
+      case "FINISH":
+        return finish(response);
+      case "RECONNECT":
+        return [
+          addPlayer,
+          startGame,
+          startChoiceWord,
+          startInputAssociation,
+          startFilterAssociations,
+          startAnswering,
+          finish
+        ].find(item => item(response) === response.state);
+      default:
+        console.log(response);
     }
   });
 };
@@ -148,5 +201,8 @@ export const selectPage = state => state.application.page;
 export const selectCurrentWord = state => state.application.word;
 export const selectPlayerId = state => state.application.playerId;
 export const selectIsMaster = state => state.application.isMaster;
+export const selectCountOfWin = state => state.application.countOfWin;
+export const selectCountOfRounds = state => state.application.countOfRounds;
+export const selectIsGaming = state => state.application.isGaming;
 
 export default application.reducer;
