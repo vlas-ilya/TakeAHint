@@ -1,11 +1,13 @@
-import { selectPlayerId, selectPlayers } from "../../app/reduser";
+import { selectPlayers, start } from "./reducer";
+import { useDispatch, useSelector } from "react-redux";
 
 import React from "react";
-import { useSelector } from "react-redux";
+import { selectPlayerId } from "../../app/reducer";
 
 export default function WaitingPlayers() {
   const players = useSelector(selectPlayers);
   const playerId = useSelector(selectPlayerId);
+  const dispatch = useDispatch();
 
   return (
     <div>
@@ -15,6 +17,9 @@ export default function WaitingPlayers() {
           {playerId === item.id && <span>(you)</span>}
         </div>
       ))}
+      <div>
+        <button onClick={() => dispatch(start())}>Start</button>
+      </div>
     </div>
   );
 }

@@ -1,0 +1,6 @@
+.associations_item--markedAsInvalid {
+  background: #ff8585;
+}
+.associations_item--invalid {
+  background: #ff0000;
+}

@@ -21,8 +21,8 @@ type GameEvent =
       neededAssociationsCount: number;
     }
   | { type: 'FILTER_ASSOCIATIONS'; associations: Map<String, Association> }
-  | { type: 'MARK_AS_VALID'; associationIndex: number }
-  | { type: 'MARK_AS_INVALID'; associationIndex: number }
+  | { type: 'MARK_AS_VALID'; id: string }
+  | { type: 'MARK_AS_INVALID'; id: string }
   | { type: 'GO_TO_ANSWER' }
   | { type: 'ANSWER'; word: string; player: Player }
   | { type: 'NEXT_GAME'; reason: NextGameReason }

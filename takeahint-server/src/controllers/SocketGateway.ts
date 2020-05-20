@@ -1,7 +1,6 @@
 import { OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
 
 import ActivePlayer from '../beans/player/ActivePlayer';
-import GameEvent from '../beans/game/GameEvent';
 import GameService from '../services/GameService';
 import ObserverPlayer from '../beans/player/ObserverPlayer';
 import { Socket } from 'socket.io';
@@ -9,6 +8,7 @@ import { v4 as uuid } from 'uuid';
 
 class SocketPayload {
   gameId: string;
+  id?: string;
   login?: string;
 }
 
@@ -17,15 +17,12 @@ export default class SocketGateway implements OnGatewayConnection, OnGatewayDisc
   constructor(private readonly gameService: GameService) {}
 
   @SubscribeMessage('connection')
-  handleMessage(client: Socket, { login, gameId }: SocketPayload, id = uuid()): void {
-    const gameEvent: GameEvent = {
-      type: 'ADD_PLAYER',
-      player: login ? new ActivePlayer(id, login, client) : new ObserverPlayer(id, client),
-    };
+  handleMessage(client: Socket, { login, gameId, id = uuid() }: SocketPayload): void {
+    const player = login ? new ActivePlayer(id, login, client) : new ObserverPlayer(id, client);
 
     client.emit('connected', { id });
 
-    this.gameService.send(gameId, gameEvent);
+    this.gameService.connect(gameId, player);
   }
 
   handleConnection(client: Socket, ...args: any[]) {

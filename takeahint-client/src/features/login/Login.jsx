@@ -1,13 +1,13 @@
 import {
   changeGameId,
   changeLogin,
-  connect,
   selectGameId,
   selectLogin
-} from "../../app/reduser";
+} from "./reducer";
 import { useDispatch, useSelector } from "react-redux";
 
 import React from "react";
+import { connect } from "../../app/reducer";
 
 export default function Login() {
   const login = useSelector(selectLogin);

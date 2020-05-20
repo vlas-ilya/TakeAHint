@@ -76,7 +76,9 @@ export default class GameCreatorService {
   });
 
   private decreaseCountOfRounds = assign({
-    countOfRounds: (context: GameContext) => context.countOfRounds - 1,
+    countOfRounds: (context: GameContext) => {
+      return context.countOfRounds - 1;
+    },
   });
 
   private increaseCountOfWinIfWin = assign({
@@ -89,7 +91,9 @@ export default class GameCreatorService {
       event.type === 'NEXT_GAME' && event.reason === 'LOSING' ? context.countOfRounds - 1 : context.countOfRounds,
   });
 
-  private hasRounds = (context: GameContext) => context.countOfRounds > 0;
+  private hasRounds = (context: GameContext) => {
+    return context.countOfRounds > 0;
+  };
 
   private vote = assign({
     currentWordSet: (context: GameContext, event: GameEvent) => {
@@ -145,11 +149,12 @@ export default class GameCreatorService {
         return context.currentWordSet;
       }
 
-      if (event.player instanceof ActivePlayer && !event.player.isMaster) {
-        context.currentWordSet.associations.set(
-          `${event.player.login} (${event.player.color})`,
-          new Association(event.association),
-        );
+      if ('login' in event.player) {
+        const player = event.player as ActivePlayer;
+
+        if (!player.isMaster) {
+          context.currentWordSet.associations.set(player.id, new Association(event.association));
+        }
       }
 
       return context.currentWordSet;
@@ -201,14 +206,23 @@ export default class GameCreatorService {
 
   private markAssociationAsValid = assign((context: GameContext, event: GameEvent) => {
     if (event.type === 'MARK_AS_VALID' && context.currentWordSet?.associations !== undefined) {
-      Array.from(context.currentWordSet.associations.values())[event.associationIndex].valid = true;
+      Array.from(context.currentWordSet.associations.values()).find(item => item.id === event.id).markedAsValid = true;
       return { currentWordSet: context.currentWordSet };
     }
   });
 
   private markAssociationAsInvalid = assign((context: GameContext, event: GameEvent) => {
     if (event.type === 'MARK_AS_INVALID' && context.currentWordSet?.associations !== undefined) {
-      Array.from(context.currentWordSet.associations.values())[event.associationIndex].valid = false;
+      Array.from(context.currentWordSet.associations.values()).find(item => item.id === event.id).markedAsValid = false;
+      return { currentWordSet: context.currentWordSet };
+    }
+  });
+
+  private filterMarkedAssociations = assign((context: GameContext) => {
+    if (context.currentWordSet?.associations !== undefined) {
+      Array.from(context.currentWordSet.associations.values()).forEach(
+        association => (association.valid = association.valid && association.markedAsValid),
+      );
       return { currentWordSet: context.currentWordSet };
     }
   });
@@ -331,7 +345,7 @@ export default class GameCreatorService {
                 },
               },
               answering: {
-                entry: ['onStartAnswering'],
+                entry: [this.filterMarkedAssociations, 'onStartAnswering'],
                 exit: ['onEndAnswering'],
               },
             },
