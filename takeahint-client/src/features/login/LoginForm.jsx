@@ -38,7 +38,7 @@ export default function LoginForm({
         </FormButton>
 
         <p>
-          В режиме игры <strong>Read only</strong> на экране будет отображаться
+          В режиме игры <strong>Readonly</strong> на экране будет отображаться
           только статистика и текущий статус игры
         </p>
       </div>
