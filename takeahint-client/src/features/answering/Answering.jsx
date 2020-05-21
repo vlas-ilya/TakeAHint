@@ -1,7 +1,9 @@
 import {
   changeAnswer,
+  invalidAnswer,
   selectAnswer,
   selectAssociations,
+  selectValidAnswer,
   sendAnswer,
   sendEmptyAnswer
 } from "./reducer";
@@ -20,6 +22,7 @@ export default function Answering() {
   const associations = useSelector(selectAssociations);
   const answer = useSelector(selectAnswer);
   const isMaster = useSelector(selectIsMaster);
+  const valid = useSelector(selectValidAnswer);
   const dispatch = useDispatch();
 
   return (
@@ -37,10 +40,19 @@ export default function Answering() {
               label="Введите ответ"
               name="answer"
               value={answer}
+              validMessage={valid ? "" : "Необходимо ввести ответ"}
               onChange={value => dispatch(changeAnswer(value))}
             />
 
-            <FormButton onClick={() => dispatch(sendAnswer())}>
+            <FormButton
+              onClick={() => {
+                if (answer) {
+                  dispatch(sendAnswer());
+                } else {
+                  dispatch(invalidAnswer());
+                }
+              }}
+            >
               Ответить
             </FormButton>
 

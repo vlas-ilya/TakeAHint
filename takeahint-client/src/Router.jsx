@@ -3,6 +3,7 @@ import { constants, selectPage } from "./app/reducer";
 import Answering from "./features/answering/Answering";
 import ChooseWord from "./features/chooseWord/ChooseWord";
 import FilterAssociations from "./features/filterAssociations/FilterAssociations";
+import FinishPage from "./features/finish/FinishPage";
 import InputAssociations from "./features/inputAssociations/InputAssociations";
 import Login from "./features/login/Login";
 import React from "react";
@@ -11,6 +12,10 @@ import { useSelector } from "react-redux";
 
 export default function Router() {
   const page = useSelector(selectPage);
+
+  if (window.location.pathname.startsWith("/finish")) {
+    return <FinishPage />;
+  }
 
   switch (page) {
     case constants.pages.login:

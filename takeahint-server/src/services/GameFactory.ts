@@ -10,12 +10,31 @@ import SocketService from './SocketService';
 
 @Injectable()
 export default class GameFactory {
+  static readonly GAME_LIVE_INTERVAL = 1000 * 60 * 60 * 5;
+
   private readonly games: Map<
     String,
     Interpreter<GameContext, GameStateSchema, GameEvent, Typestate<GameContext>>
   > = new Map();
+  private readonly gameUpdates: Map<String, Date> = new Map<String, Date>();
 
-  constructor(private readonly gameCreatorService: GameCreatorService, private readonly socketService: SocketService) {}
+  constructor(private readonly gameCreatorService: GameCreatorService, private readonly socketService: SocketService) {
+    setInterval(() => {
+      for (let key of this.games.keys()) {
+        const game = this.games.get(key);
+        const lastUpdate = this.gameUpdates.get(key);
+        const interval = new Date().getTime() - lastUpdate.getTime();
+        if (
+          interval > GameFactory.GAME_LIVE_INTERVAL ||
+          game.state.value === 'showResult' ||
+          game.state.value['game'] === 'showResult'
+        ) {
+          this.games.delete(key);
+          this.gameUpdates.delete(key);
+        }
+      }
+    }, 1000 * 10);
+  }
 
   private getGameConfig(gameId: string): Partial<MachineOptions<GameContext, GameEvent>> {
     return {
@@ -67,11 +86,15 @@ export default class GameFactory {
 
         onEndAnswering: (context: GameContext, event: GameEvent) =>
           this.socketService.onEndAnswering(gameId, context, event, this.get(gameId).state),
+
+        onShowResult: (context: GameContext, event: GameEvent) =>
+          this.socketService.onShowResult(gameId, context, event, this.get(gameId).state),
       },
     };
   }
 
   get(gameId: string) {
+    this.gameUpdates.set(gameId, new Date());
     if (!this.games.has(gameId)) {
       const game = this.gameCreatorService.create();
       const gameConfig = this.getGameConfig(gameId);
@@ -80,5 +103,9 @@ export default class GameFactory {
       this.games.set(gameId, interpreter);
     }
     return this.games.get(gameId);
+  }
+
+  getGames() {
+    return Array.from(this.games.values());
   }
 }

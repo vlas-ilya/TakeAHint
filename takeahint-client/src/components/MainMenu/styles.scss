@@ -15,17 +15,20 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    overflow: hidden;
 
     .word {
+      flex: 2 1 200px;
       display: flex;
       justify-content: center;
       flex-direction: column;
       font-weight: bold;
       font-size: 25px;
-      margin-left: 20px;
       color: #2d2d2d;
+      padding: 10px 20px;
     }
     .rounds {
+      flex: 1 1 200px;
       text-align: right;
     }
   }

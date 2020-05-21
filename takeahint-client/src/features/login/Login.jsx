@@ -2,7 +2,9 @@ import {
   changeGameId,
   changeLogin,
   selectGameId,
-  selectLogin
+  selectGameIdValid,
+  selectLogin,
+  selectLoginValid
 } from "./reducer";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -14,17 +16,21 @@ import { connect } from "../../app/reducer";
 
 export default function Login() {
   const login = useSelector(selectLogin);
+  const loginValid = useSelector(selectLoginValid);
   const gameId = useSelector(selectGameId);
+  const gameIdValid = useSelector(selectGameIdValid);
   const dispatch = useDispatch();
 
   return (
     <Page className="login-page">
       <LoginForm
         gameId={gameId}
+        gameIdValid={gameIdValid}
         login={login}
+        loginValid={loginValid}
         onGameIdChange={value => dispatch(changeGameId(value))}
         onLoginChange={value => dispatch(changeLogin(value))}
-        onLogin={() => dispatch(connect())}
+        onLogin={readonly => dispatch(connect(readonly))}
       />
       <GrCode />
     </Page>

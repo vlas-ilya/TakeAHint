@@ -6,7 +6,9 @@ export const reducer = createSlice({
   name: "loginPage",
   initialState: {
     gameId: getParam("gameId", ""),
-    login: getParam("player", "")
+    login: getParam("player", ""),
+    gameIdValid: true,
+    loginValid: true
   },
   reducers: {
     changeGameId: (state, action) =>
@@ -17,13 +19,34 @@ export const reducer = createSlice({
     changeLogin: (state, action) =>
       produce(state, draftState => {
         draftState.login = action.payload;
-      })
+      }),
+
+    changeGameIdValid: (state, action) =>
+      state.gameIdValid === action.payload
+        ? state
+        : produce(state, draftState => {
+            draftState.gameIdValid = action.payload;
+          }),
+
+    changeLoginValid: (state, action) =>
+      state.loginValid === action.payload
+        ? state
+        : produce(state, draftState => {
+            draftState.loginValid = action.payload;
+          })
   }
 });
 
-export const { changeGameId, changeLogin } = reducer.actions;
+export const {
+  changeGameId,
+  changeLogin,
+  changeGameIdValid,
+  changeLoginValid
+} = reducer.actions;
 
 export const selectGameId = state => state.loginPage.gameId;
+export const selectGameIdValid = state => state.loginPage.gameIdValid;
 export const selectLogin = state => state.loginPage.login;
+export const selectLoginValid = state => state.loginPage.loginValid;
 
 export default reducer.reducer;

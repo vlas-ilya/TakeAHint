@@ -5,8 +5,10 @@ import React from "react";
 
 export default function LoginForm({
   gameId,
+  gameIdValid,
   onGameIdChange,
   login,
+  loginValid,
   onLoginChange,
   onLogin
 }) {
@@ -16,6 +18,7 @@ export default function LoginForm({
         <FormInput
           name="gameId"
           label="Номер комнаты"
+          validMessage={gameIdValid ? "" : "Необходимо указать номер комнаты"}
           value={gameId}
           onChange={onGameIdChange}
         />
@@ -23,13 +26,14 @@ export default function LoginForm({
         <FormInput
           name="login"
           label="Логин"
+          validMessage={loginValid ? "" : "Необходимо указать логин"}
           value={login}
           onChange={onLoginChange}
         />
 
-        <FormButton onClick={onLogin}>Подключиться</FormButton>
+        <FormButton onClick={() => onLogin()}>Подключиться</FormButton>
 
-        <FormButton className="grey" onClick={onLogin}>
+        <FormButton className="grey" onClick={() => onLogin(true)}>
           Read only
         </FormButton>
 

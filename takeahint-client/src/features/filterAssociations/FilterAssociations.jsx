@@ -11,16 +11,22 @@ import Page from "../../components/Page/Page";
 import React from "react";
 import classNames from "classnames";
 import { selectIsMaster } from "../../app/reducer";
+import { selectLogin } from "../login/reducer";
 
 export default function FilterAssociations() {
   const isMaster = useSelector(selectIsMaster);
+  const login = useSelector(selectLogin);
   const associations = useSelector(selectAssociations);
   const dispatch = useDispatch();
 
   return (
     <Page className="associations">
       <Form>
-        {!isMaster ? (
+        {!isMaster && !login ? (
+          <>
+            <h2>Команда придумывает ассоциации</h2>
+          </>
+        ) : !isMaster ? (
           <>
             <h2>Уберите неподходящие ассоциации</h2>
             <List title="Список ассоциаций">

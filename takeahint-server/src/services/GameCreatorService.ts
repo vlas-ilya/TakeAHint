@@ -6,6 +6,8 @@ import Association from '../beans/wordSet/Association';
 import GameContext from '../beans/game/GameContext';
 import GameEvent from '../beans/game/GameEvent';
 import GameStateSchema from '../beans/game/GameStateSchema';
+import GameStatistic from '../beans/game/GameStatistic';
+import GameStatisticService from './GameStatisticService';
 import { Injectable } from '@nestjs/common';
 import Player from '../beans/player/Player';
 import SequenceOfMasterService from './SequenceOfMasterService';
@@ -18,6 +20,7 @@ export default class GameCreatorService {
   constructor(
     private readonly sequenceOfMasterService: SequenceOfMasterService,
     private readonly wordSetsService: WordSetsService,
+    private readonly gameStatisticService: GameStatisticService,
   ) {}
 
   private setColor(player: Player): Player {
@@ -236,7 +239,7 @@ export default class GameCreatorService {
 
   private saveCurrentWord = assign((context: GameContext, event: GameEvent) => {
     if (event.type === 'CHOOSE_WORD') {
-      return { currentWord: event.currentWord };
+      return { currentWord: event.currentWord, oldWords: [...context.oldWords, event.currentWord] };
     }
   });
 
@@ -261,6 +264,16 @@ export default class GameCreatorService {
     });
   };
 
+  private saveGameStatistic = assign((context: GameContext) => {
+    const gameStatistic = new GameStatistic();
+
+    gameStatistic.players = context.players.filter(item => item.login).map(item => item.login);
+    gameStatistic.words = context.oldWords;
+    gameStatistic.countOfWin = context.countOfWin;
+
+    return { statisticId: this.gameStatisticService.put(gameStatistic) };
+  });
+
   public create = (): StateMachine<GameContext, GameStateSchema, GameEvent, Typestate<GameContext>> => {
     return Machine<GameContext, GameStateSchema, GameEvent>(
       {
@@ -268,13 +281,15 @@ export default class GameCreatorService {
         initial: 'waitPlayers',
 
         context: {
-          countOfRounds: 13,
+          countOfRounds: 1,
           countOfWin: 0,
           players: [],
           wordSets: [],
           currentWordSet: null,
           currentWord: null,
           sequenceOfMasterPlayers: [],
+          oldWords: [],
+          statisticId: '',
         },
 
         invoke: [
@@ -386,7 +401,7 @@ export default class GameCreatorService {
             },
           },
           showResult: {
-            entry: ['onShowResult'],
+            entry: [this.saveGameStatistic, 'onShowResult'],
           },
         },
       },
@@ -408,6 +423,7 @@ export default class GameCreatorService {
           onEndFilterAssociations: pass,
           onStartAnswering: pass,
           onEndAnswering: pass,
+          onShowResult: pass,
         },
       },
     );

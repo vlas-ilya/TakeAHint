@@ -3,10 +3,27 @@ import "./form-input.scss";
 import React from "react";
 import classNames from "classnames";
 
-export default function FormInput({ name, label, value, onChange }) {
+export default function FormInput({
+  name,
+  label,
+  validMessage,
+  value,
+  onChange
+}) {
   return (
-    <div className={classNames("form-input", { filled: value })}>
-      <label htmlFor={name}>{label}</label>
+    <div
+      className={classNames("form-input", {
+        filled: value,
+        invalid: validMessage
+      })}
+    >
+      <label htmlFor={name}>
+        {!validMessage ? (
+          label
+        ) : (
+          <span className="validMessage">{validMessage}</span>
+        )}
+      </label>
       <input
         name={name}
         type="text"

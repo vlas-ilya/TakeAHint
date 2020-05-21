@@ -13,7 +13,7 @@ class SocketPayload {
 }
 
 @WebSocketGateway()
-export default class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
+export default class SocketGateway implements OnGatewayDisconnect {
   constructor(private readonly gameService: GameService) {}
 
   @SubscribeMessage('connection')
@@ -25,11 +25,7 @@ export default class SocketGateway implements OnGatewayConnection, OnGatewayDisc
     this.gameService.connect(gameId, player);
   }
 
-  handleConnection(client: Socket, ...args: any[]) {
-    console.log();
-  }
-
   handleDisconnect(client: Socket) {
-    console.log();
+    this.gameService.disconnect(client);
   }
 }

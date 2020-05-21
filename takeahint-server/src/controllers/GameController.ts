@@ -1,8 +1,9 @@
-import { Body, Controller, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 
 import ActivePlayer from '../beans/player/ActivePlayer';
 import GameEvent from '../beans/game/GameEvent';
 import GameService from '../services/GameService';
+import GameStatisticService from '../services/GameStatisticService';
 import { throwIf } from '../utils/utils';
 
 @Controller('game')
@@ -17,7 +18,7 @@ export class GameController {
     'ANSWER',
   ];
 
-  constructor(private readonly gameService: GameService) {}
+  constructor(private readonly gameService: GameService, private readonly gameStatisticService: GameStatisticService) {}
 
   @Post(':gameId/command')
   onMessage(
@@ -31,5 +32,10 @@ export class GameController {
 
   private static commandValid(event: GameEvent): boolean {
     return true; // TODO
+  }
+
+  @Get('statistic/:id')
+  getStatistic(@Param('id') id: string) {
+    return this.gameStatisticService.get(id);
   }
 }

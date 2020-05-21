@@ -26,7 +26,7 @@ export default function WaitingPlayers() {
               key={item.id}
               className={classNames({ you: playerId === item.id })}
             >
-              {item.login}
+              {item.login || "Наблюдатель"}
             </ListItem>
           ))}
         </List>

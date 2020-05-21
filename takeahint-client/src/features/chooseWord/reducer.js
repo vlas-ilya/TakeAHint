@@ -5,7 +5,8 @@ import produce from "immer";
 export const reducer = createSlice({
   name: "loginPage",
   initialState: {
-    words: []
+    words: [],
+    notVoted: []
   },
   reducers: {
     changeWords: (state, action) =>
@@ -15,6 +16,11 @@ export const reducer = createSlice({
           word: item,
           selected: false
         }));
+      }),
+
+    saveNotVoted: (state, action) =>
+      produce(state, draftState => {
+        draftState.notVoted = action.payload;
       }),
 
     selectWord: (state, action) =>
@@ -27,7 +33,7 @@ export const reducer = createSlice({
   }
 });
 
-export const { changeWords, selectWord } = reducer.actions;
+export const { changeWords, selectWord, saveNotVoted } = reducer.actions;
 
 export const chooseWord = () => async (dispatch, getState) => {
   const state = getState();
@@ -43,8 +49,7 @@ export const chooseWord = () => async (dispatch, getState) => {
   });
 };
 
-export const selectWords = state => {
-  return state.chooseWordPage.words;
-};
+export const selectWords = state => state.chooseWordPage.words;
+export const selectNotVoted = state => state.chooseWordPage.notVoted;
 
 export default reducer.reducer;

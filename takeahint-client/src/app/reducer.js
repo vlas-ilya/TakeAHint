@@ -1,8 +1,13 @@
+import {
+  changeAssociation,
+  saveNotReady
+} from "../features/inputAssociations/reducer";
+import { changeGameIdValid, changeLoginValid } from "../features/login/reducer";
+import { changeWords, saveNotVoted } from "../features/chooseWord/reducer";
+
 import { answeringPageChangeAssociations } from "../features/answering/reducer";
-import { changeAssociation } from "../features/inputAssociations/reducer";
 import { changeAssociations } from "../features/filterAssociations/reducer";
 import { changePlayers } from "../features/waitingPlayers/reducer";
-import { changeWords } from "../features/chooseWord/reducer";
 import { createSlice } from "@reduxjs/toolkit";
 import io from "socket.io-client";
 import produce from "immer";
@@ -110,19 +115,22 @@ export const {
   changeMaster
 } = application.actions;
 
-export const connect = () => (dispatch, getState) => {
+export const connect = readonly => (dispatch, getState) => {
   const state = getState();
-
-  const socket = io("ws://localhost:3003", {
-    query: {
-      token: "123"
-    }
-  });
 
   const payload = {
     gameId: state.loginPage.gameId,
-    login: state.loginPage.login
+    login: readonly ? "" : state.loginPage.login
   };
+
+  dispatch(changeGameIdValid(payload.gameId));
+  dispatch(changeLoginValid(readonly || payload.login));
+
+  if (!(payload.gameId && (readonly || payload.login))) {
+    return;
+  }
+
+  const socket = io(`ws://${window.location.host.replace("3000", "3003")}`);
 
   setParam("gameId", payload.gameId);
   setParam("player", payload.login);
@@ -156,6 +164,7 @@ export const connect = () => (dispatch, getState) => {
     dispatch(changeCountOfWin(response.countOfWin));
     dispatch(changeCountOfRounds(response.countOfRounds));
     dispatch(changeIsGaming(true));
+    dispatch(changeMaster(response.master));
     return "START_GAME";
   };
 
@@ -163,14 +172,19 @@ export const connect = () => (dispatch, getState) => {
     dispatch(changePage(constants.pages.chooseWord));
     dispatch(changeWords(response.words));
     dispatch(changeWord(""));
-    dispatch(changeMaster(response.master));
     return "START_CHOICE_WORD";
+  };
+
+  const voted = response => {
+    dispatch(saveNotVoted(response.notVotedPlayers));
+    return "VOTED";
   };
 
   const startInputAssociation = response => {
     dispatch(changePage(constants.pages.inputAssociations));
     dispatch(changeWord(response.word));
     dispatch(changeAssociation(""));
+    dispatch(saveNotReady(response.notReady));
     return "START_INPUT_ASSOCIATION";
   };
 
@@ -191,6 +205,11 @@ export const connect = () => (dispatch, getState) => {
     return "FINISH";
   };
 
+  const showResult = response => {
+    window.location = `/finish?id=${response.id}`;
+    return "SHOW_RESULT";
+  };
+
   socket.on("event", response => {
     switch (response.type) {
       case "ADD_PLAYER":
@@ -199,6 +218,8 @@ export const connect = () => (dispatch, getState) => {
         return startGame(response);
       case "START_CHOICE_WORD":
         return startChoiceWord(response);
+      case "VOTED":
+        return voted(response);
       case "START_INPUT_ASSOCIATION":
         return startInputAssociation(response);
       case "START_FILTER_ASSOCIATIONS":
@@ -207,10 +228,13 @@ export const connect = () => (dispatch, getState) => {
         return startAnswering(response);
       case "FINISH":
         return finish(response);
+      case "SHOW_RESULT":
+        return showResult(response);
       case "RECONNECT":
         return [
           addPlayer,
           startGame,
+          voted,
           startChoiceWord,
           startInputAssociation,
           startFilterAssociations,

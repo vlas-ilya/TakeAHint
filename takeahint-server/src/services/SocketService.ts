@@ -1,5 +1,6 @@
 import { Interpreter, State, StateSchema, Typestate } from 'xstate';
 
+import ActivePlayer from '../beans/player/ActivePlayer';
 import GameContext from '../beans/game/GameContext';
 import GameEvent from '../beans/game/GameEvent';
 import GameStateSchema from '../beans/game/GameStateSchema';
@@ -109,6 +110,19 @@ export default class SocketService {
         });
       });
     }
+
+    const ids = Array.from(context.currentWordSet.vote.keys());
+    context.players
+      .filter(player => !player.login)
+      .forEach(player => {
+        player.client.emit('event', {
+          type: 'VOTED',
+          notVotedPlayers: context.players
+            .filter(item => !item.isMaster && item.login)
+            .filter(item => !ids.includes(item.id))
+            .map(item => item.login),
+        });
+      });
   }
 
   onEndChoiceWord(
@@ -116,14 +130,7 @@ export default class SocketService {
     context: GameContext,
     event: GameEvent,
     state: State<GameContext, GameEvent, StateSchema<GameContext>, Typestate<GameContext>>,
-  ) {
-    console.log(`
-      --------- [Game id = ${gameId}, event = onEndChoiceWord] ---------
-      [ event = ${JSON.stringify(event.type)} ]
-      [ context = {JSON.stringify(context)} ]
-      [ state = ${JSON.stringify(state.value)} ]
-    `);
-  }
+  ) {}
 
   onStartInputAssociations(
     gameId: string,
@@ -139,6 +146,19 @@ export default class SocketService {
         });
       });
     }
+
+    const ids = Array.from(context.currentWordSet.associations.keys());
+    context.players
+      .filter(player => !player.login)
+      .forEach(player => {
+        player.client.emit('event', {
+          type: 'START_INPUT_ASSOCIATION',
+          notReady: context.players
+            .filter(item => !item.isMaster && item.login)
+            .filter(item => !ids.includes(item.id))
+            .map(item => item.login),
+        });
+      });
   }
 
   onEndInputAssociations(
@@ -246,6 +266,20 @@ export default class SocketService {
     }
   }
 
+  onShowResult(
+    gameId: string,
+    context: GameContext,
+    event: GameEvent,
+    state: State<GameContext, GameEvent, any, Typestate<GameContext>>,
+  ) {
+    context.players.forEach(player => {
+      player.client.emit('event', {
+        type: 'SHOW_RESULT',
+        id: context.statisticId,
+      });
+    });
+  }
+
   onReconnect(
     gameId: string,
     game: Interpreter<GameContext, GameStateSchema, GameEvent, Typestate<GameContext>>,
@@ -262,6 +296,9 @@ export default class SocketService {
       countOfWin: 0,
       countOfRounds: 0,
       master: '',
+      notVotedPlayers: [],
+      notReady: [],
+      statisticId: '',
     };
     [
       () => {
@@ -282,12 +319,30 @@ export default class SocketService {
         payload.countOfRounds = game.state.context.countOfRounds;
         const master = game.state.context.players.find(item => item.isMaster);
         payload.master = master.login;
+
+        if (!(player as ActivePlayer).login) {
+          const ids = Array.from(game.state.context.currentWordSet.vote.keys());
+          payload.notVotedPlayers = game.state.context.players
+            .filter(item => !item.isMaster && item.login)
+            .filter(item => !ids.includes(item.id))
+            .map(item => item.login);
+        }
+
         return 'choiceWord';
       },
 
       () => {
         payload.state = 'START_INPUT_ASSOCIATION';
         payload.word = payload.isMaster === false ? game.state.context.currentWord : '';
+
+        if (!(player as ActivePlayer).login) {
+          const ids = Array.from(game.state.context.currentWordSet.associations.keys());
+          payload.notReady = game.state.context.players
+            .filter(item => !item.isMaster && item.login)
+            .filter(item => !ids.includes(item.id))
+            .map(item => item.login);
+        }
+
         return 'inputAssociations';
       },
 
@@ -307,6 +362,7 @@ export default class SocketService {
       },
 
       () => {
+        payload.statisticId = game.state.context.statisticId;
         return 'showResult';
       },
     ].find(item => [game.state.value, game.state.value['game']].includes(item()));

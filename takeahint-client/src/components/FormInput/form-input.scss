@@ -30,6 +30,10 @@
     color: #909090;
   }
 
+  .validMessage {
+    color: #bd1d1d;
+  }
+
   input[type="text"] {
     font-family: "Roboto", sans-serif;
     outline: 0;
@@ -44,6 +48,12 @@
     &:active,
     &:focus {
       border: 1px solid $input-border-color-hover;
+    }
+  }
+
+  &.invalid {
+    input[type="text"] {
+      border: 1px solid #bd1d1d;
     }
   }
 }

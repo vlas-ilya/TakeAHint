@@ -2,6 +2,7 @@ import { GameController } from './controllers/GameController';
 import GameCreatorService from './services/GameCreatorService';
 import GameFactory from './services/GameFactory';
 import GameService from './services/GameService';
+import GameStatisticService from './services/GameStatisticService';
 import { Module } from '@nestjs/common';
 import SequenceOfMasterService from './services/SequenceOfMasterService';
 import SocketGateway from './controllers/SocketGateway';
@@ -19,6 +20,7 @@ import WordSetsService from './services/WordSetsService';
     GameFactory,
     SocketService,
     SocketGateway,
+    GameStatisticService,
   ],
 })
 export class AppModule {}

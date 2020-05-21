@@ -9,6 +9,8 @@ interface GameContext {
   currentWordSet: WordSet | null;
   currentWord: string;
   sequenceOfMasterPlayers: Array<number>;
+  oldWords: Array<string>;
+  statisticId: string;
 }
 
 export default GameContext;

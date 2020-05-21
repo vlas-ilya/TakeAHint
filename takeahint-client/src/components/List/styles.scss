@@ -5,6 +5,10 @@
   margin-bottom: 20px;
   box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.14);
 
+  &:last-child {
+    margin-bottom: 0;
+  }
+
   .list-title {
     background: $list-background;
     color: $list-color;

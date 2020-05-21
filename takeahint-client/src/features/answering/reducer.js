@@ -6,7 +6,8 @@ export const reducer = createSlice({
   name: "answeringPage",
   initialState: {
     associations: [],
-    answer: ""
+    answer: "",
+    valid: true
   },
   reducers: {
     changeAnswer: (state, action) =>
@@ -16,13 +17,19 @@ export const reducer = createSlice({
     answeringPageChangeAssociations: (state, action) =>
       produce(state, draftState => {
         draftState.associations = action.payload;
-      })
+      }),
+
+    invalidAnswer: state => ({
+      ...state,
+      valid: false
+    })
   }
 });
 
 export const {
   answeringPageChangeAssociations,
-  changeAnswer
+  changeAnswer,
+  invalidAnswer
 } = reducer.actions;
 
 export const sendAnswer = () => async (dispatch, getState) => {
@@ -53,5 +60,6 @@ export const sendEmptyAnswer = () => async (dispatch, getState) => {
 
 export const selectAssociations = state => state.answeringPage.associations;
 export const selectAnswer = state => state.answeringPage.answer;
+export const selectValidAnswer = state => state.answeringPage.valid;
 
 export default reducer.reducer;
