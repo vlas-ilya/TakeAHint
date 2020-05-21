@@ -1,7 +1,15 @@
+import "./styles.scss";
+
 import { selectPlayers, start } from "./reducer";
 import { useDispatch, useSelector } from "react-redux";
 
+import Form from "../../components/Form/Form";
+import FormButton from "../../components/FormButton/FormButton";
+import List from "../../components/List/List";
+import ListItem from "../../components/List/ListItem";
+import Page from "../../components/Page/Page";
 import React from "react";
+import classNames from "classnames";
 import { selectPlayerId } from "../../app/reducer";
 
 export default function WaitingPlayers() {
@@ -10,16 +18,21 @@ export default function WaitingPlayers() {
   const dispatch = useDispatch();
 
   return (
-    <div>
-      {players.map(item => (
-        <div key={item.id}>
-          {item.login}
-          {playerId === item.id && <span>(you)</span>}
-        </div>
-      ))}
-      <div>
-        <button onClick={() => dispatch(start())}>Start</button>
-      </div>
-    </div>
+    <Page className="waiting-players">
+      <Form>
+        <List>
+          {players.map(item => (
+            <ListItem
+              key={item.id}
+              className={classNames({ you: playerId === item.id })}
+            >
+              {item.login}
+            </ListItem>
+          ))}
+        </List>
+
+        <FormButton onClick={() => dispatch(start())}>Start</FormButton>
+      </Form>
+    </Page>
   );
 }

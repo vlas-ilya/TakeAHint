@@ -1,10 +1,12 @@
 import { answeringPageChangeAssociations } from "../features/answering/reducer";
+import { changeAssociation } from "../features/inputAssociations/reducer";
 import { changeAssociations } from "../features/filterAssociations/reducer";
 import { changePlayers } from "../features/waitingPlayers/reducer";
 import { changeWords } from "../features/chooseWord/reducer";
 import { createSlice } from "@reduxjs/toolkit";
 import io from "socket.io-client";
 import produce from "immer";
+import { setParam } from "../utils/url.utils";
 
 export const constants = {
   pages: {
@@ -13,9 +15,7 @@ export const constants = {
     chooseWord: "CHOOSE_WORD",
     inputAssociations: "INPUT_ASSOCIATIONS",
     filterAssociations: "FILTER_ASSOCIATIONS",
-    answering: "ANSWERING",
-    countOfWin: 0,
-    countOfRounds: 0
+    answering: "ANSWERING"
   }
 };
 
@@ -26,7 +26,11 @@ export const application = createSlice({
     playerId: "",
     word: "",
     isMaster: false,
-    isGaming: false
+    isGaming: false,
+    alert: "",
+    countOfWin: 0,
+    countOfRounds: 0,
+    master: ""
   },
   reducers: {
     changeWord: (state, action) =>
@@ -76,6 +80,20 @@ export const application = createSlice({
         ? state
         : produce(state, draftState => {
             draftState.isGaming = action.payload;
+          }),
+
+    changeAlert: (state, action) =>
+      state.alert === action.payload
+        ? state
+        : produce(state, draftState => {
+            draftState.alert = action.payload;
+          }),
+
+    changeMaster: (state, action) =>
+      state.master === action.payload
+        ? state
+        : produce(state, draftState => {
+            draftState.master = action.payload;
           })
   }
 });
@@ -87,7 +105,9 @@ export const {
   changeWord,
   changeCountOfWin,
   changeCountOfRounds,
-  changeIsGaming
+  changeIsGaming,
+  changeAlert,
+  changeMaster
 } = application.actions;
 
 export const connect = () => (dispatch, getState) => {
@@ -103,6 +123,9 @@ export const connect = () => (dispatch, getState) => {
     gameId: state.loginPage.gameId,
     login: state.loginPage.login
   };
+
+  setParam("gameId", payload.gameId);
+  setParam("player", payload.login);
 
   const id = localStorage.getItem(
     `${state.loginPage.gameId}/${state.loginPage.login}`
@@ -139,12 +162,15 @@ export const connect = () => (dispatch, getState) => {
   const startChoiceWord = response => {
     dispatch(changePage(constants.pages.chooseWord));
     dispatch(changeWords(response.words));
+    dispatch(changeWord(""));
+    dispatch(changeMaster(response.master));
     return "START_CHOICE_WORD";
   };
 
   const startInputAssociation = response => {
     dispatch(changePage(constants.pages.inputAssociations));
     dispatch(changeWord(response.word));
+    dispatch(changeAssociation(""));
     return "START_INPUT_ASSOCIATION";
   };
 
@@ -161,7 +187,7 @@ export const connect = () => (dispatch, getState) => {
   };
 
   const finish = response => {
-    alert(response.result);
+    dispatch(changeAlert(response.result));
     return "FINISH";
   };
 
@@ -204,5 +230,7 @@ export const selectIsMaster = state => state.application.isMaster;
 export const selectCountOfWin = state => state.application.countOfWin;
 export const selectCountOfRounds = state => state.application.countOfRounds;
 export const selectIsGaming = state => state.application.isGaming;
+export const selectAlert = state => state.application.alert;
+export const selectMaster = state => state.application.master;
 
 export default application.reducer;

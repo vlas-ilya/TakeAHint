@@ -69,12 +69,14 @@ export default class SocketService {
     event: GameEvent,
     state: State<GameContext, GameEvent, StateSchema<GameContext>, Typestate<GameContext>>,
   ) {
+    const master = context.players.find(item => item.isMaster);
     context.players.forEach(player => {
       player.client.emit('event', {
         type: 'START_GAME',
         isMaster: player.isMaster,
         countOfWin: context.countOfWin,
         countOfRounds: context.countOfRounds,
+        master: master?.login,
       });
     });
   }
@@ -218,9 +220,7 @@ export default class SocketService {
     context.players.forEach(player => {
       player.client.emit('event', {
         type: 'START_ANSWERING',
-        associations: player.isMaster
-          ? Array.from(context.currentWordSet.associations.values()).filter(item => item.valid)
-          : [],
+        associations: Array.from(context.currentWordSet.associations.values()).filter(item => item.valid),
       });
     });
   }
@@ -235,7 +235,12 @@ export default class SocketService {
       context.players.forEach(player => {
         player.client.emit('event', {
           type: 'FINISH',
-          result: event.reason,
+          result:
+            event.reason === 'WIN'
+              ? 'Вы угадали слово!'
+              : event.reason === 'LOSING'
+              ? `Нет, это не ${event.word}`
+              : 'Вам не удалось угадать слово',
         });
       });
     }
@@ -256,6 +261,7 @@ export default class SocketService {
       associations: [],
       countOfWin: 0,
       countOfRounds: 0,
+      master: '',
     };
     [
       () => {
@@ -274,6 +280,8 @@ export default class SocketService {
         payload.words = payload.isMaster === false ? game.state.context.currentWordSet.words : [];
         payload.countOfWin = game.state.context.countOfWin;
         payload.countOfRounds = game.state.context.countOfRounds;
+        const master = game.state.context.players.find(item => item.isMaster);
+        payload.master = master.login;
         return 'choiceWord';
       },
 
@@ -292,16 +300,16 @@ export default class SocketService {
 
       () => {
         payload.state = 'START_ANSWERING';
-        payload.associations = payload.isMaster
-          ? Array.from(game.state.context.currentWordSet.associations.values()).filter(item => item.valid)
-          : [];
+        payload.associations = Array.from(game.state.context.currentWordSet.associations.values()).filter(
+          item => item.valid,
+        );
         return 'answering';
       },
 
       () => {
         return 'showResult';
       },
-    ].find(item => item() === game.state.value['game']);
+    ].find(item => [game.state.value, game.state.value['game']].includes(item()));
 
     player.client.emit('event', payload);
   }

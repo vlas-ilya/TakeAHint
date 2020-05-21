@@ -39,6 +39,18 @@ export const sendAnswer = () => async (dispatch, getState) => {
   });
 };
 
+export const sendEmptyAnswer = () => async (dispatch, getState) => {
+  const state = getState();
+
+  await axios.post(`/game/${state.loginPage.gameId}/command`, {
+    type: "ANSWER",
+    player: {
+      login: state.loginPage.login,
+      id: state.application.playerId
+    }
+  });
+};
+
 export const selectAssociations = state => state.answeringPage.associations;
 export const selectAnswer = state => state.answeringPage.answer;
 

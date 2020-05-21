@@ -1,0 +1,33 @@
+@import "src/styles/theme";
+
+.form {
+  margin: 10px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+  width: 800px;
+  min-width: 300px;
+
+  background: $form-background;
+  padding: 20px;
+
+  &.small {
+    width: 300px;
+  }
+
+  p {
+    font-family: "Roboto", sans-serif;
+    font-size: 12px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  h2 {
+    font-family: "Roboto", sans-serif;
+    font-weight: 100;
+    margin-top: 0;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}

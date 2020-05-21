@@ -24,8 +24,9 @@ type GameEvent =
   | { type: 'MARK_AS_VALID'; id: string }
   | { type: 'MARK_AS_INVALID'; id: string }
   | { type: 'GO_TO_ANSWER' }
+  | { type: 'TRY_TO_ANSWERING'; associations: Map<String, Association> }
   | { type: 'ANSWER'; word: string; player: Player }
-  | { type: 'NEXT_GAME'; reason: NextGameReason }
+  | { type: 'NEXT_GAME'; reason: NextGameReason; word?: string }
   | { type: 'FINISH' };
 
 export default GameEvent;

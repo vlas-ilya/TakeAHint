@@ -1,0 +1,49 @@
+@import "src/styles/theme";
+
+.form-input {
+  position: relative;
+  margin: 0 0 15px;
+
+  &:last-child {
+    margin: 0;
+  }
+
+  &.filled {
+    label {
+      position: absolute;
+      transition: all 0.1s;
+
+      transform: scale(0.6) translate(0, -24px);
+      font-weight: bold;
+      color: #505050;
+    }
+  }
+
+  label {
+    transform-origin: left;
+    transition: all 0.2s;
+    font-family: "Roboto", sans-serif;
+    position: absolute;
+    font-size: 14px;
+    top: 15px;
+    left: 15px;
+    color: #909090;
+  }
+
+  input[type="text"] {
+    font-family: "Roboto", sans-serif;
+    outline: 0;
+    background: #f2f2f2;
+    width: 100%;
+    border: 1px solid $input-border-color;
+    padding: 14px;
+    box-sizing: border-box;
+    font-size: 14px;
+
+    &:hover,
+    &:active,
+    &:focus {
+      border: 1px solid $input-border-color-hover;
+    }
+  }
+}

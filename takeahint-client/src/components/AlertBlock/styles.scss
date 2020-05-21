@@ -1,0 +1,25 @@
+@import "src/styles/theme";
+
+.alert-block {
+  z-index: 100;
+  position: fixed;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  .alert {
+    min-width: 200px;
+    max-width: 300px;
+    padding: 10px 20px;
+    color: white;
+    background: $alert-background;
+    margin-top: -1000px;
+    transition: ease-in 0.2s;
+
+    &.show {
+      transition: all 0.3s;
+      box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+      margin-top: 0;
+    }
+  }
+}

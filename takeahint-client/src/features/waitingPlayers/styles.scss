@@ -1,0 +1,13 @@
+.waiting-players {
+  .list {
+    .list-item {
+      text-transform: uppercase;
+
+      &.you {
+        font-size: 20px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+      }
+    }
+  }
+}

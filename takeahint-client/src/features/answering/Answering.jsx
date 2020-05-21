@@ -2,10 +2,17 @@ import {
   changeAnswer,
   selectAnswer,
   selectAssociations,
-  sendAnswer
+  sendAnswer,
+  sendEmptyAnswer
 } from "./reducer";
 import { useDispatch, useSelector } from "react-redux";
 
+import Form from "../../components/Form/Form";
+import FormButton from "../../components/FormButton/FormButton";
+import FormInput from "../../components/FormInput/FormInput";
+import List from "../../components/List/List";
+import ListItem from "../../components/List/ListItem";
+import Page from "../../components/Page/Page";
 import React from "react";
 import { selectIsMaster } from "../../app/reducer";
 
@@ -16,27 +23,54 @@ export default function Answering() {
   const dispatch = useDispatch();
 
   return (
-    <div>
-      Answering
-      {isMaster && (
-        <>
-          <div>
-            {associations.map(item => (
-              <div key={item.id}>{item.value}</div>
-            ))}
-          </div>
-          <div>
-            <label htmlFor="answer">Answer</label>
-            <input
+    <Page>
+      <Form>
+        {isMaster ? (
+          <>
+            <h2>Угадайте слово</h2>
+            <List title="Список ассоциаций">
+              {associations.map(item => (
+                <ListItem key={item.id}>{item.value}</ListItem>
+              ))}
+            </List>
+            <FormInput
+              label="Введите ответ"
               name="answer"
-              type="text"
               value={answer}
-              onChange={e => dispatch(changeAnswer(e.target.value))}
+              onChange={value => dispatch(changeAnswer(value))}
             />
-            <button onClick={() => dispatch(sendAnswer())}>Answer</button>
-          </div>
-        </>
-      )}
-    </div>
+
+            <FormButton onClick={() => dispatch(sendAnswer())}>
+              Ответить
+            </FormButton>
+
+            <FormButton
+              className="grey"
+              onClick={() => dispatch(sendEmptyAnswer())}
+            >
+              Пропустить
+            </FormButton>
+
+            <p>
+              По списку ассоциаций, который подготовила для вас ваша команда,
+              попробуйте догадаться какое слово было загаданно
+            </p>
+            <p>
+              Введите ответ, соблюдая все правила орфографии, и нажмите{" "}
+              <strong>Ответить</strong>
+            </p>
+          </>
+        ) : (
+          <>
+            <h2>Ведущий отгадывает слово</h2>
+            <List title="Список ассоциаций">
+              {associations.map(item => (
+                <ListItem key={item.id}>{item.value}</ListItem>
+              ))}
+            </List>
+          </>
+        )}
+      </Form>
+    </Page>
   );
 }

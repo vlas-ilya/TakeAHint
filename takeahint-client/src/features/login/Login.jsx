@@ -6,6 +6,9 @@ import {
 } from "./reducer";
 import { useDispatch, useSelector } from "react-redux";
 
+import GrCode from "../../components/QrCode/GrCode";
+import LoginForm from "./LoginForm";
+import Page from "../../components/Page/Page";
 import React from "react";
 import { connect } from "../../app/reducer";
 
@@ -15,30 +18,15 @@ export default function Login() {
   const dispatch = useDispatch();
 
   return (
-    <div>
-      <div>
-        <label htmlFor="gameId">Game id:</label>
-        <input
-          name="gameId"
-          type="text"
-          value={gameId}
-          onChange={e => dispatch(changeGameId(e.target.value))}
-        />
-      </div>
-
-      <div>
-        <label htmlFor="login">Login:</label>
-        <input
-          name="login"
-          type="text"
-          value={login}
-          onChange={e => dispatch(changeLogin(e.target.value))}
-        />
-      </div>
-
-      <div>
-        <button onClick={() => dispatch(connect())}>Connect</button>
-      </div>
-    </div>
+    <Page className="login-page">
+      <LoginForm
+        gameId={gameId}
+        login={login}
+        onGameIdChange={value => dispatch(changeGameId(value))}
+        onLoginChange={value => dispatch(changeLogin(value))}
+        onLogin={() => dispatch(connect())}
+      />
+      <GrCode />
+    </Page>
   );
 }

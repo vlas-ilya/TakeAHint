@@ -100,10 +100,10 @@ export default class GameCreatorService {
       if (event.type !== 'VOTE' || context.currentWordSet === null) {
         return context.currentWordSet;
       }
-      if (context.currentWordSet.vote[event.index] === undefined) {
-        context.currentWordSet.vote[event.index] = 0;
+      let player = context.players.find(item => item.id === event.player.id);
+      if (player.login && !player.isMaster) {
+        context.currentWordSet.vote.set(event.player.id, event.index);
       }
-      context.currentWordSet.vote[event.index] += 1;
       return context.currentWordSet;
     },
   });
@@ -129,13 +129,20 @@ export default class GameCreatorService {
       if (event.type !== 'TRY_CHOOSE_WORD') {
         return;
       }
-      const sum = event.vote.reduce((a: number, b: number) => a + b);
+      let vote = Array.from(event.vote.values()).reduce((acc: Array<number>, index: number) => {
+        if (!acc[index]) {
+          acc[index] = 0;
+        }
+        acc[index] += 1;
+        return acc;
+      }, []);
+      const sum = vote.reduce((a: number, b: number) => a + b);
       if (sum < this.getPlayers(event.players)) {
         return;
       }
 
-      const max = Math.max(...event.vote.filter(Boolean));
-      const indexes = event.vote.flatMap((item, index) => (item === max ? [index] : []));
+      const max = Math.max(...vote.filter(Boolean));
+      const indexes = vote.flatMap((item, index) => (item === max ? [index] : []));
       const newWordIndex = randomElement(indexes);
       const currentWord = event.words[newWordIndex];
 
@@ -233,6 +240,27 @@ export default class GameCreatorService {
     }
   });
 
+  private toAnsweringIfHasAssociations = send(
+    (context: GameContext) => ({
+      type: 'TRY_TO_ANSWERING',
+      associations: context.currentWordSet?.associations,
+    }),
+    { to: 'toAnsweringService' },
+  );
+
+  private tryToAnsweringService = () => (cb: Sender<GameEvent>, onReceive: Receiver<GameEvent>) => {
+    onReceive((event: GameEvent) => {
+      if (event.type !== 'TRY_TO_ANSWERING') {
+        return;
+      }
+      if (Array.from(event.associations.values()).some(item => item.valid)) {
+        cb({ type: 'GO_TO_ANSWER' });
+      } else {
+        cb({ type: 'NEXT_GAME', reason: 'SKIP' });
+      }
+    });
+  };
+
   public create = (): StateMachine<GameContext, GameStateSchema, GameEvent, Typestate<GameContext>> => {
     return Machine<GameContext, GameStateSchema, GameEvent>(
       {
@@ -257,6 +285,10 @@ export default class GameCreatorService {
           {
             id: 'filterAssociationsService',
             src: this.tryFilterAssociations,
+          },
+          {
+            id: 'toAnsweringService',
+            src: this.tryToAnsweringService,
           },
         ],
 
@@ -333,7 +365,10 @@ export default class GameCreatorService {
                 entry: ['onStartFilterAssociations'],
                 exit: ['onEndFilterAssociations'],
                 on: {
-                  GO_TO_ANSWER: 'answering',
+                  GO_TO_ANSWER: {
+                    target: 'answering',
+                    actions: [this.toAnsweringIfHasAssociations],
+                  },
                   MARK_AS_VALID: {
                     target: 'filterAssociations',
                     actions: [this.markAssociationAsValid, 'onMarkAssociationAsValid'],

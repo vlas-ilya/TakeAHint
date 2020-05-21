@@ -9,9 +9,11 @@ export const reducer = createSlice({
   },
   reducers: {
     changeAssociation: (state, action) =>
-      produce(state, draftState => {
-        draftState.association = action.payload;
-      })
+      state.association === action.payload
+        ? state
+        : produce(state, draftState => {
+            draftState.association = action.payload;
+          })
   }
 });
 

@@ -13,7 +13,8 @@ export default class GameService {
       const { currentWord } = game.state.context;
       game.send({
         type: 'NEXT_GAME',
-        reason: currentWord === event.word ? 'WIN' : !currentWord ? 'SKIP' : 'LOSING',
+        word: event.word,
+        reason: currentWord === event.word ? 'WIN' : !event.word ? 'SKIP' : 'LOSING',
       });
       return;
     }

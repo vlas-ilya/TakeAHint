@@ -1,0 +1,32 @@
+@import "src/styles/theme";
+
+.main-menu-block {
+  font-family: "Roboto", sans-serif;
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 20px;
+
+  .main-menu {
+    margin: 0 10px;
+    padding: 10px;
+    background: $form-background;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    .word {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      font-weight: bold;
+      font-size: 25px;
+      margin-left: 20px;
+      color: #2d2d2d;
+    }
+    .rounds {
+      text-align: right;
+    }
+  }
+}

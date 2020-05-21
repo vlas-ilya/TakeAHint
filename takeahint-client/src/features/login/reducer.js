@@ -1,15 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { getParam } from "../../utils/url.utils";
 import produce from "immer";
-
-const url = new URL(window.location.href);
-const gameId = url.searchParams.get("gameId");
-const player = url.searchParams.get("player");
 
 export const reducer = createSlice({
   name: "loginPage",
   initialState: {
-    gameId: gameId || "",
-    login: player || ""
+    gameId: getParam("gameId", ""),
+    login: getParam("player", "")
   },
   reducers: {
     changeGameId: (state, action) =>
