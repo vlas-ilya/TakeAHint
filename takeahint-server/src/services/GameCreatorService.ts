@@ -23,7 +23,7 @@ export default class GameCreatorService {
     private readonly gameStatisticService: GameStatisticService,
   ) {}
 
-  private setColor(player: Player): Player {
+  private static setColor(player: Player): Player {
     if (player instanceof ActivePlayer) {
       // TODO: set color to player
       player.color = '#000000';
@@ -33,7 +33,7 @@ export default class GameCreatorService {
 
   private addPlayer = assign({
     players: (context: GameContext, event: GameEvent) =>
-      event.type === 'ADD_PLAYER' ? [...context.players, this.setColor(event.player)] : context.players,
+      event.type === 'ADD_PLAYER' ? [...context.players, GameCreatorService.setColor(event.player)] : context.players,
   });
 
   private removePlayer = assign({
@@ -172,9 +172,9 @@ export default class GameCreatorService {
   });
 
   private getNeededAssociationsCount = (context: GameContext): number => {
-    if (this.getPlayers(context.players) === 2) {
+    /*if (this.getPlayers(context.players) === 2) {
       return 4;
-    }
+    }*/
     return this.getPlayers(context.players);
   };
 
@@ -281,7 +281,7 @@ export default class GameCreatorService {
         initial: 'waitPlayers',
 
         context: {
-          countOfRounds: 1,
+          countOfRounds: 13,
           countOfWin: 0,
           players: [],
           wordSets: [],
