@@ -34,7 +34,7 @@ export default function LoginForm({
         <FormButton onClick={() => onLogin()}>Подключиться</FormButton>
 
         <FormButton className="grey" onClick={() => onLogin(true)}>
-          Read only
+          Readonly
         </FormButton>
 
         <p>

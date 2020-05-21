@@ -1,6 +1,5 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 
-import ActivePlayer from '../beans/player/ActivePlayer';
 import GameEvent from '../beans/game/GameEvent';
 import GameService from '../services/GameService';
 import GameStatisticService from '../services/GameStatisticService';
