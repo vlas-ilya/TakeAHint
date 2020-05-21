@@ -28,6 +28,7 @@
     top: 15px;
     left: 15px;
     color: #909090;
+    cursor: auto;
   }
 
   .validMessage {
@@ -54,6 +55,14 @@
   &.invalid {
     input[type="text"] {
       border: 1px solid #bd1d1d;
+    }
+  }
+
+  @media not all and (min-resolution: 0.001dpcm) {
+    @supports (-webkit-appearance: none) {
+      label {
+        top: 18px;
+      }
     }
   }
 }

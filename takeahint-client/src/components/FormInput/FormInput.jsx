@@ -25,6 +25,7 @@ export default function FormInput({
         )}
       </label>
       <input
+        id={name}
         name={name}
         type="text"
         value={value}

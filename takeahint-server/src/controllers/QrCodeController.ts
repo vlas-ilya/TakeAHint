@@ -8,6 +8,7 @@ export default class QrCodeController {
   generate(@Query("params") params: string) {
     return QRCode.toDataURL(params, {
       width: 300,
+      margin: 3,
       color: {
         dark: '#0b303d'
       }
