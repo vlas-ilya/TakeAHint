@@ -6,12 +6,18 @@ import GameStatisticService from './services/GameStatisticService';
 import { Module } from '@nestjs/common';
 import QrCodeController from './controllers/QrCodeController';
 import SequenceOfMasterService from './services/SequenceOfMasterService';
+import { ServeStaticModule } from '@nestjs/serve-static';
 import SocketGateway from './controllers/SocketGateway';
 import SocketService from './services/SocketService';
 import WordSetsService from './services/WordSetsService';
+import { join } from 'path';
 
 @Module({
-  imports: [],
+  imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', '..', 'takeahint-client', 'build'),
+    }),
+  ],
   controllers: [GameController, QrCodeController],
   providers: [
     WordSetsService,
