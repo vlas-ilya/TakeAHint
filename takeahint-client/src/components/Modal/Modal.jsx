@@ -12,7 +12,7 @@ export default function Modal({ actions, title, body, className, noPadding }) {
             <h2>{title}</h2>
           </div>
         )}
-        <div className={classNames('Modal-body', { 'no-padding': noPadding })}>{body}</div>
+        <div className={classNames('modal-body', { 'no-padding': noPadding })}>{body}</div>
         <div className="modal-actions">{actions}</div>
       </div>
     </div>
