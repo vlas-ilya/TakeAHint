@@ -152,7 +152,7 @@ export default class SocketService {
     game: Interpreter<GameContext, GameStateSchema, GameEvent, Typestate<GameContext>>,
     player: Player,
   ) {
-    const realPlayer = game.state.context.players.find((item) => (item.id = player.id));
+    const realPlayer = game.state.context.players.find((item) => item.id === player.id);
     const payload = {
       type: 'RECONNECT',
       state: '',

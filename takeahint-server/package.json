@@ -23,6 +23,7 @@
     "@nestjs/platform-socket.io": "7.0.13",
     "@nestjs/serve-static": "2.1.1",
     "@nestjs/websockets": "7.0.13",
+    "express-static-gzip": "^2.0.6",
     "qrcode": "1.4.4",
     "reflect-metadata": "0.1.13",
     "rimraf": "3.0.2",
