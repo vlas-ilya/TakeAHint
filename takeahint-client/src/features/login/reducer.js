@@ -1,7 +1,7 @@
+import { change } from '../../utils/utils';
 import { createSlice } from '@reduxjs/toolkit';
-import { generateCode } from '../../utils/utils';
+import { generateCode } from '../../utils/generate.utils';
 import { getParam } from '../../utils/url.utils';
-import produce from 'immer';
 
 export const reducer = createSlice({
   name: 'login',
@@ -12,29 +12,10 @@ export const reducer = createSlice({
     loginValid: true,
   },
   reducers: {
-    changeGameId: (state, action) =>
-      produce(state, draftState => {
-        draftState.gameId = action.payload;
-      }),
-
-    changeLogin: (state, action) =>
-      produce(state, draftState => {
-        draftState.login = action.payload;
-      }),
-
-    changeGameIdValid: (state, action) =>
-      state.gameIdValid === action.payload
-        ? state
-        : produce(state, draftState => {
-            draftState.gameIdValid = action.payload;
-          }),
-
-    changeLoginValid: (state, action) =>
-      state.loginValid === action.payload
-        ? state
-        : produce(state, draftState => {
-            draftState.loginValid = action.payload;
-          }),
+    changeGameId: change('gameId'),
+    changeLogin: change('login'),
+    changeGameIdValid: change('gameIdValid'),
+    changeLoginValid: change('loginValid'),
   },
 });
 

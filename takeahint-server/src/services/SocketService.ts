@@ -1,6 +1,5 @@
-import { Interpreter, State, StateSchema, Typestate } from 'xstate';
+import { Interpreter, Typestate } from 'xstate';
 
-import ActivePlayer from '../beans/player/ActivePlayer';
 import GameContext from '../beans/game/GameContext';
 import GameEvent from '../beans/game/GameEvent';
 import GameStateSchema from '../beans/game/GameStateSchema';
@@ -9,26 +8,7 @@ import Player from '../beans/player/Player';
 
 @Injectable()
 export default class SocketService {
-  onCreateGame(
-    gameId: string,
-    context: GameContext,
-    event: GameEvent,
-    state: State<GameContext, GameEvent, StateSchema<GameContext>, Typestate<GameContext>>,
-  ) {
-    console.log(`
-      --------- [Game id = ${gameId}, event = onCreateGame] ---------
-      [ event = ${JSON.stringify(event.type)} ]
-      [ context = {JSON.stringify(context)} ]
-      [ state = ${JSON.stringify(state.value)} ]
-    `);
-  }
-
-  onAddPlayer(
-    gameId: string,
-    context: GameContext,
-    event: GameEvent,
-    state: State<GameContext, GameEvent, StateSchema<GameContext>, Typestate<GameContext>>,
-  ) {
+  onAddPlayer(gameId: string, context: GameContext) {
     context.players.forEach(player => {
       player.client.emit('event', {
         type: 'ADD_PLAYER',
@@ -41,35 +21,11 @@ export default class SocketService {
     });
   }
 
-  onRemovePlayer(
-    gameId: string,
-    context: GameContext,
-    event: GameEvent,
-    state: State<GameContext, GameEvent, StateSchema<GameContext>, Typestate<GameContext>>,
-  ) {
-    this.onAddPlayer(gameId, context, event, state);
+  onRemovePlayer(gameId: string, context: GameContext) {
+    this.onAddPlayer(gameId, context);
   }
 
-  onPrepareGame(
-    gameId: string,
-    context: GameContext,
-    event: GameEvent,
-    state: State<GameContext, GameEvent, StateSchema<GameContext>, Typestate<GameContext>>,
-  ) {
-    console.log(`
-      --------- [Game id = ${gameId}, event = onPrepareGame] ---------
-      [ event = ${JSON.stringify(event.type)} ]
-      [ context = {JSON.stringify(context)} ]
-      [ state = ${JSON.stringify(state.value)} ]
-    `);
-  }
-
-  onStartGame(
-    gameId: string,
-    context: GameContext,
-    event: GameEvent,
-    state: State<GameContext, GameEvent, StateSchema<GameContext>, Typestate<GameContext>>,
-  ) {
+  onStartGame(gameId: string, context: GameContext) {
     const master = context.players.find(item => item.isMaster);
     context.players.forEach(player => {
       player.client.emit('event', {
@@ -82,26 +38,7 @@ export default class SocketService {
     });
   }
 
-  onEndGame(
-    gameId: string,
-    context: GameContext,
-    event: GameEvent,
-    state: State<GameContext, GameEvent, StateSchema<GameContext>, Typestate<GameContext>>,
-  ) {
-    console.log(`
-      --------- [Game id = ${gameId}, event = onEndGame] ---------
-      [ event = ${JSON.stringify(event.type)} ]
-      [ context = {JSON.stringify(context)} ]
-      [ state = ${JSON.stringify(state.value)} ]
-    `);
-  }
-
-  onStartChoiceWord(
-    gameId: string,
-    context: GameContext,
-    event: GameEvent,
-    state: State<GameContext, GameEvent, StateSchema<GameContext>, Typestate<GameContext>>,
-  ) {
+  onStartChoiceWord(gameId: string, context: GameContext, event: GameEvent) {
     if (event.type !== 'VOTE') {
       context.players.forEach(player => {
         player.client.emit('event', {
@@ -113,7 +50,7 @@ export default class SocketService {
 
     const ids = Array.from(context.currentWordSet.vote.keys());
     context.players
-      .filter(player => !player.login)
+      .filter(player => !player.login || player.isMaster)
       .forEach(player => {
         player.client.emit('event', {
           type: 'VOTED',
@@ -125,19 +62,7 @@ export default class SocketService {
       });
   }
 
-  onEndChoiceWord(
-    gameId: string,
-    context: GameContext,
-    event: GameEvent,
-    state: State<GameContext, GameEvent, StateSchema<GameContext>, Typestate<GameContext>>,
-  ) {}
-
-  onStartInputAssociations(
-    gameId: string,
-    context: GameContext,
-    event: GameEvent,
-    state: State<GameContext, GameEvent, StateSchema<GameContext>, Typestate<GameContext>>,
-  ) {
+  onStartInputAssociations(gameId: string, context: GameContext, event: GameEvent) {
     if (event.type !== 'INPUT_ASSOCIATION') {
       context.players.forEach(player => {
         player.client.emit('event', {
@@ -149,7 +74,7 @@ export default class SocketService {
 
     const ids = Array.from(context.currentWordSet.associations.keys());
     context.players
-      .filter(player => !player.login)
+      .filter(player => !player.login || player.isMaster)
       .forEach(player => {
         player.client.emit('event', {
           type: 'START_INPUT_ASSOCIATION',
@@ -161,26 +86,7 @@ export default class SocketService {
       });
   }
 
-  onEndInputAssociations(
-    gameId: string,
-    context: GameContext,
-    event: GameEvent,
-    state: State<GameContext, GameEvent, StateSchema<GameContext>, Typestate<GameContext>>,
-  ) {
-    console.log(`
-      --------- [Game id = ${gameId}, event = onEndInputAssociations] ---------
-      [ event = ${JSON.stringify(event.type)} ]
-      [ context = {JSON.stringify(context)} ]
-      [ state = ${JSON.stringify(state.value)} ]
-    `);
-  }
-
-  onStartFilterAssociations(
-    gameId: string,
-    context: GameContext,
-    event: GameEvent,
-    state: State<GameContext, GameEvent, StateSchema<GameContext>, Typestate<GameContext>>,
-  ) {
+  onStartFilterAssociations(gameId: string, context: GameContext) {
     context.players.forEach(player => {
       player.client.emit('event', {
         type: 'START_FILTER_ASSOCIATIONS',
@@ -189,54 +95,7 @@ export default class SocketService {
     });
   }
 
-  onMarkAssociationAsValid(
-    gameId: string,
-    context: GameContext,
-    event: GameEvent,
-    state: State<GameContext, GameEvent, StateSchema<GameContext>, Typestate<GameContext>>,
-  ) {
-    console.log(`
-      --------- [Game id = ${gameId}, event = onMarkAssociationAsValid] ---------
-      [ event = ${JSON.stringify(event.type)} ]
-      [ context = {JSON.stringify(context)} ]
-      [ state = ${JSON.stringify(state.value)} ]
-    `);
-  }
-
-  onMarkAssociationAsInvalid(
-    gameId: string,
-    context: GameContext,
-    event: GameEvent,
-    state: State<GameContext, GameEvent, StateSchema<GameContext>, Typestate<GameContext>>,
-  ) {
-    console.log(`
-      --------- [Game id = ${gameId}, event = onMarkAssociationAsInvalid] ---------
-      [ event = ${JSON.stringify(event.type)} ]
-      [ context = {JSON.stringify(context)} ]
-      [ state = ${JSON.stringify(state.value)} ]
-    `);
-  }
-
-  onEndFilterAssociations(
-    gameId: string,
-    context: GameContext,
-    event: GameEvent,
-    state: State<GameContext, GameEvent, StateSchema<GameContext>, Typestate<GameContext>>,
-  ) {
-    console.log(`
-      --------- [Game id = ${gameId}, event = onEndFilterAssociations] ---------
-      [ event = ${JSON.stringify(event.type)} ]
-      [ context = {JSON.stringify(context)} ]
-      [ state = ${JSON.stringify(state.value)} ]
-    `);
-  }
-
-  onStartAnswering(
-    gameId: string,
-    context: GameContext,
-    event: GameEvent,
-    state: State<GameContext, GameEvent, StateSchema<GameContext>, Typestate<GameContext>>,
-  ) {
+  onStartAnswering(gameId: string, context: GameContext) {
     context.players.forEach(player => {
       player.client.emit('event', {
         type: 'START_ANSWERING',
@@ -245,12 +104,7 @@ export default class SocketService {
     });
   }
 
-  onEndAnswering(
-    gameId: string,
-    context: GameContext,
-    event: GameEvent,
-    state: State<GameContext, GameEvent, StateSchema<GameContext>, Typestate<GameContext>>,
-  ) {
+  onEndAnswering(gameId: string, context: GameContext, event: GameEvent) {
     if (event.type === 'NEXT_GAME') {
       context.players.forEach(player => {
         player.client.emit('event', {
@@ -266,12 +120,7 @@ export default class SocketService {
     }
   }
 
-  onShowResult(
-    gameId: string,
-    context: GameContext,
-    event: GameEvent,
-    state: State<GameContext, GameEvent, any, Typestate<GameContext>>,
-  ) {
+  onShowResult(gameId: string, context: GameContext) {
     context.players.forEach(player => {
       player.client.emit('event', {
         type: 'SHOW_RESULT',
@@ -280,12 +129,7 @@ export default class SocketService {
     });
   }
 
-  onStartCheckAnswer(
-    gameId: string,
-    context: GameContext,
-    event: GameEvent,
-    state: State<GameContext, GameEvent, any, Typestate<GameContext>>,
-  ) {
+  onStartCheckAnswer(gameId: string, context: GameContext, event: GameEvent) {
     if (event.type === 'CHECK_ANSWER') {
       context.players.forEach(player => {
         player.client.emit('event', {
@@ -302,6 +146,7 @@ export default class SocketService {
     game: Interpreter<GameContext, GameStateSchema, GameEvent, Typestate<GameContext>>,
     player: Player,
   ) {
+    const realPlayer = game.state.context.players.find(item => (item.id = player.id));
     const payload = {
       type: 'RECONNECT',
       state: '',
@@ -338,7 +183,7 @@ export default class SocketService {
         const master = game.state.context.players.find(item => item.isMaster);
         payload.master = master.login;
 
-        if (!(player as ActivePlayer).login) {
+        if (!realPlayer.login || realPlayer.isMaster) {
           const ids = Array.from(game.state.context.currentWordSet.vote.keys());
           payload.notVotedPlayers = game.state.context.players
             .filter(item => !item.isMaster && item.login)
@@ -353,7 +198,7 @@ export default class SocketService {
         payload.state = 'START_INPUT_ASSOCIATION';
         payload.word = payload.isMaster === false ? game.state.context.currentWord : '';
 
-        if (!(player as ActivePlayer).login) {
+        if (!realPlayer.login || realPlayer.isMaster) {
           const ids = Array.from(game.state.context.currentWordSet.associations.keys());
           payload.notReady = game.state.context.players
             .filter(item => !item.isMaster && item.login)

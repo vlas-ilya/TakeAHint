@@ -1,6 +1,6 @@
 import { default as axios } from 'axios';
+import { change } from '../../utils/utils';
 import { createSlice } from '@reduxjs/toolkit';
-import produce from 'immer';
 
 export const reducer = createSlice({
   name: 'chooseWord',
@@ -9,27 +9,22 @@ export const reducer = createSlice({
     notVoted: [],
   },
   reducers: {
-    changeWords: (state, action) =>
-      produce(state, (draftState) => {
-        draftState.words = action.payload.map((item, index) => ({
-          key: index,
-          word: item,
-          selected: false,
-        }));
-      }),
+    changeWords: change('words', words =>
+      words.map((item, index) => ({
+        key: index,
+        word: item,
+        selected: false,
+      })),
+    ),
 
-    saveNotVoted: (state, action) =>
-      produce(state, (draftState) => {
-        draftState.notVoted = action.payload;
-      }),
+    saveNotVoted: change('notVoted'),
 
-    selectWord: (state, action) =>
-      produce(state, (draftState) => {
-        draftState.words = state.words.map((item) => ({
-          ...item,
-          selected: action.payload === item.key,
-        }));
-      }),
+    selectWord: change('words', (key, { words }) =>
+      words.map(item => ({
+        ...item,
+        selected: key === item.key,
+      })),
+    ),
   },
 });
 
@@ -37,7 +32,7 @@ export const { changeWords, selectWord, saveNotVoted } = reducer.actions;
 
 export const chooseWord = () => async (dispatch, getState) => {
   const state = getState();
-  const index = state.chooseWord.words.findIndex((item) => item.selected);
+  const index = state.chooseWord.words.findIndex(item => item.selected);
 
   await axios.post(`/game/${state.login.gameId}/command`, {
     type: 'VOTE',
@@ -49,7 +44,7 @@ export const chooseWord = () => async (dispatch, getState) => {
   });
 };
 
-export const selectWords = (state) => state.chooseWord.words;
-export const selectNotVoted = (state) => state.chooseWord.notVoted;
+export const selectWords = state => state.chooseWord.words;
+export const selectNotVoted = state => state.chooseWord.notVoted;
 
 export default reducer.reducer;

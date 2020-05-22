@@ -1,6 +1,6 @@
 import { default as axios } from 'axios';
+import { change } from '../../utils/utils';
 import { createSlice } from '@reduxjs/toolkit';
-import produce from 'immer';
 
 export const reducer = createSlice({
   name: 'inputAssociations',
@@ -10,24 +10,9 @@ export const reducer = createSlice({
     notReady: [],
   },
   reducers: {
-    changeAssociation: (state, action) =>
-      state.association === action.payload
-        ? state
-        : produce(state, (draftState) => {
-            draftState.association = action.payload;
-          }),
-
-    saveNotReady: (state, action) =>
-      state.notReady === action.payload
-        ? state
-        : produce(state, (draftState) => {
-            draftState.notReady = action.payload;
-          }),
-
-    invalidAssociation: (state) => ({
-      ...state,
-      valid: false,
-    }),
+    changeAssociation: change('association'),
+    saveNotReady: change('notReady'),
+    invalidAssociation: change('notReady', false),
   },
 });
 
@@ -46,8 +31,8 @@ export const saveAssociation = () => async (dispatch, getState) => {
   });
 };
 
-export const selectAssociation = (state) => state.inputAssociations.association;
-export const selectValidAssociation = (state) => state.inputAssociations.valid;
-export const selectNotReady = (state) => state.inputAssociations.notReady;
+export const selectAssociation = state => state.inputAssociations.association;
+export const selectValidAssociation = state => state.inputAssociations.valid;
+export const selectNotReady = state => state.inputAssociations.notReady;
 
 export default reducer.reducer;

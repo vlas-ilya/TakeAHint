@@ -1,6 +1,6 @@
 import { default as axios } from 'axios';
+import { change } from '../../utils/utils';
 import { createSlice } from '@reduxjs/toolkit';
-import produce from 'immer';
 
 export const reducer = createSlice({
   name: 'answering',
@@ -10,21 +10,9 @@ export const reducer = createSlice({
     valid: true,
   },
   reducers: {
-    changeAnswer: (state, action) =>
-      state.answer === action.payload
-        ? state
-        : produce(state, (draftState) => {
-            draftState.answer = action.payload;
-          }),
-    answeringChangeAssociations: (state, action) =>
-      produce(state, (draftState) => {
-        draftState.associations = action.payload;
-      }),
-
-    invalidAnswer: (state) => ({
-      ...state,
-      valid: false,
-    }),
+    changeAnswer: change('answer'),
+    answeringChangeAssociations: change('associations'),
+    invalidAnswer: change('valid'),
   },
 });
 
@@ -56,8 +44,8 @@ export const sendEmptyAnswer = () => async (dispatch, getState) => {
   });
 };
 
-export const selectAssociations = (state) => state.answering.associations;
-export const selectAnswer = (state) => state.answering.answer;
-export const selectValidAnswer = (state) => state.answering.valid;
+export const selectAssociations = state => state.answering.associations;
+export const selectAnswer = state => state.answering.answer;
+export const selectValidAnswer = state => state.answering.valid;
 
 export default reducer.reducer;

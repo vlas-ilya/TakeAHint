@@ -1,6 +1,6 @@
 import { default as axios } from 'axios';
+import { change } from '../../utils/utils';
 import { createSlice } from '@reduxjs/toolkit';
-import produce from 'immer';
 
 export const reducer = createSlice({
   name: 'filterAssociations',
@@ -8,18 +8,15 @@ export const reducer = createSlice({
     associations: [],
   },
   reducers: {
-    changeAssociations: (state, action) =>
-      produce(state, (draftState) => {
-        draftState.associations = action.payload;
-      }),
+    changeAssociations: change('associations'),
   },
 });
 
 export const { changeAssociations } = reducer.actions;
 
-export const toggleAssociation = (id) => async (dispatch, getState) => {
+export const toggleAssociation = id => async (dispatch, getState) => {
   const state = getState();
-  const association = state.filterAssociations.associations.find((item) => item.id === id);
+  const association = state.filterAssociations.associations.find(item => item.id === id);
   if (!association) {
     return;
   }
@@ -37,6 +34,6 @@ export const done = () => async (dispatch, getState) => {
   });
 };
 
-export const selectAssociations = (state) => state.filterAssociations.associations;
+export const selectAssociations = state => state.filterAssociations.associations;
 
 export default reducer.reducer;

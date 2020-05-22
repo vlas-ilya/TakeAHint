@@ -10,6 +10,7 @@ import { getParam } from '../../utils/url.utils';
 
 export default function FinishPage() {
   const [statistic, setStatistic] = useState({});
+
   useEffect(() => {
     let id = getParam('id');
     if (id) {
@@ -21,6 +22,7 @@ export default function FinishPage() {
       })();
     }
   });
+
   return (
     <Page>
       {statistic && 'countOfWin' in statistic && (
@@ -30,12 +32,12 @@ export default function FinishPage() {
             Угаданно слов: <strong>{statistic.countOfWin}</strong>
           </h2>
           <List title="Слова">
-            {statistic.words.map((item) => (
+            {statistic.words.map(item => (
               <ListItem key={item}>{item}</ListItem>
             ))}
           </List>
           <List title="Игроки">
-            {statistic.players.map((item) => (
+            {statistic.players.map(item => (
               <ListItem key={item}>{item}</ListItem>
             ))}
           </List>

@@ -3,7 +3,6 @@ import '../styles/App.scss';
 import {
   changeModal,
   checkAnswer,
-  constants,
   selectCountOfRounds,
   selectCountOfWin,
   selectCurrentWord,
@@ -25,6 +24,7 @@ import Modal from '../components/Modal/Modal';
 import React from 'react';
 import Router from './Router';
 import Rules from '../components/Rules/Rules';
+import constants from '../utils/constansts';
 import { selectAnswer } from '../features/answering/reducer';
 
 export default function App() {

@@ -1,6 +1,6 @@
 import { default as axios } from 'axios';
+import { change } from '../../utils/utils';
 import { createSlice } from '@reduxjs/toolkit';
-import produce from 'immer';
 
 export const reducer = createSlice({
   name: 'waitingPlayers',
@@ -8,10 +8,7 @@ export const reducer = createSlice({
     players: [],
   },
   reducers: {
-    changePlayers: (state, action) =>
-      produce(state, (draftState) => {
-        draftState.players = action.payload;
-      }),
+    changePlayers: change('players'),
   },
 });
 
@@ -24,6 +21,6 @@ export const start = () => async (dispatch, getState) => {
   });
 };
 
-export const selectPlayers = (state) => state.waitingPlayers.players;
+export const selectPlayers = state => state.waitingPlayers.players;
 
 export default reducer.reducer;
