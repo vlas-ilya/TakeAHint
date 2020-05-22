@@ -11,9 +11,11 @@ export const reducer = createSlice({
   },
   reducers: {
     changeAnswer: (state, action) =>
-      produce(state, draftState => {
-        draftState.answer = action.payload;
-      }),
+      state.answer === action.payload
+        ? state
+        : produce(state, draftState => {
+            draftState.answer = action.payload;
+          }),
     answeringChangeAssociations: (state, action) =>
       produce(state, draftState => {
         draftState.associations = action.payload;

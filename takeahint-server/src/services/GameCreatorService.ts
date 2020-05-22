@@ -274,6 +274,12 @@ export default class GameCreatorService {
     return { statisticId: this.gameStatisticService.put(gameStatistic) };
   });
 
+  private saveAnswer = assign((context: GameContext, event: GameEvent) => {
+    if (event.type === 'CHECK_ANSWER') {
+      return { answer: event.answer };
+    }
+  });
+
   public create = (): StateMachine<GameContext, GameStateSchema, GameEvent, Typestate<GameContext>> => {
     return Machine<GameContext, GameStateSchema, GameEvent>(
       {
@@ -281,6 +287,7 @@ export default class GameCreatorService {
         initial: 'waitPlayers',
 
         context: {
+          answer: '',
           countOfRounds: 13,
           countOfWin: 0,
           players: [],
@@ -397,6 +404,12 @@ export default class GameCreatorService {
               answering: {
                 entry: [this.filterMarkedAssociations, 'onStartAnswering'],
                 exit: ['onEndAnswering'],
+                on: {
+                  CHECK_ANSWER: 'checkAnswer',
+                },
+              },
+              checkAnswer: {
+                entry: [this.saveAnswer, 'onStartCheckAnswer'],
               },
             },
           },
@@ -424,6 +437,7 @@ export default class GameCreatorService {
           onStartAnswering: pass,
           onEndAnswering: pass,
           onShowResult: pass,
+          onStartCheckAnswer: pass,
         },
       },
     );

@@ -27,6 +27,8 @@ type GameEvent =
   | { type: 'TRY_TO_ANSWERING'; associations: Map<String, Association> }
   | { type: 'ANSWER'; word: string; player: Player }
   | { type: 'NEXT_GAME'; reason: NextGameReason; word?: string }
+  | { type: 'CHECK_ANSWER'; word: string; answer: string }
+  | { type: 'CHECKED_ANSWER'; correct: boolean }
   | { type: 'FINISH' };
 
 export default GameEvent;

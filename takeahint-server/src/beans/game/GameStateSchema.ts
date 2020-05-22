@@ -8,6 +8,7 @@ export default interface GameStateSchema {
         inputAssociations: {};
         filterAssociations: {};
         answering: {};
+        checkAnswer: {};
       };
     };
     showResult: {};

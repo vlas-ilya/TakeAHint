@@ -18,9 +18,11 @@ export const reducer = createSlice({
           }),
 
     saveNotReady: (state, action) =>
-      produce(state, draftState => {
-        draftState.notReady = action.payload;
-      }),
+      state.notReady === action.payload
+        ? state
+        : produce(state, draftState => {
+            draftState.notReady = action.payload;
+          }),
 
     invalidAssociation: state => ({
       ...state,

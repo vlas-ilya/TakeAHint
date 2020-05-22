@@ -12,7 +12,9 @@ export default function AlertBlock() {
   useEffect(() => {
     if (alert) {
       setClassNames("alert show");
-      const timer = setTimeout(() => setClassNames("alert"), 4000);
+      const timer = setTimeout(() => {
+        setClassNames("alert");
+      }, 4000);
       return () => clearTimeout(timer);
     }
   }, [alert]);

@@ -89,6 +89,9 @@ export default class GameFactory {
 
         onShowResult: (context: GameContext, event: GameEvent) =>
           this.socketService.onShowResult(gameId, context, event, this.get(id).state),
+
+        onStartCheckAnswer: (context: GameContext, event: GameEvent) =>
+          this.socketService.onStartCheckAnswer(gameId, context, event, this.get(id).state),
       },
     };
   }

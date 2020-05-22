@@ -2,6 +2,7 @@ import "../styles/App.scss";
 
 import {
   changeModal,
+  checkAnswer,
   constants,
   selectCountOfRounds,
   selectCountOfWin,
@@ -14,6 +15,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 import AlertBlock from "../components/AlertBlock/AlertBlock";
+import CheckAnswer from "../components/CheckAnswer/CheckAnswer";
 import FormButton from "../components/FormButton/FormButton";
 import GrCode from "../components/QrCode/GrCode";
 import MainMenu from "../components/MainMenu/MainMenu";
@@ -21,7 +23,7 @@ import Modal from "../components/modal/Modal";
 import React from "react";
 import Router from "./Router";
 import Rules from "../components/Rules/Rules";
-import classNames from "classnames";
+import { selectAnswer } from "../features/answering/reducer";
 import { selectLogin } from "../features/login/reducer";
 
 export default function App() {
@@ -30,6 +32,7 @@ export default function App() {
   const countOfRounds = useSelector(selectCountOfRounds);
   const login = useSelector(selectLogin);
   const word = useSelector(selectCurrentWord);
+  const answer = useSelector(selectAnswer);
   const master = useSelector(selectMaster);
   const isGaming = useSelector(selectIsGaming);
   const modal = useSelector(selectModal);
@@ -79,6 +82,36 @@ export default function App() {
               onClick={() => dispatch(changeModal(""))}
             >
               Закрыть
+            </FormButton>
+          ]}
+        />
+      )}
+
+      {modal === constants.modals.checkAnswer && (
+        <Modal
+          title="Проверка ответа"
+          id="checkAnswer"
+          body={
+            <CheckAnswer
+              answer={answer}
+              word={word}
+              master={master}
+              isMaster={isMaster}
+            />
+          }
+          actions={[
+            <FormButton
+              key="correct"
+              onClick={() => dispatch(checkAnswer(true))}
+            >
+              Верно
+            </FormButton>,
+            <FormButton
+              key="incorrect"
+              className="grey"
+              onClick={() => dispatch(checkAnswer(false))}
+            >
+              Не верно
             </FormButton>
           ]}
         />

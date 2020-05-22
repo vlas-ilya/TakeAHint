@@ -9,6 +9,7 @@ import {
 import { changeGameIdValid, changeLoginValid } from "../features/login/reducer";
 import { changeWords, saveNotVoted } from "../features/chooseWord/reducer";
 
+import { default as axios } from "axios";
 import { changeAssociations } from "../features/filterAssociations/reducer";
 import { changePlayers } from "../features/waitingPlayers/reducer";
 import { createSlice } from "@reduxjs/toolkit";
@@ -27,7 +28,8 @@ export const constants = {
   },
   modals: {
     rules: "RULES",
-    qrCode: "QR_CODE"
+    qrCode: "QR_CODE",
+    checkAnswer: "CHECK_ANSWER"
   }
 };
 
@@ -131,6 +133,16 @@ export const {
   changeModal
 } = application.actions;
 
+export const checkAnswer = correct => async (dispatch, getState) => {
+  const state = getState();
+  dispatch(changeModal(""));
+
+  await axios.post(`/game/${state.login.gameId}/command`, {
+    type: "CHECKED_ANSWER",
+    correct
+  });
+};
+
 export const connect = readonly => (dispatch, getState) => {
   const state = getState();
 
@@ -174,6 +186,7 @@ export const connect = readonly => (dispatch, getState) => {
   };
 
   const startGame = response => {
+    dispatch(changeModal(""));
     dispatch(changeIsMaster(response.isMaster));
     dispatch(changeCountOfWin(response.countOfWin));
     dispatch(changeCountOfRounds(response.countOfRounds));
@@ -212,10 +225,19 @@ export const connect = readonly => (dispatch, getState) => {
     dispatch(changePage(constants.pages.answering));
     dispatch(changeAnswer(""));
     dispatch(answeringChangeAssociations(response.associations));
+    dispatch(changeAlert(""));
     return "START_ANSWERING";
   };
 
+  const checkAnswer = response => {
+    dispatch(changeWord(response.word));
+    dispatch(changeAnswer(response.answer));
+    dispatch(changeModal(constants.modals.checkAnswer));
+    return "CHECK_ANSWER";
+  };
+
   const finish = response => {
+    dispatch(changeModal(""));
     dispatch(changeAlert(response.result));
     return "FINISH";
   };
@@ -245,6 +267,8 @@ export const connect = readonly => (dispatch, getState) => {
         return finish(response);
       case "SHOW_RESULT":
         return showResult(response);
+      case "CHECK_ANSWER":
+        return checkAnswer(response);
       case "RECONNECT":
         return [
           addPlayer,
@@ -254,7 +278,8 @@ export const connect = readonly => (dispatch, getState) => {
           startInputAssociation,
           startFilterAssociations,
           startAnswering,
-          finish
+          finish,
+          checkAnswer
         ].find(item => item(response) === response.state);
       default:
         console.log(response);

@@ -280,6 +280,23 @@ export default class SocketService {
     });
   }
 
+  onStartCheckAnswer(
+    gameId: string,
+    context: GameContext,
+    event: GameEvent,
+    state: State<GameContext, GameEvent, any, Typestate<GameContext>>,
+  ) {
+    if (event.type === 'CHECK_ANSWER') {
+      context.players.forEach(player => {
+        player.client.emit('event', {
+          type: 'CHECK_ANSWER',
+          word: event.word,
+          answer: event.answer,
+        });
+      });
+    }
+  }
+
   onReconnect(
     gameId: string,
     game: Interpreter<GameContext, GameStateSchema, GameEvent, Typestate<GameContext>>,
@@ -299,6 +316,7 @@ export default class SocketService {
       notVotedPlayers: [],
       notReady: [],
       statisticId: '',
+      answer: '',
     };
     [
       () => {
@@ -359,6 +377,13 @@ export default class SocketService {
           item => item.valid,
         );
         return 'answering';
+      },
+
+      () => {
+        payload.state = 'CHECK_ANSWER';
+        payload.word = game.state.context.currentWord;
+        payload.answer = game.state.context.answer;
+        return 'checkAnswer';
       },
 
       () => {

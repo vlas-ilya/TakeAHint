@@ -11,15 +11,47 @@ export default class GameService {
 
   send(gameId: string, event: GameEvent, game = this.gameFactory.get(gameId)) {
     if (event.type === 'ANSWER') {
-      const { currentWord } = game.state.context;
-      game.send({
-        type: 'NEXT_GAME',
-        word: event.word,
-        reason: !event.word ? 'SKIP' : currentWord.toLowerCase() === event.word.trim().toLowerCase() ? 'WIN' : 'LOSING',
-      });
+      GameService.answer(event, game);
+      return;
+    }
+    if (event.type === 'CHECKED_ANSWER') {
+      GameService.checkedAnswer(event, game);
       return;
     }
     game.send(event);
+  }
+
+  private static checkedAnswer(event, game) {
+    game.send({
+      type: 'NEXT_GAME',
+      word: event.word,
+      reason: event.correct ? 'WIN' : 'LOSING',
+    });
+  }
+
+  private static answer(event, game) {
+    const { currentWord } = game.state.context;
+    if (!event.word) {
+      game.send({
+        type: 'NEXT_GAME',
+        word: event.word,
+        reason: 'SKIP',
+      });
+      return;
+    }
+    if (currentWord.toLowerCase() === event.word.trim().toLowerCase()) {
+      game.send({
+        type: 'NEXT_GAME',
+        word: event.word,
+        reason: 'WIN',
+      });
+      return;
+    }
+    game.send({
+      type: 'CHECK_ANSWER',
+      answer: event.word,
+      word: game.state.context.currentWord,
+    });
   }
 
   connect(gameId: string, player: Player, game = this.gameFactory.get(gameId)) {

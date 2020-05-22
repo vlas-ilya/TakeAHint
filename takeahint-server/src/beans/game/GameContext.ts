@@ -2,6 +2,7 @@ import ActivePlayer from '../player/ActivePlayer';
 import WordSet from '../wordSet/WordSet';
 
 interface GameContext {
+  answer: string;
   countOfRounds: number;
   countOfWin: number;
   players: Array<ActivePlayer>;

@@ -15,6 +15,7 @@ export class GameController {
     'MARK_AS_INVALID',
     'GO_TO_ANSWER',
     'ANSWER',
+    'CHECKED_ANSWER',
   ];
 
   constructor(private readonly gameService: GameService, private readonly gameStatisticService: GameStatisticService) {}
