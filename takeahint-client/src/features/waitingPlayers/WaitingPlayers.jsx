@@ -20,6 +20,7 @@ export default function WaitingPlayers() {
   return (
     <Page className="waiting-players">
       <Form>
+        <h2>Дождитесь всех игроков</h2>
         <List>
           {players.map(item => (
             <ListItem
@@ -31,7 +32,15 @@ export default function WaitingPlayers() {
           ))}
         </List>
 
-        <FormButton onClick={() => dispatch(start())}>Start</FormButton>
+        <FormButton
+          onClick={() =>
+            players.filter(player => player.login).length >= 3 &&
+            dispatch(start())
+          }
+        >
+          Играть
+        </FormButton>
+        <p>Для начала игры необходимо минимум 3 игрока</p>
       </Form>
     </Page>
   );

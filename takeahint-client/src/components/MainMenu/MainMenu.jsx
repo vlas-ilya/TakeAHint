@@ -1,36 +1,27 @@
 import "./styles.scss";
 
-import {
-  selectCountOfRounds,
-  selectCountOfWin,
-  selectCurrentWord,
-  selectIsGaming,
-  selectIsMaster,
-  selectMaster
-} from "../../app/reducer";
-
 import React from "react";
-import { selectLogin } from "../../features/login/reducer";
-import { useSelector } from "react-redux";
 
-export default function MainMenu() {
-  const isMaster = useSelector(selectIsMaster);
-  const countOfWin = useSelector(selectCountOfWin);
-  const countOfRounds = useSelector(selectCountOfRounds);
-  const login = useSelector(selectLogin);
-  const word = useSelector(selectCurrentWord);
-  const master = useSelector(selectMaster);
-  const isGaming = useSelector(selectIsGaming);
-
+export default function MainMenu({
+  isMaster,
+  countOfWin,
+  countOfRounds,
+  login,
+  word,
+  master,
+  isGaming,
+  onShowRules,
+  onQrCode
+}) {
   return (
     <div className="main-menu-block">
       <div className="main-menu">
-        {isGaming && (
-          <>
-            <div className="word">
-              {word ? <span>{word}</span> : <span>Намек понял</span>}
-            </div>
-            <div className="rounds">
+        <div className="word">
+          {word ? <span>{word}</span> : <span>Намек понял</span>}
+        </div>
+        <div className="rounds">
+          {isGaming && (
+            <>
               <div>
                 <strong>{login}</strong>
               </div>
@@ -49,9 +40,28 @@ export default function MainMenu() {
                   </span>
                 ) : null}
               </div>
+            </>
+          )}
+        </div>
+        <div className="menu">
+          <div className="menu-item" role="button" onClick={onShowRules}>
+            Правила игры
+          </div>
+          <a
+            className="menu-item"
+            role="button"
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://www.google.com/search?q=%D0%BA%D1%83%D0%BF%D0%B8%D1%82%D1%8C+%D0%B8%D0%B3%D1%80%D1%83+%D0%BD%D0%B0%D0%BC%D0%B5%D0%BA+%D0%BF%D0%BE%D0%BD%D1%8F%D0%BB"
+          >
+            Купить игру
+          </a>
+          {!isGaming && (
+            <div className="menu-item" role="button" onClick={onQrCode}>
+              QR код игры
             </div>
-          </>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

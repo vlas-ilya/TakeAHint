@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import Form from "../Form/Form";
 import { default as axios } from "axios";
 
-export default function GrCode() {
+export default function GrCode({ noBorder }) {
   const [dataUrl, setDataUrl] = useState("");
 
   useEffect(() => {
@@ -19,6 +19,10 @@ export default function GrCode() {
       }
     })();
   });
+
+  if (noBorder) {
+    return <>{dataUrl && <img src={dataUrl} alt="QR Code" />}</>;
+  }
 
   return (
     <Form className="qr-code small">

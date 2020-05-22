@@ -1,11 +1,14 @@
 import {
+  answeringChangeAssociations,
+  changeAnswer
+} from "../features/answering/reducer";
+import {
   changeAssociation,
   saveNotReady
 } from "../features/inputAssociations/reducer";
 import { changeGameIdValid, changeLoginValid } from "../features/login/reducer";
 import { changeWords, saveNotVoted } from "../features/chooseWord/reducer";
 
-import { answeringChangeAssociations } from "../features/answering/reducer";
 import { changeAssociations } from "../features/filterAssociations/reducer";
 import { changePlayers } from "../features/waitingPlayers/reducer";
 import { createSlice } from "@reduxjs/toolkit";
@@ -21,6 +24,10 @@ export const constants = {
     inputAssociations: "INPUT_ASSOCIATIONS",
     filterAssociations: "FILTER_ASSOCIATIONS",
     answering: "ANSWERING"
+  },
+  modals: {
+    rules: "RULES",
+    qrCode: "QR_CODE"
   }
 };
 
@@ -35,7 +42,8 @@ export const application = createSlice({
     alert: "",
     countOfWin: 0,
     countOfRounds: 0,
-    master: ""
+    master: "",
+    modal: ""
   },
   reducers: {
     changeWord: (state, action) =>
@@ -99,6 +107,13 @@ export const application = createSlice({
         ? state
         : produce(state, draftState => {
             draftState.master = action.payload;
+          }),
+
+    changeModal: (state, action) =>
+      state.modal === action.payload
+        ? state
+        : produce(state, draftState => {
+            draftState.modal = action.payload;
           })
   }
 });
@@ -112,7 +127,8 @@ export const {
   changeCountOfRounds,
   changeIsGaming,
   changeAlert,
-  changeMaster
+  changeMaster,
+  changeModal
 } = application.actions;
 
 export const connect = readonly => (dispatch, getState) => {
@@ -194,6 +210,7 @@ export const connect = readonly => (dispatch, getState) => {
 
   const startAnswering = response => {
     dispatch(changePage(constants.pages.answering));
+    dispatch(changeAnswer(""));
     dispatch(answeringChangeAssociations(response.associations));
     return "START_ANSWERING";
   };
@@ -254,5 +271,6 @@ export const selectCountOfRounds = state => state.application.countOfRounds;
 export const selectIsGaming = state => state.application.isGaming;
 export const selectAlert = state => state.application.alert;
 export const selectMaster = state => state.application.master;
+export const selectModal = state => state.application.modal;
 
 export default application.reducer;

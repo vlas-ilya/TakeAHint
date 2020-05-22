@@ -1,0 +1,42 @@
+.modal-back {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #0000009e;
+  padding-left: 10px;
+  padding-right: 10px;
+  overflow-x: auto;
+
+  .modal {
+    font-family: "Roboto", sans-serif;
+
+    max-width: 600px;
+    background: white;
+    margin: 40px auto;
+
+    &.width-auto {
+      width: fit-content;
+    }
+
+    .modal-title {
+      padding: 10px;
+      font-weight: 100;
+      h2 {
+        margin: 0;
+      }
+    }
+
+    .modal-body {
+      padding: 10px;
+      &.no-padding {
+        padding: 0;
+      }
+    }
+
+    .modal-actions {
+      padding: 10px;
+    }
+  }
+}

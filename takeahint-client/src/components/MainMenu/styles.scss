@@ -31,5 +31,33 @@
       flex: 1 1 200px;
       text-align: right;
     }
+    .menu {
+      flex: 1 1 400px;
+      display: flex;
+      margin: 10px -10px -10px -10px;
+      justify-content: space-between;
+
+      .menu-item {
+        padding: 4px;
+        flex: 1 1 200px;
+        text-align: center;
+        border-top: 1px solid $color5;
+        border-left: 1px solid $color5;
+        cursor: pointer;
+
+        color: $color1;
+        text-decoration: none;
+
+        &:hover,
+        &:focus,
+        &:active {
+          background: $color5;
+        }
+
+        &:first-child {
+          border-left: none;
+        }
+      }
+    }
   }
 }
