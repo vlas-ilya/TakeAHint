@@ -4,7 +4,7 @@ import { changeGameIdValid, changeLoginValid } from '../features/login/reducer';
 import { changeWords, saveNotVoted } from '../features/chooseWord/reducer';
 
 import { default as axios } from 'axios';
-import { change } from '../utils/utils';
+import { change } from '../utils/redux.utils';
 import { changeAssociations } from '../features/filterAssociations/reducer';
 import { changePlayers } from '../features/waitingPlayers/reducer';
 import constants from '../utils/constansts';
@@ -53,8 +53,7 @@ export const {
   changeModal,
 } = application.actions;
 
-export const checkAnswer = correct => async (dispatch, getState) => {
-  const state = getState();
+export const checkAnswer = (correct) => async (dispatch, getState, state = getState()) => {
   dispatch(changeModal(''));
 
   await axios.post(`/game/${state.login.gameId}/command`, {
@@ -63,9 +62,7 @@ export const checkAnswer = correct => async (dispatch, getState) => {
   });
 };
 
-export const connect = readonly => (dispatch, getState) => {
-  const state = getState();
-
+export const connect = (readonly) => (dispatch, getState, state = getState()) => {
   const payload = {
     gameId: state.login.gameId,
     login: readonly ? '' : state.login.login,
@@ -93,7 +90,7 @@ export const connect = readonly => (dispatch, getState) => {
 
   let connectInterval = 0;
 
-  socket.on('connected', response => {
+  socket.on('connected', (response) => {
     clearInterval(connectInterval);
     dispatch(changePage(constants.pages.waitingPlayers));
     dispatch(changePlayerId(response.id));
@@ -106,12 +103,12 @@ export const connect = readonly => (dispatch, getState) => {
     socket.open();
   });
 
-  const addPlayer = response => {
+  const addPlayer = (response) => {
     dispatch(changePlayers(response.players));
     return 'ADD_PLAYER';
   };
 
-  const startGame = response => {
+  const startGame = (response) => {
     dispatch(changeModal(''));
     dispatch(changeIsMaster(response.isMaster));
     dispatch(changeCountOfWin(response.countOfWin));
@@ -121,19 +118,19 @@ export const connect = readonly => (dispatch, getState) => {
     return 'START_GAME';
   };
 
-  const startChoiceWord = response => {
+  const startChoiceWord = (response) => {
     dispatch(changePage(constants.pages.chooseWord));
     dispatch(changeWords(response.words));
     dispatch(changeWord(''));
     return 'START_CHOICE_WORD';
   };
 
-  const voted = response => {
+  const voted = (response) => {
     dispatch(saveNotVoted(response.notVotedPlayers));
     return 'VOTED';
   };
 
-  const startInputAssociation = response => {
+  const startInputAssociation = (response) => {
     dispatch(changePage(constants.pages.inputAssociations));
     dispatch(changeWord(response.word));
     dispatch(changeAssociation(''));
@@ -141,13 +138,13 @@ export const connect = readonly => (dispatch, getState) => {
     return 'START_INPUT_ASSOCIATION';
   };
 
-  const startFilterAssociations = response => {
+  const startFilterAssociations = (response) => {
     dispatch(changePage(constants.pages.filterAssociations));
     dispatch(changeAssociations(response.associations));
     return 'START_FILTER_ASSOCIATIONS';
   };
 
-  const startAnswering = response => {
+  const startAnswering = (response) => {
     dispatch(changePage(constants.pages.answering));
     dispatch(changeAnswer(''));
     dispatch(answeringChangeAssociations(response.associations));
@@ -155,25 +152,25 @@ export const connect = readonly => (dispatch, getState) => {
     return 'START_ANSWERING';
   };
 
-  const checkAnswer = response => {
+  const checkAnswer = (response) => {
     dispatch(changeWord(response.word));
     dispatch(changeAnswer(response.answer));
     dispatch(changeModal(constants.modals.checkAnswer));
     return 'CHECK_ANSWER';
   };
 
-  const finish = response => {
+  const finish = (response) => {
     dispatch(changeModal(''));
     dispatch(changeAlert(response.result));
     return 'FINISH';
   };
 
-  const showResult = response => {
+  const showResult = (response) => {
     window.location = `/finish?id=${response.id}`;
     return 'SHOW_RESULT';
   };
 
-  socket.on('event', response => {
+  socket.on('event', (response) => {
     switch (response.type) {
       case 'ADD_PLAYER':
         return addPlayer(response);
@@ -206,22 +203,22 @@ export const connect = readonly => (dispatch, getState) => {
           startAnswering,
           finish,
           checkAnswer,
-        ].find(item => item(response) === response.state);
+        ].find((item) => item(response) === response.state);
       default:
         console.log(response);
     }
   });
 };
 
-export const selectPage = state => state.application.page;
-export const selectCurrentWord = state => state.application.word;
-export const selectPlayerId = state => state.application.playerId;
-export const selectIsMaster = state => state.application.isMaster;
-export const selectCountOfWin = state => state.application.countOfWin;
-export const selectCountOfRounds = state => state.application.countOfRounds;
-export const selectIsGaming = state => state.application.isGaming;
-export const selectAlert = state => state.application.alert;
-export const selectMaster = state => state.application.master;
-export const selectModal = state => state.application.modal;
+export const selectPage = (state) => state.application.page;
+export const selectCurrentWord = (state) => state.application.word;
+export const selectPlayerId = (state) => state.application.playerId;
+export const selectIsMaster = (state) => state.application.isMaster;
+export const selectCountOfWin = (state) => state.application.countOfWin;
+export const selectCountOfRounds = (state) => state.application.countOfRounds;
+export const selectIsGaming = (state) => state.application.isGaming;
+export const selectAlert = (state) => state.application.alert;
+export const selectMaster = (state) => state.application.master;
+export const selectModal = (state) => state.application.modal;
 
 export default application.reducer;

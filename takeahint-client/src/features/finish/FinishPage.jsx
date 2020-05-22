@@ -32,12 +32,12 @@ export default function FinishPage() {
             Угаданно слов: <strong>{statistic.countOfWin}</strong>
           </h2>
           <List title="Слова">
-            {statistic.words.map(item => (
+            {statistic.words.map((item) => (
               <ListItem key={item}>{item}</ListItem>
             ))}
           </List>
           <List title="Игроки">
-            {statistic.players.map(item => (
+            {statistic.players.map((item) => (
               <ListItem key={item}>{item}</ListItem>
             ))}
           </List>

@@ -1,5 +1,5 @@
 import { default as axios } from 'axios';
-import { change } from '../../utils/utils';
+import { change } from '../../utils/redux.utils';
 import { createSlice } from '@reduxjs/toolkit';
 
 export const reducer = createSlice({
@@ -9,7 +9,7 @@ export const reducer = createSlice({
     notVoted: [],
   },
   reducers: {
-    changeWords: change('words', words =>
+    changeWords: change('words', (words) =>
       words.map((item, index) => ({
         key: index,
         word: item,
@@ -20,7 +20,7 @@ export const reducer = createSlice({
     saveNotVoted: change('notVoted'),
 
     selectWord: change('words', (key, { words }) =>
-      words.map(item => ({
+      words.map((item) => ({
         ...item,
         selected: key === item.key,
       })),
@@ -30,9 +30,8 @@ export const reducer = createSlice({
 
 export const { changeWords, selectWord, saveNotVoted } = reducer.actions;
 
-export const chooseWord = () => async (dispatch, getState) => {
-  const state = getState();
-  const index = state.chooseWord.words.findIndex(item => item.selected);
+export const chooseWord = () => async (dispatch, getState, state = getState()) => {
+  const index = state.chooseWord.words.findIndex((item) => item.selected);
 
   await axios.post(`/game/${state.login.gameId}/command`, {
     type: 'VOTE',
@@ -44,7 +43,7 @@ export const chooseWord = () => async (dispatch, getState) => {
   });
 };
 
-export const selectWords = state => state.chooseWord.words;
-export const selectNotVoted = state => state.chooseWord.notVoted;
+export const selectWords = (state) => state.chooseWord.words;
+export const selectNotVoted = (state) => state.chooseWord.notVoted;
 
 export default reducer.reducer;

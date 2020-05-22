@@ -8,6 +8,7 @@ export function change(filed, value) {
     }
     return value;
   };
+
   return (state, action) => ({
     ...state,
     [filed]: getValue(action, state),

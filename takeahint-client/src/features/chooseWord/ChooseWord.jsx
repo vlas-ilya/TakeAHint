@@ -24,7 +24,7 @@ export default function ChooseWord() {
           <h2>Ваша команда выберает слово для текущей игры</h2>
           {notVoted && notVoted.length > 0 && (
             <List title="Не выбрали слово">
-              {notVoted.map(item => (
+              {notVoted.map((item) => (
                 <ListItem key={item}>{item}</ListItem>
               ))}
             </List>
@@ -36,7 +36,7 @@ export default function ChooseWord() {
           <h2>Команда выберает слово для текущей игры</h2>
           {notVoted && notVoted.length > 0 && (
             <List title="Не выбрали слово">
-              {notVoted.map(item => (
+              {notVoted.map((item) => (
                 <ListItem key={item}>{item}</ListItem>
               ))}
             </List>
@@ -48,7 +48,7 @@ export default function ChooseWord() {
       {!choose ? (
         <>
           <List title="Список слов">
-            {words.map(item => (
+            {words.map((item) => (
               <ListItem
                 key={item.key}
                 className={classNames({
@@ -63,7 +63,7 @@ export default function ChooseWord() {
 
           <FormButton
             onClick={() => {
-              if (words.find(item => item.selected)) {
+              if (words.find((item) => item.selected)) {
                 setChoose(true);
                 dispatch(chooseWord());
               }
@@ -75,7 +75,7 @@ export default function ChooseWord() {
         </>
       ) : (
         <>
-          Выбранное слово: <strong>{words.find(item => item.selected).word}</strong>
+          Выбранное слово: <strong>{words.find((item) => item.selected).word}</strong>
           <p>Дождитесь когда остальные игроки тоже сделают выбор</p>
         </>
       )}

@@ -1,4 +1,4 @@
-import { OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
+import { OnGatewayDisconnect, SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
 
 import ActivePlayer from '../beans/player/ActivePlayer';
 import GameService from '../services/GameService';

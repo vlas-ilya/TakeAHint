@@ -12,7 +12,7 @@ export default class WordSetsService {
       .map(() => new WordSet())
       .map(
         pick(
-          item =>
+          (item) =>
             (item.words = [
               words[indexes.shift()],
               words[indexes.shift()],

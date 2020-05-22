@@ -32,6 +32,7 @@ export default function WaitingPlayers() {
         <FormButton onClick={() => players.filter((player) => player.login).length >= 3 && dispatch(start())}>
           Играть
         </FormButton>
+
         <p>Для начала игры необходимо минимум 3 игрока</p>
       </Form>
     </Page>

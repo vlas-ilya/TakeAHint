@@ -12,7 +12,7 @@
   .modal {
     font-family: 'Roboto', sans-serif;
 
-    max-width: 600px;
+    max-width: 700px;
     background: white;
     margin: 40px auto;
 
@@ -32,6 +32,15 @@
       padding: 10px;
       &.no-padding {
         padding: 0;
+      }
+    }
+
+    &.big-margin {
+      .modal-title {
+        padding: 20px;
+      }
+      .modal-body {
+        padding: 10px 20px;
       }
     }
 

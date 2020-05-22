@@ -8,6 +8,6 @@ export default class SequenceOfMasterService {
   public generate(players: Array<Player>, countOfRounds: number): Array<number> {
     const indexes = players.flatMap((player, index) => (player instanceof ActivePlayer ? [index] : []));
     shuffle(indexes);
-    return [...Array(countOfRounds).keys()].map(item => indexes[item % indexes.length]);
+    return [...Array(countOfRounds).keys()].map((item) => indexes[item % indexes.length]);
   }
 }

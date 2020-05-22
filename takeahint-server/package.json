@@ -7,7 +7,6 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
@@ -18,35 +17,35 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand"
   },
   "dependencies": {
-    "@nestjs/common": "^7.0.13",
-    "@nestjs/core": "^7.0.13",
-    "@nestjs/platform-express": "^7.0.13",
-    "@nestjs/platform-socket.io": "^7.0.13",
-    "@nestjs/serve-static": "^2.1.1",
-    "@nestjs/websockets": "^7.0.13",
-    "qrcode": "^1.4.4",
-    "reflect-metadata": "^0.1.13",
-    "rimraf": "^3.0.2",
-    "rxjs": "^6.5.4",
-    "uuid": "^8.0.0",
-    "xstate": "^4.9.1"
+    "@nestjs/common": "7.0.13",
+    "@nestjs/core": "7.0.13",
+    "@nestjs/platform-express": "7.0.13",
+    "@nestjs/platform-socket.io": "7.0.13",
+    "@nestjs/serve-static": "2.1.1",
+    "@nestjs/websockets": "7.0.13",
+    "qrcode": "1.4.4",
+    "reflect-metadata": "0.1.13",
+    "rimraf": "3.0.2",
+    "rxjs": "6.5.5",
+    "uuid": "8.1.0",
+    "xstate": "4.10.0"
   },
   "devDependencies": {
-    "@nestjs/cli": "^7.0.0",
-    "@nestjs/schematics": "^7.0.0",
-    "@nestjs/testing": "^7.0.0",
-    "@types/express": "^4.17.3",
+    "@nestjs/cli": "7.1.5",
+    "@nestjs/schematics": "7.0.0",
+    "@nestjs/testing": "7.0.13",
+    "@types/express": "4.17.6",
     "@types/jest": "25.1.4",
-    "@types/node": "^13.9.1",
-    "@types/socket.io": "^2.1.6",
-    "@types/supertest": "^2.0.8",
-    "jest": "^25.1.0",
-    "supertest": "^4.0.2",
+    "@types/node": "14.0.5",
+    "@types/socket.io": "2.1.6",
+    "@types/supertest": "2.0.9",
+    "jest": "26.0.1",
+    "supertest": "4.0.2",
     "ts-jest": "25.2.1",
-    "ts-loader": "^6.2.1",
-    "ts-node": "^8.6.2",
-    "tsconfig-paths": "^3.9.0",
-    "typescript": "^3.7.4"
+    "ts-loader": "7.0.4",
+    "ts-node": "8.10.1",
+    "tsconfig-paths": "3.9.0",
+    "typescript": "3.9.3"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -57,7 +56,7 @@
     "rootDir": "test",
     "testRegex": ".spec.ts$",
     "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
+      ".+\\.(t|j)s$": "ts-jest"
     },
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"

@@ -1,5 +1,5 @@
 import { default as axios } from 'axios';
-import { change } from '../../utils/utils';
+import { change } from '../../utils/redux.utils';
 import { createSlice } from '@reduxjs/toolkit';
 
 export const reducer = createSlice({
@@ -18,10 +18,8 @@ export const reducer = createSlice({
 
 export const { changeAssociation, invalidAssociation, saveNotReady } = reducer.actions;
 
-export const saveAssociation = () => async (dispatch, getState) => {
-  const state = getState();
-
-  await axios.post(`/game/${state.login.gameId}/command`, {
+export const saveAssociation = () => (dispatch, getState, state = getState()) =>
+  axios.post(`/game/${state.login.gameId}/command`, {
     type: 'INPUT_ASSOCIATION',
     association: state.inputAssociations.association,
     player: {
@@ -29,10 +27,9 @@ export const saveAssociation = () => async (dispatch, getState) => {
       id: state.application.playerId,
     },
   });
-};
 
-export const selectAssociation = state => state.inputAssociations.association;
-export const selectValidAssociation = state => state.inputAssociations.valid;
-export const selectNotReady = state => state.inputAssociations.notReady;
+export const selectAssociation = (state) => state.inputAssociations.association;
+export const selectValidAssociation = (state) => state.inputAssociations.valid;
+export const selectNotReady = (state) => state.inputAssociations.notReady;
 
 export default reducer.reducer;

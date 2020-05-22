@@ -30,7 +30,7 @@ export default function FilterAssociations() {
     >
       <h2>Уберите неподходящие подсказки</h2>
       <List title="Список подсказок">
-        {associations.map(item => (
+        {associations.map((item) => (
           <ListItem
             key={item.id}
             onClick={() => item.valid && dispatch(toggleAssociation(item.id))}

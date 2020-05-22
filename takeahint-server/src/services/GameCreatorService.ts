@@ -25,7 +25,6 @@ export default class GameCreatorService {
 
   private static setColor(player: Player): Player {
     if (player instanceof ActivePlayer) {
-      // TODO: set color to player
       player.color = '#000000';
     }
     return player;
@@ -38,7 +37,7 @@ export default class GameCreatorService {
 
   private removePlayer = assign({
     players: (context: GameContext, event: GameEvent) =>
-      event.type === 'REMOVE_PLAYER' ? context.players.filter(item => item !== event.player) : context.players,
+      event.type === 'REMOVE_PLAYER' ? context.players.filter((item) => item !== event.player) : context.players,
   });
 
   private initWordSets = assign({
@@ -56,17 +55,13 @@ export default class GameCreatorService {
         .map(
           forClass(
             ActivePlayer,
-            pick(item => {
-              if (item !== undefined) {
-                item.isMaster = false;
-              }
-            }),
+            pick((item) => (item.isMaster = false)),
           ),
         )
         .map(
           forItem(
             context.sequenceOfMasterPlayers[0],
-            pick(item => (item.isMaster = true)),
+            pick((item) => (item.isMaster = true)),
           ),
         ),
 
@@ -79,9 +74,7 @@ export default class GameCreatorService {
   });
 
   private decreaseCountOfRounds = assign({
-    countOfRounds: (context: GameContext) => {
-      return context.countOfRounds - 1;
-    },
+    countOfRounds: (context: GameContext) => context.countOfRounds - 1,
   });
 
   private increaseCountOfWinIfWin = assign({
@@ -94,16 +87,14 @@ export default class GameCreatorService {
       event.type === 'NEXT_GAME' && event.reason === 'LOSING' ? context.countOfRounds - 1 : context.countOfRounds,
   });
 
-  private hasRounds = (context: GameContext) => {
-    return context.countOfRounds > 0;
-  };
+  private hasRounds = (context: GameContext) => context.countOfRounds > 0;
 
   private vote = assign({
     currentWordSet: (context: GameContext, event: GameEvent) => {
       if (event.type !== 'VOTE' || context.currentWordSet === null) {
         return context.currentWordSet;
       }
-      let player = context.players.find(item => item.id === event.player.id);
+      const player = context.players.find((item) => item.id === event.player.id);
       if (player instanceof ActivePlayer && !player.isMaster) {
         context.currentWordSet.vote.set(event.player.id, event.index);
       }
@@ -114,7 +105,7 @@ export default class GameCreatorService {
   private getPlayers = (players: Array<Player>): number =>
     players
       .filter((item: Player) => item instanceof ActivePlayer)
-      .map(item => item as ActivePlayer)
+      .map((item) => item as ActivePlayer)
       .filter((item: ActivePlayer) => !item.isMaster).length;
 
   private toChooseWordIfEveryoneVoted = send(
@@ -139,6 +130,7 @@ export default class GameCreatorService {
         acc[index] += 1;
         return acc;
       }, []);
+
       const sum = vote.reduce((a: number, b: number) => a + b);
       if (sum < this.getPlayers(event.players)) {
         return;
@@ -187,7 +179,7 @@ export default class GameCreatorService {
     { to: 'filterAssociationsService' },
   );
 
-  private tryFilterAssociations = () => (cb: Sender<GameEvent>, onReceive: Receiver<GameEvent>) => {
+  private tryFilterAssociations = () => (cb: Sender<GameEvent>, onReceive: Receiver<GameEvent>) =>
     onReceive((event: GameEvent) => {
       if (event.type !== 'TRY_FILTER_ASSOCIATIONS') {
         return;
@@ -205,7 +197,6 @@ export default class GameCreatorService {
 
       cb({ type: 'FILTER_ASSOCIATIONS', associations: event.associations });
     });
-  };
 
   private filterAssociations = assign((context: GameContext, event: GameEvent) => {
     if (event.type === 'FILTER_ASSOCIATIONS' && context.currentWordSet?.associations !== undefined) {
@@ -216,14 +207,18 @@ export default class GameCreatorService {
 
   private markAssociationAsValid = assign((context: GameContext, event: GameEvent) => {
     if (event.type === 'MARK_AS_VALID' && context.currentWordSet?.associations !== undefined) {
-      Array.from(context.currentWordSet.associations.values()).find(item => item.id === event.id).markedAsValid = true;
+      Array.from(context.currentWordSet.associations.values()).find(
+        (item) => item.id === event.id,
+      ).markedAsValid = true;
       return { currentWordSet: context.currentWordSet };
     }
   });
 
   private markAssociationAsInvalid = assign((context: GameContext, event: GameEvent) => {
     if (event.type === 'MARK_AS_INVALID' && context.currentWordSet?.associations !== undefined) {
-      Array.from(context.currentWordSet.associations.values()).find(item => item.id === event.id).markedAsValid = false;
+      Array.from(context.currentWordSet.associations.values()).find(
+        (item) => item.id === event.id,
+      ).markedAsValid = false;
       return { currentWordSet: context.currentWordSet };
     }
   });
@@ -231,7 +226,7 @@ export default class GameCreatorService {
   private filterMarkedAssociations = assign((context: GameContext) => {
     if (context.currentWordSet?.associations !== undefined) {
       Array.from(context.currentWordSet.associations.values()).forEach(
-        association => (association.valid = association.valid && association.markedAsValid),
+        (association) => (association.valid = association.valid && association.markedAsValid),
       );
       return { currentWordSet: context.currentWordSet };
     }
@@ -251,23 +246,22 @@ export default class GameCreatorService {
     { to: 'toAnsweringService' },
   );
 
-  private tryToAnsweringService = () => (cb: Sender<GameEvent>, onReceive: Receiver<GameEvent>) => {
+  private tryToAnsweringService = () => (cb: Sender<GameEvent>, onReceive: Receiver<GameEvent>) =>
     onReceive((event: GameEvent) => {
       if (event.type !== 'TRY_TO_ANSWERING') {
         return;
       }
-      if (Array.from(event.associations.values()).some(item => item.valid)) {
+      if (Array.from(event.associations.values()).some((item) => item.valid)) {
         cb({ type: 'GO_TO_ANSWER' });
       } else {
         cb({ type: 'NEXT_GAME', reason: 'SKIP' });
       }
     });
-  };
 
   private saveGameStatistic = assign((context: GameContext) => {
     const gameStatistic = new GameStatistic();
 
-    gameStatistic.players = context.players.filter(item => item.login).map(item => item.login);
+    gameStatistic.players = context.players.filter((item) => item.login).map((item) => item.login);
     gameStatistic.words = context.oldWords;
     gameStatistic.countOfWin = context.countOfWin;
 

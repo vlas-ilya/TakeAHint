@@ -5,13 +5,13 @@ const QRCode = require('qrcode');
 @Controller('qr')
 export default class QrCodeController {
   @Get('qrCode.png')
-  generate(@Query("params") params: string) {
+  generate(@Query('params') params: string) {
     return QRCode.toDataURL(params, {
       width: 300,
-      margin: 3,
+      margin: 1.4,
       color: {
-        dark: '#0b303d'
-      }
+        dark: '#0b303d',
+      },
     });
   }
 }

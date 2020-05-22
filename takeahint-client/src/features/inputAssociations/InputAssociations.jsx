@@ -29,7 +29,7 @@ export default function InputAssociations() {
           <h2>Ваша команда придумывает подсказки</h2>
           {notReady && notReady.length > 0 && (
             <List title="Не придумали подсказку">
-              {notReady.map(item => (
+              {notReady.map((item) => (
                 <ListItem key={item}>{item}</ListItem>
               ))}
             </List>
@@ -41,7 +41,7 @@ export default function InputAssociations() {
           <h2>Команда придумывает подсказки</h2>
           {notReady && notReady.length > 0 && (
             <List title="Не придумали подсказку">
-              {notReady.map(item => (
+              {notReady.map((item) => (
                 <ListItem key={item}>{item}</ListItem>
               ))}
             </List>
@@ -57,7 +57,7 @@ export default function InputAssociations() {
             label="Введите подсказку"
             value={association}
             validMessage={valid ? '' : 'Необходимо ввести подсказку'}
-            onChange={value => dispatch(changeAssociation(value))}
+            onChange={(value) => dispatch(changeAssociation(value))}
           />
           <FormButton
             onClick={() => {

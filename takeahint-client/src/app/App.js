@@ -28,77 +28,86 @@ import constants from '../utils/constansts';
 import { selectAnswer } from '../features/answering/reducer';
 
 export default function App() {
-  const isMaster = useSelector(selectIsMaster);
-  const countOfWin = useSelector(selectCountOfWin);
-  const countOfRounds = useSelector(selectCountOfRounds);
-  const login = useSelector(selectLogin);
-  const word = useSelector(selectCurrentWord);
   const answer = useSelector(selectAnswer);
-  const master = useSelector(selectMaster);
+  const countOfRounds = useSelector(selectCountOfRounds);
+  const countOfWin = useSelector(selectCountOfWin);
+  const dispatch = useDispatch();
+  const gameId = useSelector(selectGameId);
   const isGaming = useSelector(selectIsGaming);
+  const isMaster = useSelector(selectIsMaster);
+  const login = useSelector(selectLogin);
+  const master = useSelector(selectMaster);
   const modal = useSelector(selectModal);
   const page = useSelector(selectPage);
-  const gameId = useSelector(selectGameId);
-  const dispatch = useDispatch();
+  const word = useSelector(selectCurrentWord);
+
+  const menu = {
+    countOfRounds,
+    countOfWin,
+    gameId,
+    isGaming,
+    isMaster,
+    login,
+    master,
+    word,
+  };
 
   return (
     <div className="take-a-hint">
       <AlertBlock />
+
       <MainMenu
-        isMaster={isMaster}
-        countOfWin={countOfWin}
-        countOfRounds={countOfRounds}
-        login={login}
-        word={word}
-        master={master}
-        isGaming={isGaming}
+        {...menu}
+        showGameId={page === constants.pages.waitingPlayers}
         onShowRules={() => dispatch(changeModal(constants.modals.rules))}
         onQrCode={() => dispatch(changeModal(constants.modals.qrCode))}
-        gameId={gameId}
-        showGameId={page === constants.pages.waitingPlayers}
       />
-      <Router />
-      {modal === constants.modals.rules && (
-        <Modal
-          id="rules"
-          title="Правила игры"
-          body={<Rules />}
-          actions={[
-            <FormButton key="close" className="grey" onClick={() => dispatch(changeModal(''))}>
-              Закрыть
-            </FormButton>,
-          ]}
-        />
-      )}
-      {modal === constants.modals.qrCode && (
-        <Modal
-          id="qrCode"
-          className="width-auto"
-          noPadding
-          body={<GrCode noBorder gameId={gameId} />}
-          actions={[
-            <FormButton key="close" className="grey" onClick={() => dispatch(changeModal(''))}>
-              Закрыть
-            </FormButton>,
-          ]}
-        />
-      )}
 
-      {modal === constants.modals.checkAnswer && (
-        <Modal
-          title="Проверка ответа"
-          id="checkAnswer"
-          body={<CheckAnswer answer={answer} word={word} master={master} isMaster={isMaster} />}
-          actions={[
-            <FormButton key="correct" onClick={() => dispatch(checkAnswer(true))}>
-              Верно
-            </FormButton>,
-            <FormButton key="incorrect" className="grey" onClick={() => dispatch(checkAnswer(false))}>
-              Не верно
-            </FormButton>,
-          ]}
-        />
-      )}
+      <Router />
+
+      <Modal
+        id="rules"
+        show={modal === constants.modals.rules}
+        title="Правила игры"
+        className={'big-margin'}
+        actions={[
+          <FormButton key="close" className="grey" onClick={() => dispatch(changeModal(''))}>
+            Закрыть
+          </FormButton>,
+        ]}
+      >
+        <Rules />
+      </Modal>
+
+      <Modal
+        id="qrCode"
+        show={modal === constants.modals.qrCode}
+        className="width-auto"
+        noPadding
+        actions={[
+          <FormButton key="close" className="grey" onClick={() => dispatch(changeModal(''))}>
+            Закрыть
+          </FormButton>,
+        ]}
+      >
+        <GrCode noBorder gameId={gameId} />
+      </Modal>
+
+      <Modal
+        id="checkAnswer"
+        show={modal === constants.modals.checkAnswer}
+        title="Проверка ответа"
+        actions={[
+          <FormButton key="correct" onClick={() => dispatch(checkAnswer(true))}>
+            Верно
+          </FormButton>,
+          <FormButton key="incorrect" className="grey" onClick={() => dispatch(checkAnswer(false))}>
+            Не верно
+          </FormButton>,
+        ]}
+      >
+        <CheckAnswer answer={answer} word={word} master={master} isMaster={isMaster} />
+      </Modal>
     </div>
   );
 }

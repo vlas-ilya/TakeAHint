@@ -1,5 +1,5 @@
 import { default as axios } from 'axios';
-import { change } from '../../utils/utils';
+import { change } from '../../utils/redux.utils';
 import { createSlice } from '@reduxjs/toolkit';
 
 export const reducer = createSlice({
@@ -14,13 +14,11 @@ export const reducer = createSlice({
 
 export const { changePlayers } = reducer.actions;
 
-export const start = () => async (dispatch, getState) => {
-  const state = getState();
-  await axios.post(`/game/${state.login.gameId}/command`, {
+export const start = () => (dispatch, getState, state = getState()) =>
+  axios.post(`/game/${state.login.gameId}/command`, {
     type: 'CREATE',
   });
-};
 
-export const selectPlayers = state => state.waitingPlayers.players;
+export const selectPlayers = (state) => state.waitingPlayers.players;
 
 export default reducer.reducer;

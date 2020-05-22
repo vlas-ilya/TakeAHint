@@ -2,15 +2,14 @@
   "name": "takeahint",
   "version": "1.0.0",
   "description": "Цифровая реализация настолькой игры \"Намек понял\"",
-  "main": "index.js",
   "scripts": {
-    "prettier": "prettier-eslint --write \"$PWD/{takeahint-client,takeahint-server}/{src,test,public}/**/*.{js,jsx,json,css,scss,md}\""
+    "prettier": "prettier-eslint --write \"$PWD/{takeahint-client,takeahint-server}/{src,test,public}/**/*.{js,jsx,ts,json,css,scss,md}\""
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vlas-ilya/TakeAHint.git"
   },
-  "author": "",
+  "author": "vlas-ilya",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/vlas-ilya/TakeAHint/issues"

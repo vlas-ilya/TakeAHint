@@ -55,7 +55,7 @@ export default class GameService {
   }
 
   connect(gameId: string, player: Player, game = this.gameFactory.get(gameId)) {
-    const foundPlayer = game.state.context.players.filter(item => item.id === player.id)[0];
+    const foundPlayer = game.state.context.players.filter((item) => item.id === player.id)[0];
     if (foundPlayer) {
       foundPlayer.client = player.client;
       this.socketService.onReconnect(gameId, game, player);
@@ -71,10 +71,10 @@ export default class GameService {
   disconnect(client: Socket) {
     const game = this.gameFactory
       .getGames()
-      .find(game => !!game.state.context.players.find(item => item.client === client));
+      .find((game) => !!game.state.context.players.find((item) => item.client === client));
 
     if (game) {
-      const player = game.state.context.players.find(item => item.client === client);
+      const player = game.state.context.players.find((item) => item.client === client);
       game.send({
         type: 'REMOVE_PLAYER',
         player,

@@ -28,7 +28,7 @@ export default function Answering() {
         <>
           <h2>Угадайте слово</h2>
           <List title="Список ассоциаций">
-            {associations.map(item => (
+            {associations.map((item) => (
               <ListItem key={item.id}>{item.value}</ListItem>
             ))}
           </List>
@@ -37,7 +37,7 @@ export default function Answering() {
             name="answer"
             value={answer}
             validMessage={valid ? '' : 'Необходимо ввести ответ'}
-            onChange={value => dispatch(changeAnswer(value))}
+            onChange={(value) => dispatch(changeAnswer(value))}
           />
 
           <FormButton
@@ -68,7 +68,7 @@ export default function Answering() {
     >
       <h2>Ведущий отгадывает слово</h2>
       <List title="Список ассоциаций">
-        {associations.map(item => (
+        {associations.map((item) => (
           <ListItem key={item.id}>{item.value}</ListItem>
         ))}
       </List>
