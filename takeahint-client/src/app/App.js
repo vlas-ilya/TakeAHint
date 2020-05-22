@@ -75,7 +75,7 @@ export default function App() {
           id="qrCode"
           className="width-auto"
           noPadding
-          body={<GrCode noBorder />}
+          body={<GrCode noBorder gameId={gameId} />}
           actions={[
             <FormButton key="close" className="grey" onClick={() => dispatch(changeModal(''))}>
               Закрыть

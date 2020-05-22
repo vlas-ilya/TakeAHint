@@ -20,9 +20,9 @@ export default function Login() {
         gameIdValid={gameIdValid}
         login={login}
         loginValid={loginValid}
-        onGameIdChange={value => dispatch(changeGameId(value))}
-        onLoginChange={value => dispatch(changeLogin(value))}
-        onLogin={readonly => dispatch(connect(readonly))}
+        onGameIdChange={(value) => dispatch(changeGameId(value))}
+        onLoginChange={(value) => dispatch(changeLogin(value))}
+        onLogin={(readonly) => dispatch(connect(readonly))}
       />
     </Page>
   );

@@ -9,7 +9,7 @@ const cache = (() => {
   let oldImageUrl = '';
   let oldDataUrl = '';
 
-  return async imageUrl => {
+  return async (imageUrl) => {
     if (oldImageUrl !== imageUrl) {
       oldDataUrl = await axios.get(imageUrl);
       oldImageUrl = imageUrl;
@@ -18,12 +18,11 @@ const cache = (() => {
   };
 })();
 
-export default function GrCode({ noBorder }) {
+export default function GrCode({ noBorder, gameId }) {
   const [dataUrl, setDataUrl] = useState('');
 
   useEffect(() => {
     const url = new URL(window.location.href);
-    const gameId = url.searchParams.get('gameId');
     url.search = '';
     url.searchParams.set('gameId', gameId);
     const imageUrl = '/qr/qrCode.png?params=' + encodeURI(url.href);
@@ -33,7 +32,7 @@ export default function GrCode({ noBorder }) {
         setDataUrl(dataUrl.data);
       }
     })();
-  }, []);
+  }, [gameId]);
 
   if (noBorder) {
     return <>{dataUrl && <img src={dataUrl} alt="QR Code" />}</>;

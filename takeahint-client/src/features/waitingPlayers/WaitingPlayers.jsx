@@ -22,14 +22,14 @@ export default function WaitingPlayers() {
       <Form>
         <h2>Дождитесь всех игроков</h2>
         <List>
-          {players.map(item => (
+          {players.map((item) => (
             <ListItem key={item.id} className={classNames({ you: playerId === item.id })}>
               {item.login || 'Наблюдатель'}
             </ListItem>
           ))}
         </List>
 
-        <FormButton onClick={() => players.filter(player => player.login).length >= 3 && dispatch(start())}>
+        <FormButton onClick={() => players.filter((player) => player.login).length >= 3 && dispatch(start())}>
           Играть
         </FormButton>
         <p>Для начала игры необходимо минимум 3 игрока</p>
