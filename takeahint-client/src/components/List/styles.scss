@@ -1,7 +1,7 @@
-@import "src/styles/theme";
+@import 'src/styles/theme';
 
 .list {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   margin-bottom: 20px;
   box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.14);
 
@@ -25,7 +25,7 @@
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
     font-size: 15px;
     padding: 10px;
-    border-top: 1px dashed rgba(255,255,255,0.3);
+    border-top: 1px dashed rgba(255, 255, 255, 0.3);
 
     &.selected {
       background: $list-selected-background;

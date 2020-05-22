@@ -1,10 +1,13 @@
-@import "src/styles/theme";
+@import 'src/styles/theme';
 
 .main-menu-block {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   position: relative;
   max-width: 800px;
   margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   padding: 0 20px;
 
   .main-menu {
@@ -16,6 +19,8 @@
     flex-wrap: wrap;
     justify-content: space-between;
     overflow: hidden;
+    min-width: 300px;
+    flex: 1 1 200px;
 
     .word {
       flex: 2 1 200px;
@@ -44,9 +49,13 @@
         border-top: 1px solid $color5;
         border-left: 1px solid $color5;
         cursor: pointer;
-
         color: $color1;
         text-decoration: none;
+        display: flex;
+
+        > * {
+          margin: auto;
+        }
 
         &:hover,
         &:focus,

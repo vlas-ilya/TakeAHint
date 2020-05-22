@@ -259,7 +259,7 @@ export default class SocketService {
             event.reason === 'WIN'
               ? 'Вы угадали слово!'
               : event.reason === 'LOSING'
-              ? `Нет, это не ${event.word}`
+              ? `Вам не удалось угадать слово:( Это не ${event.word}`
               : 'Вам не удалось угадать слово',
         });
       });

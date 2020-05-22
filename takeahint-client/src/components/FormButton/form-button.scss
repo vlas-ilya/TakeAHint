@@ -1,4 +1,4 @@
-@import "src/styles/theme";
+@import 'src/styles/theme';
 
 .form-button {
   margin: 0 0 15px;
@@ -8,10 +8,7 @@
   }
 
   button {
-    @mixin button(
-      $background: $button-background,
-      $color: $button-color
-    ) {
+    @mixin button($background: $button-background, $color: $button-color) {
       background: $background;
       color: $color;
 
@@ -25,7 +22,7 @@
 
     @include button();
 
-    font-family: "Roboto", sans-serif;
+    font-family: 'Roboto', sans-serif;
     text-transform: uppercase;
     outline: 0;
     width: 100%;

@@ -24,7 +24,7 @@ export default class GameService {
   private static checkedAnswer(event, game) {
     game.send({
       type: 'NEXT_GAME',
-      word: event.word,
+      word: game.state.context.answer,
       reason: event.correct ? 'WIN' : 'LOSING',
     });
   }

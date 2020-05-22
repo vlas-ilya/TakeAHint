@@ -13,15 +13,13 @@ class SocketPayload {
 }
 
 @WebSocketGateway()
-export default class SocketGateway implements OnGatewayDisconnect {
+export default class SocketController implements OnGatewayDisconnect {
   constructor(private readonly gameService: GameService) {}
 
   @SubscribeMessage('connection')
   handleMessage(client: Socket, { login, gameId, id = uuid() }: SocketPayload): void {
     const player = login ? new ActivePlayer(id, login, client) : new ObserverPlayer(id, client);
-
     client.emit('connected', { id });
-
     this.gameService.connect(gameId, player);
   }
 

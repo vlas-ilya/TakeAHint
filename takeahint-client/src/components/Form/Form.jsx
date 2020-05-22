@@ -1,8 +1,8 @@
-import "./styles.scss";
+import './styles.scss';
 
-import React from "react";
-import classNames from "classnames";
+import React from 'react';
+import classNames from 'classnames';
 
 export default function Form({ children, className }) {
-  return <div className={classNames("form", className)}>{children}</div>;
+  return <div className={classNames('form', className)}>{children}</div>;
 }

@@ -1,4 +1,4 @@
-@import "src/styles/theme";
+@import 'src/styles/theme';
 
 .form-input {
   position: relative;
@@ -22,7 +22,7 @@
   label {
     transform-origin: left;
     transition: all 0.2s;
-    font-family: "Roboto", sans-serif;
+    font-family: 'Roboto', sans-serif;
     position: absolute;
     font-size: 14px;
     top: 15px;
@@ -35,8 +35,8 @@
     color: #bd1d1d;
   }
 
-  input[type="text"] {
-    font-family: "Roboto", sans-serif;
+  input[type='text'] {
+    font-family: 'Roboto', sans-serif;
     outline: 0;
     background: #f2f2f2;
     width: 100%;
@@ -53,7 +53,7 @@
   }
 
   &.invalid {
-    input[type="text"] {
+    input[type='text'] {
       border: 1px solid #bd1d1d;
     }
   }

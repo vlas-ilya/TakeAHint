@@ -1,4 +1,4 @@
-@import "src/styles/theme";
+@import 'src/styles/theme';
 
 .form {
   margin: 10px;
@@ -10,11 +10,11 @@
   padding: 20px;
 
   &.small {
-    width: 300px;
+    max-width: 400px;
   }
 
   p {
-    font-family: "Roboto", sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 12px;
     &:last-child {
       margin-bottom: 0;
@@ -22,10 +22,10 @@
   }
 
   h2 {
-    font-family: "Roboto", sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-weight: 100;
     margin-top: 0;
-    
+
     &:last-child {
       margin-bottom: 0;
     }

@@ -104,7 +104,7 @@ export default class GameCreatorService {
         return context.currentWordSet;
       }
       let player = context.players.find(item => item.id === event.player.id);
-      if (player.login && !player.isMaster) {
+      if (player instanceof ActivePlayer && !player.isMaster) {
         context.currentWordSet.vote.set(event.player.id, event.index);
       }
       return context.currentWordSet;
@@ -410,6 +410,7 @@ export default class GameCreatorService {
               },
               checkAnswer: {
                 entry: [this.saveAnswer, 'onStartCheckAnswer'],
+                exit: ['onEndAnswering'],
               },
             },
           },

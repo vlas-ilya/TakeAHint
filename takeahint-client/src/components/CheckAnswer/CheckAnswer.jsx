@@ -1,6 +1,6 @@
-import "./styles.scss";
+import './styles.scss';
 
-import React from "react";
+import React from 'react';
 
 export default function CheckAnswer({ word, answer, master, isMaster }) {
   return (
@@ -11,8 +11,7 @@ export default function CheckAnswer({ word, answer, master, isMaster }) {
         </div>
       )}
       <div>
-        <strong>{isMaster ? <>Ваш ответ:</> : <>Ответ ведущего:</>}</strong>{" "}
-        {answer}
+        <strong>{isMaster ? <>Ваш ответ:</> : <>Ответ ведущего:</>}</strong> {answer}
       </div>
       <div>
         <strong>Правильный ответ: </strong> {word}

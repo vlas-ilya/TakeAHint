@@ -1,4 +1,4 @@
-import "../styles/App.scss";
+import '../styles/App.scss';
 
 import {
   changeModal,
@@ -10,21 +10,22 @@ import {
   selectIsGaming,
   selectIsMaster,
   selectMaster,
-  selectModal
-} from "./reducer";
-import { useDispatch, useSelector } from "react-redux";
+  selectModal,
+  selectPage,
+} from './reducer';
+import { selectGameId, selectLogin } from '../features/login/reducer';
+import { useDispatch, useSelector } from 'react-redux';
 
-import AlertBlock from "../components/AlertBlock/AlertBlock";
-import CheckAnswer from "../components/CheckAnswer/CheckAnswer";
-import FormButton from "../components/FormButton/FormButton";
-import GrCode from "../components/QrCode/GrCode";
-import MainMenu from "../components/MainMenu/MainMenu";
-import Modal from "../components/modal/Modal";
-import React from "react";
-import Router from "./Router";
-import Rules from "../components/Rules/Rules";
-import { selectAnswer } from "../features/answering/reducer";
-import { selectLogin } from "../features/login/reducer";
+import AlertBlock from '../components/AlertBlock/AlertBlock';
+import CheckAnswer from '../components/CheckAnswer/CheckAnswer';
+import FormButton from '../components/FormButton/FormButton';
+import GrCode from '../components/QrCode/GrCode';
+import MainMenu from '../components/MainMenu/MainMenu';
+import Modal from '../components/Modal/Modal';
+import React from 'react';
+import Router from './Router';
+import Rules from '../components/Rules/Rules';
+import { selectAnswer } from '../features/answering/reducer';
 
 export default function App() {
   const isMaster = useSelector(selectIsMaster);
@@ -36,6 +37,8 @@ export default function App() {
   const master = useSelector(selectMaster);
   const isGaming = useSelector(selectIsGaming);
   const modal = useSelector(selectModal);
+  const page = useSelector(selectPage);
+  const gameId = useSelector(selectGameId);
   const dispatch = useDispatch();
 
   return (
@@ -51,6 +54,8 @@ export default function App() {
         isGaming={isGaming}
         onShowRules={() => dispatch(changeModal(constants.modals.rules))}
         onQrCode={() => dispatch(changeModal(constants.modals.qrCode))}
+        gameId={gameId}
+        showGameId={page === constants.pages.waitingPlayers}
       />
       <Router />
       {modal === constants.modals.rules && (
@@ -59,13 +64,9 @@ export default function App() {
           title="Правила игры"
           body={<Rules />}
           actions={[
-            <FormButton
-              key="close"
-              className="grey"
-              onClick={() => dispatch(changeModal(""))}
-            >
+            <FormButton key="close" className="grey" onClick={() => dispatch(changeModal(''))}>
               Закрыть
-            </FormButton>
+            </FormButton>,
           ]}
         />
       )}
@@ -76,13 +77,9 @@ export default function App() {
           noPadding
           body={<GrCode noBorder />}
           actions={[
-            <FormButton
-              key="close"
-              className="grey"
-              onClick={() => dispatch(changeModal(""))}
-            >
+            <FormButton key="close" className="grey" onClick={() => dispatch(changeModal(''))}>
               Закрыть
-            </FormButton>
+            </FormButton>,
           ]}
         />
       )}
@@ -91,28 +88,14 @@ export default function App() {
         <Modal
           title="Проверка ответа"
           id="checkAnswer"
-          body={
-            <CheckAnswer
-              answer={answer}
-              word={word}
-              master={master}
-              isMaster={isMaster}
-            />
-          }
+          body={<CheckAnswer answer={answer} word={word} master={master} isMaster={isMaster} />}
           actions={[
-            <FormButton
-              key="correct"
-              onClick={() => dispatch(checkAnswer(true))}
-            >
+            <FormButton key="correct" onClick={() => dispatch(checkAnswer(true))}>
               Верно
             </FormButton>,
-            <FormButton
-              key="incorrect"
-              className="grey"
-              onClick={() => dispatch(checkAnswer(false))}
-            >
+            <FormButton key="incorrect" className="grey" onClick={() => dispatch(checkAnswer(false))}>
               Не верно
-            </FormButton>
+            </FormButton>,
           ]}
         />
       )}

@@ -21,10 +21,7 @@ export class GameController {
   constructor(private readonly gameService: GameService, private readonly gameStatisticService: GameStatisticService) {}
 
   @Post(':gameId/command')
-  onMessage(
-    @Param('gameId') gameId: string,
-    @Body() event: GameEvent
-  ) {
+  onMessage(@Param('gameId') gameId: string, @Body() event: GameEvent) {
     throwIf(!GameController.VALID_COMMANDS.includes(event.type), 'Unsupported');
     throwIf(!GameController.commandValid(event), 'Invalid');
     this.gameService.send(gameId, event);

@@ -1,6 +1,6 @@
-import "./styles.scss";
+import './styles.scss';
 
-import React from "react";
+import React from 'react';
 
 export default function MainMenu({
   isMaster,
@@ -11,13 +11,15 @@ export default function MainMenu({
   master,
   isGaming,
   onShowRules,
-  onQrCode
+  onQrCode,
+  gameId,
+  showGameId,
 }) {
   return (
     <div className="main-menu-block">
       <div className="main-menu">
         <div className="word">
-          {word ? <span>{word}</span> : <span>Намек понял</span>}
+          {showGameId ? <span>{gameId}</span> : word ? <span>{word}</span> : <span>Намек понял</span>}
         </div>
         <div className="rounds">
           {isGaming && (
@@ -45,7 +47,7 @@ export default function MainMenu({
         </div>
         <div className="menu">
           <div className="menu-item" role="button" onClick={onShowRules}>
-            Правила игры
+            <span>Правила игры</span>
           </div>
           <a
             className="menu-item"
@@ -54,11 +56,11 @@ export default function MainMenu({
             rel="noopener noreferrer"
             href="https://www.google.com/search?q=%D0%BA%D1%83%D0%BF%D0%B8%D1%82%D1%8C+%D0%B8%D0%B3%D1%80%D1%83+%D0%BD%D0%B0%D0%BC%D0%B5%D0%BA+%D0%BF%D0%BE%D0%BD%D1%8F%D0%BB"
           >
-            Купить игру
+            <span>Купить игру</span>
           </a>
           {!isGaming && (
             <div className="menu-item" role="button" onClick={onQrCode}>
-              QR код игры
+              <span>QR код игры</span>
             </div>
           )}
         </div>

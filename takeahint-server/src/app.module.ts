@@ -7,7 +7,7 @@ import { Module } from '@nestjs/common';
 import QrCodeController from './controllers/QrCodeController';
 import SequenceOfMasterService from './services/SequenceOfMasterService';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import SocketGateway from './controllers/SocketGateway';
+import SocketController from './controllers/SocketController';
 import SocketService from './services/SocketService';
 import WordSetsService from './services/WordSetsService';
 import { join } from 'path';
@@ -26,7 +26,7 @@ import { join } from 'path';
     GameService,
     GameFactory,
     SocketService,
-    SocketGateway,
+    SocketController,
     GameStatisticService,
   ],
 })

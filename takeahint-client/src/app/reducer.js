@@ -1,51 +1,45 @@
-import {
-  answeringChangeAssociations,
-  changeAnswer
-} from "../features/answering/reducer";
-import {
-  changeAssociation,
-  saveNotReady
-} from "../features/inputAssociations/reducer";
-import { changeGameIdValid, changeLoginValid } from "../features/login/reducer";
-import { changeWords, saveNotVoted } from "../features/chooseWord/reducer";
+import { answeringChangeAssociations, changeAnswer } from '../features/answering/reducer';
+import { changeAssociation, saveNotReady } from '../features/inputAssociations/reducer';
+import { changeGameIdValid, changeLoginValid } from '../features/login/reducer';
+import { changeWords, saveNotVoted } from '../features/chooseWord/reducer';
 
-import { default as axios } from "axios";
-import { changeAssociations } from "../features/filterAssociations/reducer";
-import { changePlayers } from "../features/waitingPlayers/reducer";
-import { createSlice } from "@reduxjs/toolkit";
-import io from "socket.io-client";
-import produce from "immer";
-import { setParam } from "../utils/url.utils";
+import { default as axios } from 'axios';
+import { changeAssociations } from '../features/filterAssociations/reducer';
+import { changePlayers } from '../features/waitingPlayers/reducer';
+import { createSlice } from '@reduxjs/toolkit';
+import io from 'socket.io-client';
+import produce from 'immer';
+import { setParam } from '../utils/url.utils';
 
 export const constants = {
   pages: {
-    login: "LOGIN_PAGE",
-    waitingPlayers: "WAITING_PLAYERS",
-    chooseWord: "CHOOSE_WORD",
-    inputAssociations: "INPUT_ASSOCIATIONS",
-    filterAssociations: "FILTER_ASSOCIATIONS",
-    answering: "ANSWERING"
+    login: 'LOGIN_PAGE',
+    waitingPlayers: 'WAITING_PLAYERS',
+    chooseWord: 'CHOOSE_WORD',
+    inputAssociations: 'INPUT_ASSOCIATIONS',
+    filterAssociations: 'FILTER_ASSOCIATIONS',
+    answering: 'ANSWERING',
   },
   modals: {
-    rules: "RULES",
-    qrCode: "QR_CODE",
-    checkAnswer: "CHECK_ANSWER"
-  }
+    rules: 'RULES',
+    qrCode: 'QR_CODE',
+    checkAnswer: 'CHECK_ANSWER',
+  },
 };
 
 export const application = createSlice({
-  name: "application",
+  name: 'application',
   initialState: {
     page: constants.pages.login,
-    playerId: "",
-    word: "",
+    playerId: '',
+    word: '',
     isMaster: false,
     isGaming: false,
-    alert: "",
+    alert: '',
     countOfWin: 0,
     countOfRounds: 0,
-    master: "",
-    modal: ""
+    master: '',
+    modal: '',
   },
   reducers: {
     changeWord: (state, action) =>
@@ -116,8 +110,8 @@ export const application = createSlice({
         ? state
         : produce(state, draftState => {
             draftState.modal = action.payload;
-          })
-  }
+          }),
+  },
 });
 
 export const {
@@ -130,16 +124,16 @@ export const {
   changeIsGaming,
   changeAlert,
   changeMaster,
-  changeModal
+  changeModal,
 } = application.actions;
 
 export const checkAnswer = correct => async (dispatch, getState) => {
   const state = getState();
-  dispatch(changeModal(""));
+  dispatch(changeModal(''));
 
   await axios.post(`/game/${state.login.gameId}/command`, {
-    type: "CHECKED_ANSWER",
-    correct
+    type: 'CHECKED_ANSWER',
+    correct,
   });
 };
 
@@ -148,7 +142,7 @@ export const connect = readonly => (dispatch, getState) => {
 
   const payload = {
     gameId: state.login.gameId,
-    login: readonly ? "" : state.login.login
+    login: readonly ? '' : state.login.login,
   };
 
   dispatch(changeGameIdValid(payload.gameId));
@@ -158,10 +152,10 @@ export const connect = readonly => (dispatch, getState) => {
     return;
   }
 
-  const socket = io(`ws://${window.location.host.replace("3000", "80")}`);
+  const socket = io(`ws://${window.location.host.replace('3000', '80')}`);
 
-  setParam("gameId", payload.gameId);
-  setParam("player", payload.login);
+  setParam('gameId', payload.gameId);
+  setParam('player', payload.login);
 
   const id = localStorage.getItem(`${state.login.gameId}/${state.login.login}`);
 
@@ -169,107 +163,113 @@ export const connect = readonly => (dispatch, getState) => {
     payload.id = id;
   }
 
-  socket.emit("connection", payload);
+  socket.emit('connection', payload);
 
-  socket.on("connected", response => {
+  let connectInterval = 0;
+
+  socket.on('connected', response => {
+    clearInterval(connectInterval);
     dispatch(changePage(constants.pages.waitingPlayers));
     dispatch(changePlayerId(response.id));
-    localStorage.setItem(
-      `${state.login.gameId}/${state.login.login}`,
-      response.id
-    );
+    localStorage.setItem(`${state.login.gameId}/${state.login.login}`, response.id);
+  });
+
+  socket.on('disconnect', () => {
+    socket.emit('connection', payload);
+    connectInterval = setInterval(() => socket.open(), 1000);
+    socket.open();
   });
 
   const addPlayer = response => {
     dispatch(changePlayers(response.players));
-    return "ADD_PLAYER";
+    return 'ADD_PLAYER';
   };
 
   const startGame = response => {
-    dispatch(changeModal(""));
+    dispatch(changeModal(''));
     dispatch(changeIsMaster(response.isMaster));
     dispatch(changeCountOfWin(response.countOfWin));
     dispatch(changeCountOfRounds(response.countOfRounds));
     dispatch(changeIsGaming(true));
     dispatch(changeMaster(response.master));
-    return "START_GAME";
+    return 'START_GAME';
   };
 
   const startChoiceWord = response => {
     dispatch(changePage(constants.pages.chooseWord));
     dispatch(changeWords(response.words));
-    dispatch(changeWord(""));
-    return "START_CHOICE_WORD";
+    dispatch(changeWord(''));
+    return 'START_CHOICE_WORD';
   };
 
   const voted = response => {
     dispatch(saveNotVoted(response.notVotedPlayers));
-    return "VOTED";
+    return 'VOTED';
   };
 
   const startInputAssociation = response => {
     dispatch(changePage(constants.pages.inputAssociations));
     dispatch(changeWord(response.word));
-    dispatch(changeAssociation(""));
+    dispatch(changeAssociation(''));
     dispatch(saveNotReady(response.notReady));
-    return "START_INPUT_ASSOCIATION";
+    return 'START_INPUT_ASSOCIATION';
   };
 
   const startFilterAssociations = response => {
     dispatch(changePage(constants.pages.filterAssociations));
     dispatch(changeAssociations(response.associations));
-    return "START_FILTER_ASSOCIATIONS";
+    return 'START_FILTER_ASSOCIATIONS';
   };
 
   const startAnswering = response => {
     dispatch(changePage(constants.pages.answering));
-    dispatch(changeAnswer(""));
+    dispatch(changeAnswer(''));
     dispatch(answeringChangeAssociations(response.associations));
-    dispatch(changeAlert(""));
-    return "START_ANSWERING";
+    dispatch(changeAlert(''));
+    return 'START_ANSWERING';
   };
 
   const checkAnswer = response => {
     dispatch(changeWord(response.word));
     dispatch(changeAnswer(response.answer));
     dispatch(changeModal(constants.modals.checkAnswer));
-    return "CHECK_ANSWER";
+    return 'CHECK_ANSWER';
   };
 
   const finish = response => {
-    dispatch(changeModal(""));
+    dispatch(changeModal(''));
     dispatch(changeAlert(response.result));
-    return "FINISH";
+    return 'FINISH';
   };
 
   const showResult = response => {
     window.location = `/finish?id=${response.id}`;
-    return "SHOW_RESULT";
+    return 'SHOW_RESULT';
   };
 
-  socket.on("event", response => {
+  socket.on('event', response => {
     switch (response.type) {
-      case "ADD_PLAYER":
+      case 'ADD_PLAYER':
         return addPlayer(response);
-      case "START_GAME":
+      case 'START_GAME':
         return startGame(response);
-      case "START_CHOICE_WORD":
+      case 'START_CHOICE_WORD':
         return startChoiceWord(response);
-      case "VOTED":
+      case 'VOTED':
         return voted(response);
-      case "START_INPUT_ASSOCIATION":
+      case 'START_INPUT_ASSOCIATION':
         return startInputAssociation(response);
-      case "START_FILTER_ASSOCIATIONS":
+      case 'START_FILTER_ASSOCIATIONS':
         return startFilterAssociations(response);
-      case "START_ANSWERING":
+      case 'START_ANSWERING':
         return startAnswering(response);
-      case "FINISH":
+      case 'FINISH':
         return finish(response);
-      case "SHOW_RESULT":
+      case 'SHOW_RESULT':
         return showResult(response);
-      case "CHECK_ANSWER":
+      case 'CHECK_ANSWER':
         return checkAnswer(response);
-      case "RECONNECT":
+      case 'RECONNECT':
         return [
           addPlayer,
           startGame,
@@ -279,7 +279,7 @@ export const connect = readonly => (dispatch, getState) => {
           startFilterAssociations,
           startAnswering,
           finish,
-          checkAnswer
+          checkAnswer,
         ].find(item => item(response) === response.state);
       default:
         console.log(response);

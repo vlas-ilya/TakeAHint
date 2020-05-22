@@ -1,4 +1,4 @@
-export function getParam(name, defaultValue = "") {
+export function getParam(name, defaultValue = '') {
   const url = new URL(window.location.href);
   return url.searchParams.get(name) || defaultValue;
 }

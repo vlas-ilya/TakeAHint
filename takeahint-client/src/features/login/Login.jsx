@@ -1,18 +1,10 @@
-import {
-  changeGameId,
-  changeLogin,
-  selectGameId,
-  selectGameIdValid,
-  selectLogin,
-  selectLoginValid
-} from "./reducer";
-import { useDispatch, useSelector } from "react-redux";
+import { changeGameId, changeLogin, selectGameId, selectGameIdValid, selectLogin, selectLoginValid } from './reducer';
+import { useDispatch, useSelector } from 'react-redux';
 
-import GrCode from "../../components/QrCode/GrCode";
-import LoginForm from "./LoginForm";
-import Page from "../../components/Page/Page";
-import React from "react";
-import { connect } from "../../app/reducer";
+import LoginForm from './LoginForm';
+import Page from '../../components/Page/Page';
+import React from 'react';
+import { connect } from '../../app/reducer';
 
 export default function Login() {
   const login = useSelector(selectLogin);
@@ -32,7 +24,6 @@ export default function Login() {
         onLoginChange={value => dispatch(changeLogin(value))}
         onLogin={readonly => dispatch(connect(readonly))}
       />
-      <GrCode />
     </Page>
   );
 }
