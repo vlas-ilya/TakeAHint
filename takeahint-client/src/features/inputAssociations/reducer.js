@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import produce from "immer";
 
 export const reducer = createSlice({
-  name: "inputAssociationsPage",
+  name: "inputAssociations",
   initialState: {
     association: "",
     valid: true,
@@ -38,20 +38,18 @@ export const {
 export const saveAssociation = () => async (dispatch, getState) => {
   const state = getState();
 
-  await axios.post(`/game/${state.loginPage.gameId}/command`, {
+  await axios.post(`/game/${state.login.gameId}/command`, {
     type: "INPUT_ASSOCIATION",
-    association: state.inputAssociationsPage.association,
+    association: state.inputAssociations.association,
     player: {
-      login: state.loginPage.login,
+      login: state.login.login,
       id: state.application.playerId
     }
   });
 };
 
-export const selectAssociation = state =>
-  state.inputAssociationsPage.association;
-export const selectValidAssociation = state =>
-  state.inputAssociationsPage.valid;
-export const selectNotReady = state => state.inputAssociationsPage.notReady;
+export const selectAssociation = state => state.inputAssociations.association;
+export const selectValidAssociation = state => state.inputAssociations.valid;
+export const selectNotReady = state => state.inputAssociations.notReady;
 
 export default reducer.reducer;

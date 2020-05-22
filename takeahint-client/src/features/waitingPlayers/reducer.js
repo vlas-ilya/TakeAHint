@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import produce from "immer";
 
 export const reducer = createSlice({
-  name: "waitingPlayersPage",
+  name: "waitingPlayers",
   initialState: {
     players: []
   },
@@ -19,11 +19,11 @@ export const { changePlayers } = reducer.actions;
 
 export const start = () => async (dispatch, getState) => {
   const state = getState();
-  await axios.post(`/game/${state.loginPage.gameId}/command`, {
+  await axios.post(`/game/${state.login.gameId}/command`, {
     type: "CREATE"
   });
 };
 
-export const selectPlayers = state => state.waitingPlayersPage.players;
+export const selectPlayers = state => state.waitingPlayers.players;
 
 export default reducer.reducer;

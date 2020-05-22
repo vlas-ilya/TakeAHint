@@ -1,7 +1,7 @@
-import "./styles/App.scss";
+import "../styles/App.scss";
 
-import AlertBlock from "./components/AlertBlock/AlertBlock";
-import MainMenu from "./components/MainMenu/MainMenu";
+import AlertBlock from "../components/AlertBlock/AlertBlock";
+import MainMenu from "../components/MainMenu/MainMenu";
 import React from "react";
 import Router from "./Router";
 

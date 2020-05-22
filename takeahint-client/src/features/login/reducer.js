@@ -3,7 +3,7 @@ import { getParam } from "../../utils/url.utils";
 import produce from "immer";
 
 export const reducer = createSlice({
-  name: "loginPage",
+  name: "login",
   initialState: {
     gameId: getParam("gameId", ""),
     login: getParam("player", ""),
@@ -44,9 +44,9 @@ export const {
   changeLoginValid
 } = reducer.actions;
 
-export const selectGameId = state => state.loginPage.gameId;
-export const selectGameIdValid = state => state.loginPage.gameIdValid;
-export const selectLogin = state => state.loginPage.login;
-export const selectLoginValid = state => state.loginPage.loginValid;
+export const selectGameId = state => state.login.gameId;
+export const selectGameIdValid = state => state.login.gameIdValid;
+export const selectLogin = state => state.login.login;
+export const selectLoginValid = state => state.login.loginValid;
 
 export default reducer.reducer;

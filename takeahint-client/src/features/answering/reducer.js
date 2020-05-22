@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import produce from "immer";
 
 export const reducer = createSlice({
-  name: "answeringPage",
+  name: "answering",
   initialState: {
     associations: [],
     answer: "",
@@ -14,7 +14,7 @@ export const reducer = createSlice({
       produce(state, draftState => {
         draftState.answer = action.payload;
       }),
-    answeringPageChangeAssociations: (state, action) =>
+    answeringChangeAssociations: (state, action) =>
       produce(state, draftState => {
         draftState.associations = action.payload;
       }),
@@ -27,20 +27,20 @@ export const reducer = createSlice({
 });
 
 export const {
-  answeringPageChangeAssociations,
+  answeringChangeAssociations,
   changeAnswer,
   invalidAnswer
 } = reducer.actions;
 
 export const sendAnswer = () => async (dispatch, getState) => {
   const state = getState();
-  const answer = state.answeringPage.answer;
+  const answer = state.answering.answer;
 
-  await axios.post(`/game/${state.loginPage.gameId}/command`, {
+  await axios.post(`/game/${state.login.gameId}/command`, {
     type: "ANSWER",
     word: answer,
     player: {
-      login: state.loginPage.login,
+      login: state.login.login,
       id: state.application.playerId
     }
   });
@@ -49,17 +49,17 @@ export const sendAnswer = () => async (dispatch, getState) => {
 export const sendEmptyAnswer = () => async (dispatch, getState) => {
   const state = getState();
 
-  await axios.post(`/game/${state.loginPage.gameId}/command`, {
+  await axios.post(`/game/${state.login.gameId}/command`, {
     type: "ANSWER",
     player: {
-      login: state.loginPage.login,
+      login: state.login.login,
       id: state.application.playerId
     }
   });
 };
 
-export const selectAssociations = state => state.answeringPage.associations;
-export const selectAnswer = state => state.answeringPage.answer;
-export const selectValidAnswer = state => state.answeringPage.valid;
+export const selectAssociations = state => state.answering.associations;
+export const selectAnswer = state => state.answering.answer;
+export const selectValidAnswer = state => state.answering.valid;
 
 export default reducer.reducer;

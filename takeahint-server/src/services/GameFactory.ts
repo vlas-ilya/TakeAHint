@@ -36,73 +36,73 @@ export default class GameFactory {
     }, 1000 * 10);
   }
 
-  private getGameConfig(gameId: string): Partial<MachineOptions<GameContext, GameEvent>> {
+  private getGameConfig(gameId: string, id = gameId.toLowerCase()): Partial<MachineOptions<GameContext, GameEvent>> {
     return {
       actions: {
         onCreateGame: (context: GameContext, event: GameEvent) =>
-          this.socketService.onCreateGame(gameId, context, event, this.get(gameId).state),
+          this.socketService.onCreateGame(gameId, context, event, this.get(id).state),
 
         onAddPlayer: (context: GameContext, event: GameEvent) =>
-          this.socketService.onAddPlayer(gameId, context, event, this.get(gameId).state),
+          this.socketService.onAddPlayer(gameId, context, event, this.get(id).state),
 
         onRemovePlayer: (context: GameContext, event: GameEvent) =>
-          this.socketService.onRemovePlayer(gameId, context, event, this.get(gameId).state),
+          this.socketService.onRemovePlayer(gameId, context, event, this.get(id).state),
 
         onPrepareGame: (context: GameContext, event: GameEvent) =>
-          this.socketService.onPrepareGame(gameId, context, event, this.get(gameId).state),
+          this.socketService.onPrepareGame(gameId, context, event, this.get(id).state),
 
         onStartGame: (context: GameContext, event: GameEvent) =>
-          this.socketService.onStartGame(gameId, context, event, this.get(gameId).state),
+          this.socketService.onStartGame(gameId, context, event, this.get(id).state),
 
         onEndGame: (context: GameContext, event: GameEvent) =>
-          this.socketService.onEndGame(gameId, context, event, this.get(gameId).state),
+          this.socketService.onEndGame(gameId, context, event, this.get(id).state),
 
         onStartChoiceWord: (context: GameContext, event: GameEvent) =>
-          this.socketService.onStartChoiceWord(gameId, context, event, this.get(gameId).state),
+          this.socketService.onStartChoiceWord(gameId, context, event, this.get(id).state),
 
         onEndChoiceWord: (context: GameContext, event: GameEvent) =>
-          this.socketService.onEndChoiceWord(gameId, context, event, this.get(gameId).state),
+          this.socketService.onEndChoiceWord(gameId, context, event, this.get(id).state),
 
         onStartInputAssociations: (context: GameContext, event: GameEvent) =>
-          this.socketService.onStartInputAssociations(gameId, context, event, this.get(gameId).state),
+          this.socketService.onStartInputAssociations(gameId, context, event, this.get(id).state),
 
         onEndInputAssociations: (context: GameContext, event: GameEvent) =>
-          this.socketService.onEndInputAssociations(gameId, context, event, this.get(gameId).state),
+          this.socketService.onEndInputAssociations(gameId, context, event, this.get(id).state),
 
         onStartFilterAssociations: (context: GameContext, event: GameEvent) =>
-          this.socketService.onStartFilterAssociations(gameId, context, event, this.get(gameId).state),
+          this.socketService.onStartFilterAssociations(gameId, context, event, this.get(id).state),
 
         onMarkAssociationAsValid: (context: GameContext, event: GameEvent) =>
-          this.socketService.onMarkAssociationAsValid(gameId, context, event, this.get(gameId).state),
+          this.socketService.onMarkAssociationAsValid(gameId, context, event, this.get(id).state),
 
         onMarkAssociationAsInvalid: (context: GameContext, event: GameEvent) =>
-          this.socketService.onMarkAssociationAsInvalid(gameId, context, event, this.get(gameId).state),
+          this.socketService.onMarkAssociationAsInvalid(gameId, context, event, this.get(id).state),
 
         onEndFilterAssociations: (context: GameContext, event: GameEvent) =>
-          this.socketService.onEndFilterAssociations(gameId, context, event, this.get(gameId).state),
+          this.socketService.onEndFilterAssociations(gameId, context, event, this.get(id).state),
 
         onStartAnswering: (context: GameContext, event: GameEvent) =>
-          this.socketService.onStartAnswering(gameId, context, event, this.get(gameId).state),
+          this.socketService.onStartAnswering(gameId, context, event, this.get(id).state),
 
         onEndAnswering: (context: GameContext, event: GameEvent) =>
-          this.socketService.onEndAnswering(gameId, context, event, this.get(gameId).state),
+          this.socketService.onEndAnswering(gameId, context, event, this.get(id).state),
 
         onShowResult: (context: GameContext, event: GameEvent) =>
-          this.socketService.onShowResult(gameId, context, event, this.get(gameId).state),
+          this.socketService.onShowResult(gameId, context, event, this.get(id).state),
       },
     };
   }
 
-  get(gameId: string) {
-    this.gameUpdates.set(gameId, new Date());
-    if (!this.games.has(gameId)) {
+  get(gameId: string, id = gameId.toLowerCase()) {
+    this.gameUpdates.set(id, new Date());
+    if (!this.games.has(id)) {
       const game = this.gameCreatorService.create();
-      const gameConfig = this.getGameConfig(gameId);
+      const gameConfig = this.getGameConfig(id);
       const stateNode = game.withConfig(gameConfig);
       const interpreter = interpret<GameContext, GameStateSchema, GameEvent, Typestate<GameContext>>(stateNode).start();
-      this.games.set(gameId, interpreter);
+      this.games.set(id, interpreter);
     }
-    return this.games.get(gameId);
+    return this.games.get(id);
   }
 
   getGames() {

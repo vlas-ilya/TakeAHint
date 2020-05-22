@@ -5,7 +5,7 @@ import {
 import { changeGameIdValid, changeLoginValid } from "../features/login/reducer";
 import { changeWords, saveNotVoted } from "../features/chooseWord/reducer";
 
-import { answeringPageChangeAssociations } from "../features/answering/reducer";
+import { answeringChangeAssociations } from "../features/answering/reducer";
 import { changeAssociations } from "../features/filterAssociations/reducer";
 import { changePlayers } from "../features/waitingPlayers/reducer";
 import { createSlice } from "@reduxjs/toolkit";
@@ -119,8 +119,8 @@ export const connect = readonly => (dispatch, getState) => {
   const state = getState();
 
   const payload = {
-    gameId: state.loginPage.gameId,
-    login: readonly ? "" : state.loginPage.login
+    gameId: state.login.gameId,
+    login: readonly ? "" : state.login.login
   };
 
   dispatch(changeGameIdValid(payload.gameId));
@@ -130,14 +130,12 @@ export const connect = readonly => (dispatch, getState) => {
     return;
   }
 
-  const socket = io(`ws://${window.location.host.replace("3000", "3003")}`);
+  const socket = io(`ws://${window.location.host.replace("3000", "80")}`);
 
   setParam("gameId", payload.gameId);
   setParam("player", payload.login);
 
-  const id = localStorage.getItem(
-    `${state.loginPage.gameId}/${state.loginPage.login}`
-  );
+  const id = localStorage.getItem(`${state.login.gameId}/${state.login.login}`);
 
   if (id) {
     payload.id = id;
@@ -149,7 +147,7 @@ export const connect = readonly => (dispatch, getState) => {
     dispatch(changePage(constants.pages.waitingPlayers));
     dispatch(changePlayerId(response.id));
     localStorage.setItem(
-      `${state.loginPage.gameId}/${state.loginPage.login}`,
+      `${state.login.gameId}/${state.login.login}`,
       response.id
     );
   });
@@ -196,7 +194,7 @@ export const connect = readonly => (dispatch, getState) => {
 
   const startAnswering = response => {
     dispatch(changePage(constants.pages.answering));
-    dispatch(answeringPageChangeAssociations(response.associations));
+    dispatch(answeringChangeAssociations(response.associations));
     return "START_ANSWERING";
   };
 

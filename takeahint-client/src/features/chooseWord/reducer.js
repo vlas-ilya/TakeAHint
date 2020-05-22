@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import produce from "immer";
 
 export const reducer = createSlice({
-  name: "loginPage",
+  name: "chooseWord",
   initialState: {
     words: [],
     notVoted: []
@@ -37,19 +37,19 @@ export const { changeWords, selectWord, saveNotVoted } = reducer.actions;
 
 export const chooseWord = () => async (dispatch, getState) => {
   const state = getState();
-  const index = state.chooseWordPage.words.findIndex(item => item.selected);
+  const index = state.chooseWord.words.findIndex(item => item.selected);
 
-  await axios.post(`/game/${state.loginPage.gameId}/command`, {
+  await axios.post(`/game/${state.login.gameId}/command`, {
     type: "VOTE",
     index,
     player: {
-      login: state.loginPage.login,
+      login: state.login.login,
       id: state.application.playerId
     }
   });
 };
 
-export const selectWords = state => state.chooseWordPage.words;
-export const selectNotVoted = state => state.chooseWordPage.notVoted;
+export const selectWords = state => state.chooseWord.words;
+export const selectNotVoted = state => state.chooseWord.notVoted;
 
 export default reducer.reducer;
