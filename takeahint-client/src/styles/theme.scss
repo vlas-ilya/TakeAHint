@@ -11,8 +11,8 @@ $form-background: white;
 $alert-background: $color1;
 
 $list-background: $color3;
-$list-selected-background: $color2;
-$list-color: white;
+$list-selected-background: darken($list-background, 10);
+$list-color: lighten($color5, 5);
 
 $button-background: $color1;
 $button-color: white;

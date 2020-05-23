@@ -40,8 +40,8 @@ export default function FilterAssociations() {
           >
             <div>
               {item.value}
-              {!item.valid && <span className="deleted">Удалена</span>}
-              {!item.markedAsValid && <span className="deleted">Будет удалена</span>}
+              {!item.valid && <span className="deleted">Удалено</span>}
+              {!item.markedAsValid && <span className="deleted">Будет удалено</span>}
             </div>
           </ListItem>
         ))}

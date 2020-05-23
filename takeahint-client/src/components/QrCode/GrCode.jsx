@@ -20,6 +20,7 @@ const cache = (() => {
 
 export default function GrCode({ noBorder, gameId }) {
   const [dataUrl, setDataUrl] = useState('');
+  const [url, setUrl] = useState('');
 
   useEffect(() => {
     const url = new URL(window.location.href);
@@ -30,13 +31,22 @@ export default function GrCode({ noBorder, gameId }) {
       const dataUrl = await cache(imageUrl);
       if (dataUrl && dataUrl.data) {
         setDataUrl(dataUrl.data);
+        setUrl(decodeURI(url.href));
       }
     })();
   }, [gameId]);
 
   if (noBorder) {
-    return <>{dataUrl && <img src={dataUrl} alt="QR Code" />}</>;
+    return (
+      <div className="qr-code">
+        {dataUrl && <img src={dataUrl} alt="QR Code" />} {url && <div className="url">{url}</div>}
+      </div>
+    );
   }
 
-  return <Form className="qr-code small">{dataUrl && <img src={dataUrl} alt="QR Code" />}</Form>;
+  return (
+    <Form className="qr-code small">
+      {dataUrl && <img src={dataUrl} alt="QR Code" />} {url && <div>{url}</div>}
+    </Form>
+  );
 }

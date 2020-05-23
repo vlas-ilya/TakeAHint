@@ -19,7 +19,7 @@ export default function MainMenu({
     <div className="main-menu-block">
       <div className="main-menu">
         <div className="word">
-          {showGameId ? <span>{gameId}</span> : word ? <span>{word}</span> : <span>Намек понял</span>}
+          {showGameId ? <span>Комната: {gameId}</span> : word ? <span>Слово: {word}</span> : <span>Намек понял</span>}
         </div>
         <div className="rounds">
           {isGaming && (

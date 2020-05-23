@@ -30,7 +30,11 @@
       font-weight: bold;
       font-size: 25px;
       color: #2d2d2d;
-      padding: 10px 20px;
+      padding: 10px;
+
+      @media only screen and (max-width: 479px) {
+        text-align: center;
+      }
     }
     .rounds {
       flex: 1 1 200px;

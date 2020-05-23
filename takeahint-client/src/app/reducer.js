@@ -75,7 +75,11 @@ export const connect = (readonly) => (dispatch, getState, state = getState()) =>
     return;
   }
 
-  const socket = io(`ws://${window.location.host.replace('8080', '80')}`);
+  const protocol = window.location.protocol.startsWith('https') ? 'wss' : 'ws';
+  const host = window.location.host.endsWith('3000')
+    ? window.location.host.replace('3000', '8080')
+    : window.location.host;
+  const socket = io(`${protocol}://${host}`);
 
   setParam('gameId', payload.gameId);
   setParam('player', payload.login);

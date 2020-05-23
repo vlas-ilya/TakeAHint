@@ -8,15 +8,15 @@
   }
 
   button {
-    @mixin button($background: $button-background, $color: $button-color) {
+    @mixin button($background: $button-background, $color: $button-color, $hover-background: darken($background, 10)) {
       background: $background;
       color: $color;
+      box-shadow: 0 2px 5px 0 rgba(black, 0.26);
 
       &:hover,
       &:active,
       &:focus {
-        box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.14);
-        background: darken($background, 10);
+        background: $hover-background;
       }
     }
 
@@ -34,7 +34,11 @@
     cursor: pointer;
 
     &.grey {
-      @include button($button-background-grey, $button-color-grey);
+      @include button(
+        $button-background-grey,
+        $button-color-grey,
+        $hover-background: darken($button-background-grey, 5)
+      );
     }
   }
 }
