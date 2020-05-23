@@ -75,7 +75,7 @@ export const connect = (readonly) => (dispatch, getState, state = getState()) =>
     return;
   }
 
-  const socket = io(`ws://${window.location.host.replace('3000', '80')}`);
+  const socket = io(`ws://${window.location.host.replace('8080', '80')}`);
 
   setParam('gameId', payload.gameId);
   setParam('player', payload.login);
