@@ -17,6 +17,7 @@
     padding: 15px 10px;
     text-transform: uppercase;
     font-weight: bold;
+    overflow-wrap: break-word;
   }
 
   .list-item {
@@ -26,6 +27,7 @@
     font-size: 15px;
     padding: 10px;
     border-top: 1px dashed rgba($form-background, 0.3);
+    overflow-wrap: break-word;
 
     &.selected {
       background: $list-selected-background;
