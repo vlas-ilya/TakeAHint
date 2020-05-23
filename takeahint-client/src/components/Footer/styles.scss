@@ -1,0 +1,32 @@
+@import '../../app/theme';
+
+.footer {
+  max-width: 800px;
+  padding: 0 20px;
+  margin: 0 auto 30px;
+
+  .content {
+    color: white;
+    font-size: 14px;
+    text-align: center;
+
+    p {
+      margin: 10px;
+      &:first-child {
+        margin-top: 0;
+      }
+    }
+
+    a {
+      color: white;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.49);
+      text-decoration: none;
+
+      &:hover,
+      &:active,
+      &:focus {
+        border-bottom: none;
+      }
+    }
+  }
+}

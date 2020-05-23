@@ -10,7 +10,7 @@ import ListItem from '../../components/List/ListItem';
 import Page from '../../components/Page/Page';
 import React from 'react';
 import classNames from 'classnames';
-import { selectPlayerId } from '../../app/reducer';
+import { selectPlayerId } from '../../app/redux/reducer';
 
 export default function WaitingPlayers() {
   const players = useSelector(selectPlayers);

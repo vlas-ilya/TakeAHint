@@ -1,4 +1,4 @@
-import '../styles/App.scss';
+import './App.scss';
 
 import {
   changeModal,
@@ -11,12 +11,13 @@ import {
   selectMaster,
   selectModal,
   selectPage,
-} from './reducer';
+} from './redux/reducer';
 import { selectGameId, selectLogin } from '../features/login/reducer';
 import { useDispatch, useSelector } from 'react-redux';
 
 import AlertBlock from '../components/AlertBlock/AlertBlock';
 import CheckAnswer from '../components/CheckAnswer/CheckAnswer';
+import Footer from '../components/Footer/Footer';
 import FormButton from '../components/FormButton/FormButton';
 import GrCode from '../components/QrCode/GrCode';
 import MainMenu from '../components/MainMenu/MainMenu';
@@ -64,6 +65,8 @@ export default function App() {
       />
 
       <Router />
+
+      <Footer />
 
       <Modal
         id="rules"

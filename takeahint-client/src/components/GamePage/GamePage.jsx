@@ -1,7 +1,7 @@
 import Form from '../Form/Form';
 import Page from '../Page/Page';
 import React from 'react';
-import { selectIsMaster } from '../../app/reducer';
+import { selectIsMaster } from '../../app/redux/reducer';
 import { selectLogin } from '../../features/login/reducer';
 import { useSelector } from 'react-redux';
 

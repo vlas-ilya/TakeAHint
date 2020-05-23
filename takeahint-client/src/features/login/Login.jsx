@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import LoginForm from './LoginForm';
 import Page from '../../components/Page/Page';
 import React from 'react';
-import { connect } from '../../app/reducer';
+import { connect } from '../../app/redux/reducer';
 
 export default function Login() {
   const login = useSelector(selectLogin);

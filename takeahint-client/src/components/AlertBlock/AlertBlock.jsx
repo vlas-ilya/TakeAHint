@@ -2,7 +2,7 @@ import './styles.scss';
 
 import React, { useEffect, useState } from 'react';
 
-import { selectAlert } from '../../app/reducer';
+import { selectAlert } from '../../app/redux/reducer';
 import { useSelector } from 'react-redux';
 
 export default function AlertBlock() {

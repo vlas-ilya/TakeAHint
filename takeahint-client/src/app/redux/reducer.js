@@ -1,16 +1,16 @@
-import { answeringChangeAssociations, changeAnswer } from '../features/answering/reducer';
-import { changeAssociation, saveNotReady } from '../features/inputAssociations/reducer';
-import { changeGameIdValid, changeLoginValid } from '../features/login/reducer';
-import { changeWords, saveNotVoted } from '../features/chooseWord/reducer';
+import { answeringChangeAssociations, changeAnswer } from '../../features/answering/reducer';
+import { changeAssociation, saveNotReady } from '../../features/inputAssociations/reducer';
+import { changeGameIdValid, changeLoginValid } from '../../features/login/reducer';
+import { changeWords, saveNotVoted } from '../../features/chooseWord/reducer';
 
 import { default as axios } from 'axios';
-import { change } from '../utils/redux.utils';
-import { changeAssociations } from '../features/filterAssociations/reducer';
-import { changePlayers } from '../features/waitingPlayers/reducer';
-import constants from '../utils/constansts';
+import { change } from '../../utils/redux.utils';
+import { changeAssociations } from '../../features/filterAssociations/reducer';
+import { changePlayers } from '../../features/waitingPlayers/reducer';
+import constants from '../../utils/constansts';
 import { createSlice } from '@reduxjs/toolkit';
 import io from 'socket.io-client';
-import { setParam } from '../utils/url.utils';
+import { setParam } from '../../utils/url.utils';
 
 export const application = createSlice({
   name: 'application',

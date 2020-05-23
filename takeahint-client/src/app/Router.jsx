@@ -7,7 +7,7 @@ import Login from '../features/login/Login';
 import React from 'react';
 import WaitingPlayers from '../features/waitingPlayers/WaitingPlayers';
 import constants from '../utils/constansts';
-import { selectPage } from './reducer';
+import { selectPage } from './redux/reducer';
 import { useSelector } from 'react-redux';
 
 export default function Router() {
