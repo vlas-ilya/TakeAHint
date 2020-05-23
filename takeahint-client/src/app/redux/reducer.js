@@ -83,7 +83,7 @@ export const connect = (readonly) => (dispatch, getState, state = getState()) =>
 
   setParam('gameId', payload.gameId);
   setParam('player', payload.login);
-  const id = getParam('id', localStorage.getItem(`${state.login.gameId}/${state.login.login}`));
+  const id = getParam('userId', localStorage.getItem(`${state.login.gameId}/${state.login.login}`));
 
   if (id) {
     payload.id = id;
@@ -95,9 +95,10 @@ export const connect = (readonly) => (dispatch, getState, state = getState()) =>
 
   socket.on('connected', (response) => {
     clearInterval(connectInterval);
+    payload.id = response.id;
     dispatch(changePage(constants.pages.waitingPlayers));
     dispatch(changePlayerId(response.id));
-    setParam('id', response.id);
+    setParam('userId', response.id);
     localStorage.setItem(`${state.login.gameId}/${state.login.login}`, response.id);
   });
 

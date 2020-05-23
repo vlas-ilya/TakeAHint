@@ -33,7 +33,7 @@ export default function FinishPage() {
         <Form>
           <h1>Статистика игры</h1>
           <h2>
-            Угаданно слов: <strong>{statistic.countOfWin}</strong>
+            Угадано слов: <strong>{statistic.countOfWin}</strong>
           </h2>
           <List title="Слова">
             {statistic.words.map((item) => (
