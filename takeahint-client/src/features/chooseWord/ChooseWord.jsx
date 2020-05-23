@@ -21,7 +21,7 @@ export default function ChooseWord() {
       className="choose_word"
       forMaster={
         <>
-          <h2>Ваша команда выберает слово для текущей игры</h2>
+          <h2>Ваша команда выбирает слово для текущего раунда</h2>
           {notVoted && notVoted.length > 0 && (
             <List title="Не выбрали слово">
               {notVoted.map((item) => (
@@ -33,7 +33,7 @@ export default function ChooseWord() {
       }
       forObserver={
         <>
-          <h2>Команда выберает слово для текущей игры</h2>
+          <h2>Команда выбирает слово для текущего раунда</h2>
           {notVoted && notVoted.length > 0 && (
             <List title="Не выбрали слово">
               {notVoted.map((item) => (
@@ -44,7 +44,7 @@ export default function ChooseWord() {
         </>
       }
     >
-      <h2>Выберите слово для текущей игры</h2>
+      <h2>Выберите слово для текущего раунда</h2>
       {!choose ? (
         <>
           <List title="Список слов">
@@ -76,7 +76,7 @@ export default function ChooseWord() {
       ) : (
         <>
           Выбранное слово: <strong>{words.find((item) => item.selected).word}</strong>
-          <p>Дождитесь когда остальные игроки тоже сделают выбор</p>
+          <p>Дождитесь, когда остальные игроки тоже сделают выбор</p>
         </>
       )}
     </GamePage>

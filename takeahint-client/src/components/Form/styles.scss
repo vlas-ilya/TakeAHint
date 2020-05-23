@@ -9,6 +9,21 @@
   background: $form-background;
   padding: 20px;
 
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-left: -10px;
+    margin-right: -10px;
+
+    .form-button {
+      flex: 1 1 200px;
+      min-width: 200px;
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+  }
+
   &.small {
     max-width: 400px;
   }

@@ -105,7 +105,7 @@ export default function App() {
             Верно
           </FormButton>,
           <FormButton key="incorrect" className="grey" onClick={() => dispatch(checkAnswer(false))}>
-            Не верно
+            Неверно
           </FormButton>,
         ]}
       >

@@ -31,7 +31,7 @@ export default function MainMenu({
                 Побед: <strong>{countOfWin}</strong>
               </div>
               <div>
-                Осталось игр: <strong>{countOfRounds + 1}</strong>
+                Осталось раундов: <strong>{countOfRounds + 1}</strong>
               </div>
               <div>
                 {isMaster ? (

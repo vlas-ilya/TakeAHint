@@ -80,7 +80,7 @@ export default function InputAssociations() {
       ) : (
         <>
           Ваша подсказка <strong>{association}</strong>
-          <p>Дождитесь когда остальные игроки введут подскузки</p>
+          <p>Дождитесь, когда остальные игроки введут подсказки</p>
         </>
       )}
     </GamePage>

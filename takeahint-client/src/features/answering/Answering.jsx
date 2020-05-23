@@ -27,7 +27,7 @@ export default function Answering() {
       forMaster={
         <>
           <h2>Угадайте слово</h2>
-          <List title="Список ассоциаций">
+          <List title="Список подсказок">
             {associations.map((item) => (
               <ListItem key={item.id}>{item.value}</ListItem>
             ))}
@@ -40,34 +40,34 @@ export default function Answering() {
             onChange={(value) => dispatch(changeAnswer(value))}
           />
 
-          <FormButton
-            onClick={() => {
-              if (answer) {
-                dispatch(sendAnswer());
-              } else {
-                dispatch(invalidAnswer());
-              }
-            }}
-          >
-            Ответить
-          </FormButton>
+          <div className="actions">
+            <FormButton
+              onClick={() => {
+                if (answer) {
+                  dispatch(sendAnswer());
+                } else {
+                  dispatch(invalidAnswer());
+                }
+              }}
+            >
+              Ответить
+            </FormButton>
 
-          <FormButton className="grey" onClick={() => dispatch(sendEmptyAnswer())}>
-            Пропустить
-          </FormButton>
+            <FormButton className="grey" onClick={() => dispatch(sendEmptyAnswer())}>
+              Пропустить
+            </FormButton>
+          </div>
 
+          <p>По подсказкам, подготовленными для вас вашей командой, попробуйте догадаться, какое слово было загадано</p>
           <p>
-            По списку ассоциаций, который подготовила для вас ваша команда, попробуйте догадаться какое слово было
-            загаданно
-          </p>
-          <p>
-            Введите ответ, соблюдая все правила орфографии, и нажмите <strong>Ответить</strong>
+            Если вы не можете угадать слово, не рискуйте и нажмите <strong>Пропустить</strong>, чтобы не терять
+            дополнительно раунд в случае ошибки
           </p>
         </>
       }
     >
       <h2>Ведущий отгадывает слово</h2>
-      <List title="Список ассоциаций">
+      <List title="Список подсказок">
         {associations.map((item) => (
           <ListItem key={item.id}>{item.value}</ListItem>
         ))}
