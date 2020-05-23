@@ -1,6 +1,6 @@
-import ActivePlayer from '../beans/player/ActivePlayer';
+import ActivePlayer from '../classes/player/ActivePlayer';
 import { Injectable } from '@nestjs/common';
-import Player from '../beans/player/Player';
+import Player from '../classes/player/Player';
 import { shuffle } from '../utils/array.utils';
 
 @Injectable()

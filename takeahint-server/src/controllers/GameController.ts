@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 
-import GameEvent from '../beans/game/GameEvent';
+import GameEvent from '../classes/game/GameEvent';
 import GameService from '../services/GameService';
 import GameStatisticService from '../services/GameStatisticService';
 import { throwIf } from '../utils/errors.utils';

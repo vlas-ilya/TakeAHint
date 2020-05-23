@@ -2,6 +2,7 @@ import { answeringChangeAssociations, changeAnswer } from '../../features/answer
 import { changeAssociation, saveNotReady } from '../../features/inputAssociations/reducer';
 import { changeGameIdValid, changeLoginValid } from '../../features/login/reducer';
 import { changeWords, saveNotVoted } from '../../features/chooseWord/reducer';
+import { getParam, setParam } from '../../utils/url.utils';
 
 import { default as axios } from 'axios';
 import { change } from '../../utils/redux.utils';
@@ -10,7 +11,6 @@ import { changePlayers } from '../../features/waitingPlayers/reducer';
 import constants from '../../utils/constansts';
 import { createSlice } from '@reduxjs/toolkit';
 import io from 'socket.io-client';
-import { setParam } from '../../utils/url.utils';
 
 export const application = createSlice({
   name: 'application',
@@ -83,8 +83,7 @@ export const connect = (readonly) => (dispatch, getState, state = getState()) =>
 
   setParam('gameId', payload.gameId);
   setParam('player', payload.login);
-
-  const id = localStorage.getItem(`${state.login.gameId}/${state.login.login}`);
+  const id = getParam('id', localStorage.getItem(`${state.login.gameId}/${state.login.login}`));
 
   if (id) {
     payload.id = id;
@@ -98,6 +97,7 @@ export const connect = (readonly) => (dispatch, getState, state = getState()) =>
     clearInterval(connectInterval);
     dispatch(changePage(constants.pages.waitingPlayers));
     dispatch(changePlayerId(response.id));
+    setParam('id', response.id);
     localStorage.setItem(`${state.login.gameId}/${state.login.login}`, response.id);
   });
 

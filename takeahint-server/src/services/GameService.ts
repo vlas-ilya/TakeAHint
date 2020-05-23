@@ -1,7 +1,7 @@
-import GameEvent from '../beans/game/GameEvent';
+import GameEvent from '../classes/game/GameEvent';
 import GameFactory from './GameFactory';
 import { Injectable } from '@nestjs/common';
-import Player from '../beans/player/Player';
+import Player from '../classes/player/Player';
 import { Socket } from 'socket.io';
 import SocketService from './SocketService';
 

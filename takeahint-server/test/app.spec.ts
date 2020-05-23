@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
-import ActivePlayer from '../src/beans/player/ActivePlayer';
+import ActivePlayer from '../src/classes/player/ActivePlayer';
 import { AppModule } from '../src/app.module';
 import { GameController } from '../src/controllers/GameController';
 import GameService from '../src/services/GameService';
-import ObserverPlayer from '../src/beans/player/ObserverPlayer';
+import ObserverPlayer from '../src/classes/player/ObserverPlayer';
 
 describe('Application', () => {
   const GAME_ID = 'TEST';

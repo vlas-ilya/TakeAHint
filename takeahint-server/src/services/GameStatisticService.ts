@@ -1,4 +1,4 @@
-import GameStatistic from '../beans/game/GameStatistic';
+import GameStatistic from '../classes/game/GameStatistic';
 import { Injectable } from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
 

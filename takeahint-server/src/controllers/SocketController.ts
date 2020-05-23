@@ -1,8 +1,8 @@
 import { OnGatewayDisconnect, SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
 
-import ActivePlayer from '../beans/player/ActivePlayer';
+import ActivePlayer from '../classes/player/ActivePlayer';
 import GameService from '../services/GameService';
-import ObserverPlayer from '../beans/player/ObserverPlayer';
+import ObserverPlayer from '../classes/player/ObserverPlayer';
 import { Socket } from 'socket.io';
 import { v4 as uuid } from 'uuid';
 

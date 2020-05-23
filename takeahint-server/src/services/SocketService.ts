@@ -1,10 +1,10 @@
 import { Interpreter, Typestate } from 'xstate';
 
-import GameContext from '../beans/game/GameContext';
-import GameEvent from '../beans/game/GameEvent';
-import GameStateSchema from '../beans/game/GameStateSchema';
+import GameContext from '../classes/game/GameContext';
+import GameEvent from '../classes/game/GameEvent';
+import GameStateSchema from '../classes/game/GameStateSchema';
 import { Injectable } from '@nestjs/common';
-import Player from '../beans/player/Player';
+import Player from '../classes/player/Player';
 
 @Injectable()
 export default class SocketService {

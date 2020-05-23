@@ -1,15 +1,15 @@
 import { Machine, Receiver, Sender, StateMachine, Typestate, assign, send } from 'xstate';
 import { forClass, forItem, forItems, pass, pick } from '../utils/stream.utils';
 
-import ActivePlayer from '../beans/player/ActivePlayer';
-import Association from '../beans/wordSet/Association';
-import GameContext from '../beans/game/GameContext';
-import GameEvent from '../beans/game/GameEvent';
-import GameStateSchema from '../beans/game/GameStateSchema';
-import GameStatistic from '../beans/game/GameStatistic';
+import ActivePlayer from '../classes/player/ActivePlayer';
+import Association from '../classes/wordSet/Association';
+import GameContext from '../classes/game/GameContext';
+import GameEvent from '../classes/game/GameEvent';
+import GameStateSchema from '../classes/game/GameStateSchema';
+import GameStatistic from '../classes/game/GameStatistic';
 import GameStatisticService from './GameStatisticService';
 import { Injectable } from '@nestjs/common';
-import Player from '../beans/player/Player';
+import Player from '../classes/player/Player';
 import SequenceOfMasterService from './SequenceOfMasterService';
 import WordSetsService from './WordSetsService';
 import { getDuplicateIndexes } from '../utils/array.utils';
