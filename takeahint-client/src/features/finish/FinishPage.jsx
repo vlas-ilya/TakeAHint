@@ -6,10 +6,14 @@ import List from '../../components/List/List';
 import ListItem from '../../components/List/ListItem';
 import Page from '../../components/Page/Page';
 import { default as axios } from 'axios';
+import { changeIsGaming } from '../../app/redux/reducer';
 import { getParam } from '../../utils/url.utils';
+import { useDispatch } from 'react-redux';
 
 export default function FinishPage() {
   const [statistic, setStatistic] = useState({});
+  const dispatch = useDispatch();
+  dispatch(changeIsGaming(true));
 
   useEffect(() => {
     let id = getParam('id');
