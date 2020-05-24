@@ -5,14 +5,23 @@
 
       div {
         position: relative;
-        display: inline-block;
+        width: 100%;
+        vertical-align: middle;
+        display: flex;
+
+        span {
+          display: flex;
+          justify-content: center;
+          flex-direction: column;
+        }
+
         .deleted {
           font-size: 8px;
           text-transform: uppercase;
           font-weight: bolder;
-          position: absolute;
-          margin-left: 5px;
-          width: 100%;
+          margin-right: 5px;
+          vertical-align: middle;
+          max-width: 40px;
         }
       }
     }
