@@ -31,7 +31,7 @@ export default function FinishPage() {
         }
       })();
     }
-  }, []);
+  }, [dispatch]);
 
   if (!(statistic && 'countOfWinRounds' in statistic)) {
     return <Page className="finish" />;
