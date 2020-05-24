@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { changeIsGaming, changePage } from '../../app/redux/reducer';
 
 import Form from '../../components/Form/Form';
 import FormButton from '../../components/FormButton/FormButton';
@@ -6,14 +7,16 @@ import List from '../../components/List/List';
 import ListItem from '../../components/List/ListItem';
 import Page from '../../components/Page/Page';
 import { default as axios } from 'axios';
-import { changeIsGaming } from '../../app/redux/reducer';
+import constants from '../../utils/constansts';
 import { getParam } from '../../utils/url.utils';
 import { useDispatch } from 'react-redux';
 
 export default function FinishPage() {
   const [statistic, setStatistic] = useState({});
   const dispatch = useDispatch();
-  dispatch(changeIsGaming(true));
+
+  dispatch(changeIsGaming(false));
+  dispatch(changePage(constants.pages.finish));
 
   useEffect(() => {
     let id = getParam('id');
@@ -45,7 +48,7 @@ export default function FinishPage() {
               <ListItem key={item}>{item}</ListItem>
             ))}
           </List>
-          <FormButton onClick={() => (window.location.pathname = '/')}>Сыграть еще раз</FormButton>
+          <FormButton onClick={() => (window.location.href = '/')}>Сыграть еще раз</FormButton>
         </Form>
       )}
     </Page>

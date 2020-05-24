@@ -30,6 +30,8 @@ export default function Router() {
       return <FilterAssociations />;
     case constants.pages.answering:
       return <Answering />;
+    case constants.pages.finish:
+      return <FinishPage />;
     default:
       return null;
   }

@@ -1,6 +1,7 @@
 import './styles.scss';
 
 import React from 'react';
+import constants from '../../utils/constansts';
 
 export default function MainMenu({
   isMaster,
@@ -14,6 +15,7 @@ export default function MainMenu({
   onQrCode,
   gameId,
   showGameId,
+  page,
 }) {
   return (
     <div className="main-menu-block">
@@ -49,7 +51,7 @@ export default function MainMenu({
           <div className="menu-item" role="button" onClick={onShowRules}>
             <span>Правила игры</span>
           </div>
-          {!isGaming && (
+          {!isGaming && page !== constants.pages.finish && (
             <div className="menu-item" role="button" onClick={onQrCode}>
               <span>QR код игры</span>
             </div>

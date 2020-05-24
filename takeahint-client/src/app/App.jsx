@@ -51,6 +51,7 @@ export default function App() {
     login,
     master,
     word,
+    page,
   };
 
   return (

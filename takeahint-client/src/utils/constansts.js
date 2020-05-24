@@ -6,6 +6,7 @@ const constants = {
     inputAssociations: 'INPUT_ASSOCIATIONS',
     filterAssociations: 'FILTER_ASSOCIATIONS',
     answering: 'ANSWERING',
+    finish: 'FINISH',
   },
   modals: {
     rules: 'RULES',

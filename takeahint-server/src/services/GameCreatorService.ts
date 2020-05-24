@@ -282,7 +282,7 @@ export default class GameCreatorService {
 
         context: {
           answer: '',
-          countOfRounds: 13,
+          countOfRounds: 1,
           countOfWin: 0,
           players: [],
           wordSets: [],
