@@ -1,5 +1,6 @@
 import './styles.scss';
 
+import { changePage, selectPlayerId } from '../../app/redux/reducer';
 import { selectPlayers, start } from './reducer';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -10,7 +11,7 @@ import ListItem from '../../components/List/ListItem';
 import Page from '../../components/Page/Page';
 import React from 'react';
 import classNames from 'classnames';
-import { selectPlayerId } from '../../app/redux/reducer';
+import constants from '../../utils/constansts';
 
 export default function WaitingPlayers() {
   const players = useSelector(selectPlayers);
@@ -29,9 +30,15 @@ export default function WaitingPlayers() {
           ))}
         </List>
 
-        <FormButton onClick={() => players.filter((player) => player.login).length >= 3 && dispatch(start())}>
-          Играть
-        </FormButton>
+        <div className="actions">
+          <FormButton onClick={() => players.filter((player) => player.login).length >= 3 && dispatch(start())}>
+            Играть
+          </FormButton>
+
+          <FormButton className="grey" onClick={() => dispatch(changePage(constants.pages.login))}>
+            Выйти
+          </FormButton>
+        </div>
 
         <p>Для начала игры необходимо минимум 3 игрока</p>
       </Form>
