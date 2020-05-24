@@ -21,6 +21,7 @@ export default function LoginForm({ gameId, gameIdValid, onGameIdChange, login, 
           label="Логин"
           validMessage={loginValid ? '' : 'Необходимо указать логин'}
           value={login}
+          autoComplete={'on'}
           onEnter={() => onLogin()}
           onChange={onLoginChange}
         />

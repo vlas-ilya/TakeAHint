@@ -3,7 +3,16 @@ import './form-input.scss';
 import React from 'react';
 import classNames from 'classnames';
 
-export default function FormInput({ name, label, validMessage, value, onChange, onEnter, ...props }) {
+export default function FormInput({
+  name,
+  label,
+  validMessage,
+  value,
+  onChange,
+  onEnter,
+  autoComplete = 'off',
+  ...props
+}) {
   return (
     <div
       className={classNames('form-input', {
@@ -17,6 +26,7 @@ export default function FormInput({ name, label, validMessage, value, onChange, 
         name={name}
         type="text"
         value={value}
+        autoComplete={autoComplete}
         onKeyPress={(e) => {
           if (onEnter && e.key === 'Enter') {
             onEnter(e);
