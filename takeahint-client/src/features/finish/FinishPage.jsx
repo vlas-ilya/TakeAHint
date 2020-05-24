@@ -1,8 +1,7 @@
 import './styles.scss';
 
 import React, { useEffect, useState } from 'react';
-import { changeIsGaming, changePage, changeStatistic, selectIsGaming, selectPage } from '../../app/redux/reducer';
-import { useDispatch, useSelector } from 'react-redux';
+import { changeIsGaming, changePage, changeStatistic } from '../../app/redux/reducer';
 
 import Form from '../../components/Form/Form';
 import FormButton from '../../components/FormButton/FormButton';
@@ -14,6 +13,7 @@ import Word from './Word';
 import { default as axios } from 'axios';
 import constants from '../../utils/constansts';
 import { getParam } from '../../utils/url.utils';
+import { useDispatch } from 'react-redux';
 
 export default function FinishPage() {
   const [statistic, setStatistic] = useState({});
