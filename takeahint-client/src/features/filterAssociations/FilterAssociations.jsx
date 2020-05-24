@@ -20,12 +20,12 @@ export default function FilterAssociations() {
       forMaster={
         <>
           <h2>Вы ведущий</h2>
-          <p>Ваша команда придумывает подсказки</p>
+          <p>Ваша команда сравнивает подсказки</p>
         </>
       }
       forObserver={
         <>
-          <h2>Команда придумывает подсказки</h2>
+          <h2>Команда сравнивает подсказки</h2>
         </>
       }
     >
@@ -40,12 +40,12 @@ export default function FilterAssociations() {
             })}
           >
             <div>
-              {!item.association.valid && <span className="deleted">Удалено</span>}
-              {!item.association.markedAsValid && <span className="deleted">Будет удалено</span>}
               <span className="association">
-                <span className="player">Автор {item.login}</span>
+                <span className="player">{item.login}</span>
                 <span className="value">{item.association.value}</span>
               </span>
+              {!item.association.valid && <span className="deleted">Удалено</span>}
+              {!item.association.markedAsValid && <span className="deleted">Будет удалено</span>}
             </div>
           </ListItem>
         ))}

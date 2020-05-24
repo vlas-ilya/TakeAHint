@@ -41,7 +41,7 @@ export default function Answering() {
           <List title="Список подсказок" readonly>
             {associations.map((item) => (
               <ListItem key={item.association.id} className="association">
-                <span className="player">Автор {item.login}</span>
+                <span className="player">{item.login}</span>
                 <span className="value">{item.association.value}</span>
               </ListItem>
             ))}
@@ -75,7 +75,7 @@ export default function Answering() {
       <List title="Список подсказок" readonly>
         {associations.map((item) => (
           <ListItem key={item.association.id} className="association">
-            <span className="player">Автор {item.login}</span>
+            <span className="player">{item.login}</span>
             <span className="value">{item.association.value}</span>
           </ListItem>
         ))}
