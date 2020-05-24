@@ -1,3 +1,5 @@
+import './styles.scss';
+
 import {
   changeAnswer,
   invalidAnswer,
@@ -32,12 +34,16 @@ export default function Answering() {
 
   return (
     <GamePage
+      className="answering"
       forMaster={
         <>
           <h2>Угадайте слово</h2>
           <List title="Список подсказок" readonly>
             {associations.map((item) => (
-              <ListItem key={item.id}>{item.value}</ListItem>
+              <ListItem key={item.association.id} className="association">
+                <span className="player">Автор {item.login}</span>
+                <span className="value">{item.association.value}</span>
+              </ListItem>
             ))}
           </List>
           <FormInput
@@ -68,7 +74,10 @@ export default function Answering() {
       <h2>Ведущий отгадывает слово</h2>
       <List title="Список подсказок" readonly>
         {associations.map((item) => (
-          <ListItem key={item.id}>{item.value}</ListItem>
+          <ListItem key={item.association.id} className="association">
+            <span className="player">Автор {item.login}</span>
+            <span className="value">{item.association.value}</span>
+          </ListItem>
         ))}
       </List>
     </GamePage>

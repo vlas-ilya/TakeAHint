@@ -15,12 +15,12 @@ export const reducer = createSlice({
 export const { changeAssociations } = reducer.actions;
 
 export const toggleAssociation = (id) => async (dispatch, getState, state = getState()) => {
-  const association = state.filterAssociations.associations.find((item) => item.id === id);
+  const association = state.filterAssociations.associations.find((item) => item.association.id === id);
   if (!association) {
     return;
   }
   await axios.post(`/game/${state.login.gameId}/command`, {
-    type: !association.markedAsValid ? 'MARK_AS_VALID' : 'MARK_AS_INVALID',
+    type: !association.association.markedAsValid ? 'MARK_AS_VALID' : 'MARK_AS_INVALID',
     id,
   });
 };

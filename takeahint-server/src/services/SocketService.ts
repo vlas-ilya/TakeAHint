@@ -86,11 +86,18 @@ export default class SocketService {
       });
   }
 
+  private getAssociations(context: GameContext) {
+    return Array.from(context.currentWordSet.associations.entries()).map(([playerId, association]) => ({
+      login: context.players.find((item) => item.id === playerId)?.login,
+      association,
+    }));
+  }
+
   onStartFilterAssociations(gameId: string, context: GameContext) {
     context.players.forEach((player) => {
       player.client.emit('event', {
         type: 'START_FILTER_ASSOCIATIONS',
-        associations: player.isMaster === false ? Array.from(context.currentWordSet.associations.values()) : [],
+        associations: player.isMaster === false ? this.getAssociations(context) : [],
       });
     });
   }
@@ -99,7 +106,7 @@ export default class SocketService {
     context.players.forEach((player) => {
       player.client.emit('event', {
         type: 'START_ANSWERING',
-        associations: Array.from(context.currentWordSet.associations.values()).filter((item) => item.valid),
+        associations: this.getAssociations(context).filter((item) => item.association.valid),
       });
     });
   }
@@ -211,16 +218,13 @@ export default class SocketService {
 
       () => {
         payload.state = 'START_FILTER_ASSOCIATIONS';
-        payload.associations =
-          payload.isMaster === false ? Array.from(game.state.context.currentWordSet.associations.values()) : [];
+        payload.associations = payload.isMaster === false ? this.getAssociations(game.state.context) : [];
         return 'filterAssociations';
       },
 
       () => {
         payload.state = 'START_ANSWERING';
-        payload.associations = Array.from(game.state.context.currentWordSet.associations.values()).filter(
-          (item) => item.valid,
-        );
+        payload.associations = this.getAssociations(game.state.context).filter((item) => item.association.valid);
         return 'answering';
       },
 

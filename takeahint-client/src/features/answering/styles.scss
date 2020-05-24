@@ -1,0 +1,16 @@
+.answering {
+  .list-item.association {
+    position: relative;
+    padding-top: 17px;
+    padding-bottom: 10px;
+
+    .player {
+      text-transform: uppercase;
+      font-size: 8px;
+      font-weight: bold;
+      position: absolute;
+      top: 7px;
+      text-shadow: none;
+    }
+  }
+}

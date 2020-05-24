@@ -33,16 +33,19 @@ export default function FilterAssociations() {
       <List title="Список подсказок">
         {associations.map((item) => (
           <ListItem
-            key={item.id}
-            onClick={() => item.valid && dispatch(toggleAssociation(item.id))}
+            key={item.association.id}
+            onClick={() => item.association.valid && dispatch(toggleAssociation(item.association.id))}
             className={classNames('associations_item', {
-              selected: !item.valid || !item.markedAsValid,
+              selected: !item.association.valid || !item.association.markedAsValid,
             })}
           >
             <div>
-              {!item.valid && <span className="deleted">Удалено</span>}
-              {!item.markedAsValid && <span className="deleted">Будет удалено</span>}
-              <span>{item.value}</span>
+              {!item.association.valid && <span className="deleted">Удалено</span>}
+              {!item.association.markedAsValid && <span className="deleted">Будет удалено</span>}
+              <span className="association">
+                <span className="player">Автор {item.login}</span>
+                <span className="value">{item.association.value}</span>
+              </span>
             </div>
           </ListItem>
         ))}
