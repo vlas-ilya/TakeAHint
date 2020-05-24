@@ -21,14 +21,9 @@ export default class GameFactory {
   constructor(private readonly gameCreatorService: GameCreatorService, private readonly socketService: SocketService) {
     setInterval(() => {
       for (let key of this.games.keys()) {
-        const game = this.games.get(key);
         const lastUpdate = this.gameTimeUpdates.get(key);
         const interval = new Date().getTime() - lastUpdate.getTime();
-        if (
-          interval > GameFactory.GAME_LIVE_INTERVAL ||
-          game.state.value === 'showResult' ||
-          game.state.value['game'] === 'showResult'
-        ) {
+        if (interval > GameFactory.GAME_LIVE_INTERVAL) {
           this.games.delete(key);
           this.gameTimeUpdates.delete(key);
         }
@@ -48,6 +43,10 @@ export default class GameFactory {
       onEndAnswering: (context, event) => this.socketService.onEndAnswering(gameId, context, event),
       onShowResult: (context) => this.socketService.onShowResult(gameId, context),
       onStartCheckAnswer: (context, event) => this.socketService.onStartCheckAnswer(gameId, context, event),
+      onRemoveGame: () => {
+        this.games.delete(gameId);
+        this.gameTimeUpdates.delete(gameId);
+      },
     },
   });
 

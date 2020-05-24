@@ -409,7 +409,7 @@ export default class GameCreatorService {
             },
           },
           showResult: {
-            entry: [this.saveGameStatistic, 'onShowResult'],
+            entry: [this.saveGameStatistic, 'onShowResult', 'onRemoveGame'],
           },
         },
       },
@@ -433,6 +433,7 @@ export default class GameCreatorService {
           onEndAnswering: pass,
           onShowResult: pass,
           onStartCheckAnswer: pass,
+          onRemoveGame: pass,
         },
       },
     );
