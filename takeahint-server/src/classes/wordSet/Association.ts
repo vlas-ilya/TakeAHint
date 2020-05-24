@@ -12,6 +12,6 @@ export default class Association implements Comparable<Association> {
   }
 
   compare = (item: Association): boolean => {
-    return this.value === item.value;
+    return this.value.trim().toLowerCase() === item.value.trim().toLowerCase();
   };
 }

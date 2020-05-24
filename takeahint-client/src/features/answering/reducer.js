@@ -12,7 +12,7 @@ export const reducer = createSlice({
   reducers: {
     changeAnswer: change('answer'),
     answeringChangeAssociations: change('associations'),
-    invalidAnswer: change('valid'),
+    invalidAnswer: change('valid', false),
   },
 });
 

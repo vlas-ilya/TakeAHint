@@ -22,12 +22,20 @@ export default function Answering() {
   const valid = useSelector(selectValidAnswer);
   const dispatch = useDispatch();
 
+  const saveAnswer = () => {
+    if (answer) {
+      dispatch(sendAnswer());
+    } else {
+      dispatch(invalidAnswer());
+    }
+  };
+
   return (
     <GamePage
       forMaster={
         <>
           <h2>Угадайте слово</h2>
-          <List title="Список подсказок">
+          <List title="Список подсказок" readonly>
             {associations.map((item) => (
               <ListItem key={item.id}>{item.value}</ListItem>
             ))}
@@ -37,21 +45,12 @@ export default function Answering() {
             name="answer"
             value={answer}
             validMessage={valid ? '' : 'Необходимо ввести ответ'}
+            onEnter={saveAnswer}
             onChange={(value) => dispatch(changeAnswer(value))}
           />
 
           <div className="actions">
-            <FormButton
-              onClick={() => {
-                if (answer) {
-                  dispatch(sendAnswer());
-                } else {
-                  dispatch(invalidAnswer());
-                }
-              }}
-            >
-              Ответить
-            </FormButton>
+            <FormButton onClick={saveAnswer}>Ответить</FormButton>
 
             <FormButton className="grey" onClick={() => dispatch(sendEmptyAnswer())}>
               Пропустить
@@ -67,7 +66,7 @@ export default function Answering() {
       }
     >
       <h2>Ведущий отгадывает слово</h2>
-      <List title="Список подсказок">
+      <List title="Список подсказок" readonly>
         {associations.map((item) => (
           <ListItem key={item.id}>{item.value}</ListItem>
         ))}

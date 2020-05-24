@@ -21,7 +21,7 @@ export default function WaitingPlayers() {
     <Page className="waiting-players">
       <Form>
         <h2>Дождитесь всех игроков</h2>
-        <List>
+        <List readonly>
           {players.map((item) => (
             <ListItem key={item.id} className={classNames({ you: playerId === item.id })}>
               {item.login || 'Наблюдатель'}

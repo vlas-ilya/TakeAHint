@@ -3,7 +3,7 @@ import './form-input.scss';
 import React from 'react';
 import classNames from 'classnames';
 
-export default function FormInput({ name, label, validMessage, value, onChange }) {
+export default function FormInput({ name, label, validMessage, value, onChange, onEnter, ...props }) {
   return (
     <div
       className={classNames('form-input', {
@@ -12,7 +12,19 @@ export default function FormInput({ name, label, validMessage, value, onChange }
       })}
     >
       <label htmlFor={name}>{!validMessage ? label : <span className="validMessage">{validMessage}</span>}</label>
-      <input id={name} name={name} type="text" value={value} onChange={(e) => onChange(e.target.value, e)} />
+      <input
+        id={name}
+        name={name}
+        type="text"
+        value={value}
+        onKeyPress={(e) => {
+          if (onEnter && e.key === 'Enter') {
+            onEnter(e);
+          }
+        }}
+        onChange={(e) => onChange(e.target.value, e)}
+        {...props}
+      />
     </div>
   );
 }

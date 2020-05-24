@@ -33,6 +33,9 @@
       background: $list-selected-background;
       &:hover {
         background: darken($list-selected-background, 2);
+        &.readonly {
+          background: $list-selected-background;
+        }
       }
     }
 
@@ -44,6 +47,17 @@
 
     &:first-child {
       border-top: none;
+    }
+  }
+
+  &.readonly {
+    .list-item {
+      padding-left: 10px;
+      background: $list-background;
+
+      &.selected {
+        background: $list-selected-background;
+      }
     }
   }
 }

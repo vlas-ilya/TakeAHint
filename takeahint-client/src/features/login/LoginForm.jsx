@@ -12,6 +12,7 @@ export default function LoginForm({ gameId, gameIdValid, onGameIdChange, login, 
           label="Номер комнаты"
           validMessage={gameIdValid ? '' : 'Необходимо указать номер комнаты'}
           value={gameId}
+          onEnter={() => onLogin()}
           onChange={onGameIdChange}
         />
 
@@ -20,6 +21,7 @@ export default function LoginForm({ gameId, gameIdValid, onGameIdChange, login, 
           label="Логин"
           validMessage={loginValid ? '' : 'Необходимо указать логин'}
           value={login}
+          onEnter={() => onLogin()}
           onChange={onLoginChange}
         />
 

@@ -23,7 +23,7 @@ export default function ChooseWord() {
         <>
           <h2>Ваша команда выбирает слово для текущего раунда</h2>
           {notVoted && notVoted.length > 0 && (
-            <List title="Не выбрали слово">
+            <List title="Не выбрали слово" readonly>
               {notVoted.map((item) => (
                 <ListItem key={item}>{item}</ListItem>
               ))}
@@ -35,7 +35,7 @@ export default function ChooseWord() {
         <>
           <h2>Команда выбирает слово для текущего раунда</h2>
           {notVoted && notVoted.length > 0 && (
-            <List title="Не выбрали слово">
+            <List title="Не выбрали слово" readonly>
               {notVoted.map((item) => (
                 <ListItem key={item}>{item}</ListItem>
               ))}

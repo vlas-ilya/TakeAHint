@@ -22,13 +22,22 @@ export default function InputAssociations() {
   const notReady = useSelector(selectNotReady);
   const dispatch = useDispatch();
 
+  const _saveAssociation = () => {
+    if (association) {
+      setInput(true);
+      dispatch(saveAssociation());
+    } else {
+      dispatch(invalidAssociation());
+    }
+  };
+
   return (
     <GamePage
       forMaster={
         <>
           <h2>Ваша команда придумывает подсказки</h2>
           {notReady && notReady.length > 0 && (
-            <List title="Не придумали подсказку">
+            <List title="Не придумали подсказку" readonly>
               {notReady.map((item) => (
                 <ListItem key={item}>{item}</ListItem>
               ))}
@@ -40,7 +49,7 @@ export default function InputAssociations() {
         <>
           <h2>Команда придумывает подсказки</h2>
           {notReady && notReady.length > 0 && (
-            <List title="Не придумали подсказку">
+            <List title="Не придумали подсказку" readonly>
               {notReady.map((item) => (
                 <ListItem key={item}>{item}</ListItem>
               ))}
@@ -57,20 +66,10 @@ export default function InputAssociations() {
             label="Введите подсказку"
             value={association}
             validMessage={valid ? '' : 'Необходимо ввести подсказку'}
+            onEnter={_saveAssociation}
             onChange={(value) => dispatch(changeAssociation(value))}
           />
-          <FormButton
-            onClick={() => {
-              if (association) {
-                setInput(true);
-                dispatch(saveAssociation());
-              } else {
-                dispatch(invalidAssociation());
-              }
-            }}
-          >
-            Сохранить
-          </FormButton>
+          <FormButton onClick={_saveAssociation}>Сохранить</FormButton>
           <p>Напишите подсказку в одно слово, можно использовать любую часть речи, символы, цифры и так далее</p>
           <p>
             Нельзя использовать придуманные слова. Если несколько игроков напишут одно и то же слово, то оно убирается
