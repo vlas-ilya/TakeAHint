@@ -73,6 +73,8 @@ export default function App() {
         show={modal === constants.modals.rules}
         title="Правила игры"
         className={'big-margin'}
+        onClose={() => dispatch(changeModal(''))}
+        showCloseButton
         actions={[
           <FormButton key="close" className="grey" onClick={() => dispatch(changeModal(''))}>
             Закрыть
@@ -86,6 +88,7 @@ export default function App() {
         id="qrCode"
         show={modal === constants.modals.qrCode}
         className="width-auto"
+        onClose={() => dispatch(changeModal(''))}
         noPadding
         actions={[
           <FormButton key="close" className="grey" onClick={() => dispatch(changeModal(''))}>
