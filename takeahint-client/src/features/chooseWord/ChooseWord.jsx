@@ -21,7 +21,8 @@ export default function ChooseWord() {
       className="choose_word"
       forMaster={
         <>
-          <h2>Ваша команда выбирает слово для текущего раунда</h2>
+          <h2>Вы ведущий</h2>
+          <p>Ваша команда выбирает слово для текущего раунда</p>
           {notVoted && notVoted.length > 0 && (
             <List title="Не выбрали слово" readonly>
               {notVoted.map((item) => (

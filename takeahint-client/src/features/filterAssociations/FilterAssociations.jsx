@@ -19,7 +19,8 @@ export default function FilterAssociations() {
       className="associations"
       forMaster={
         <>
-          <h2>Ваша команда придумывает подсказки</h2>
+          <h2>Вы ведущий</h2>
+          <p>Ваша команда придумывает подсказки</p>
         </>
       }
       forObserver={

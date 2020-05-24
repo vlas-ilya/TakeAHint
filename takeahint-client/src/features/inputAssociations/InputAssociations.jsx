@@ -35,7 +35,8 @@ export default function InputAssociations() {
     <GamePage
       forMaster={
         <>
-          <h2>Ваша команда придумывает подсказки</h2>
+          <h2>Вы ведущий</h2>
+          <p>Ваша команда придумывает подсказки</p>
           {notReady && notReady.length > 0 && (
             <List title="Не придумали подсказку" readonly>
               {notReady.map((item) => (
