@@ -1,4 +1,5 @@
 import ActivePlayer from '../player/ActivePlayer';
+import GameStatistic from './GameStatistic';
 import WordSet from '../wordSet/WordSet';
 
 interface GameContext {
@@ -11,7 +12,7 @@ interface GameContext {
   currentWord: string;
   sequenceOfMasterPlayers: Array<number>;
   oldWords: Array<string>;
-  statisticId: string;
+  gameStatistic: GameStatistic;
 }
 
 export default GameContext;

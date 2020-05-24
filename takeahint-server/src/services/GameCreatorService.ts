@@ -1,3 +1,4 @@
+import GameStatistic, { StatisticAssociation, StatisticPlayer, StatisticWord } from '../classes/game/GameStatistic';
 import { Machine, Receiver, Sender, StateMachine, Typestate, assign, send } from 'xstate';
 import { forClass, forItem, forItems, pass, pick } from '../utils/stream.utils';
 
@@ -6,7 +7,6 @@ import Association from '../classes/wordSet/Association';
 import GameContext from '../classes/game/GameContext';
 import GameEvent from '../classes/game/GameEvent';
 import GameStateSchema from '../classes/game/GameStateSchema';
-import GameStatistic from '../classes/game/GameStatistic';
 import GameStatisticService from './GameStatisticService';
 import { Injectable } from '@nestjs/common';
 import Player from '../classes/player/Player';
@@ -258,20 +258,60 @@ export default class GameCreatorService {
       }
     });
 
-  private saveGameStatistic = assign((context: GameContext) => {
-    const gameStatistic = new GameStatistic();
-
-    gameStatistic.players = context.players.filter((item) => item.login).map((item) => item.login);
-    gameStatistic.words = context.oldWords;
-    gameStatistic.countOfWin = context.countOfWin;
-
-    return { statisticId: this.gameStatisticService.put(gameStatistic) };
-  });
+  private saveGameStatistic = assign((context: GameContext) => ({
+    gameStatistic: this.gameStatisticService.put(context.gameStatistic),
+  }));
 
   private saveAnswer = assign((context: GameContext, event: GameEvent) => {
     if (event.type === 'CHECK_ANSWER') {
       return { answer: event.answer };
     }
+  });
+
+  private savePlayersToStatistic = (context: GameContext) => {
+    context.gameStatistic.players = context.players.map((player) => {
+      const statisticPlayer = new StatisticPlayer();
+      statisticPlayer.id = player.id;
+      statisticPlayer.login = player.login;
+      return statisticPlayer;
+    });
+  };
+
+  private saveAssociationToStatistic = (context: GameContext) => {
+    const statisticWord = new StatisticWord();
+    statisticWord.associations = Array.from(context.currentWordSet.associations.entries()).map(
+      ([userId, association]) => {
+        const player = context.players.find((player) => player.id === userId);
+        const statisticPlayer = context.gameStatistic.players.find((player) => player.id === userId);
+        const statisticAssociation = new StatisticAssociation();
+        statisticAssociation.value = association.value;
+        statisticAssociation.good = association.valid;
+        statisticAssociation.player = player.login;
+        statisticPlayer.goodAssociationsCount += statisticAssociation.good ? 1 : 0;
+        statisticPlayer.badAssociationsCount += statisticAssociation.good ? 0 : 1;
+        return statisticAssociation;
+      },
+    );
+    context.gameStatistic.words.push(statisticWord);
+  };
+
+  private saveRoundInfoToStatistic = assign((context: GameContext, event: GameEvent) => {
+    const statisticWord = context.gameStatistic.words[context.gameStatistic.words.length - 1];
+    statisticWord.value = context.currentWord;
+    if (event.type === 'NEXT_GAME') {
+      statisticWord.status = event.reason;
+    }
+    const master = context.players.find((player) => player.isMaster);
+    const statisticPlayerMaster = context.gameStatistic.players.find((player) => player.id === master.id);
+    statisticPlayerMaster.winCount += statisticWord.status === 'WIN' ? 1 : 0;
+    statisticPlayerMaster.losingCount += statisticWord.status === 'LOSING' ? 1 : 0;
+    statisticPlayerMaster.skipCount += statisticWord.status === 'SKIP' ? 1 : 0;
+    context.gameStatistic.countOfWinRounds += statisticWord.status === 'WIN' ? 1 : 0;
+    context.gameStatistic.countOfSkippedRounds += statisticWord.status === 'SKIP' ? 1 : 0;
+
+    return {
+      gameStatistic: context.gameStatistic,
+    };
   });
 
   public create = (): StateMachine<GameContext, GameStateSchema, GameEvent, Typestate<GameContext>> => {
@@ -282,7 +322,7 @@ export default class GameCreatorService {
 
         context: {
           answer: '',
-          countOfRounds: 1,
+          countOfRounds: 13,
           countOfWin: 0,
           players: [],
           wordSets: [],
@@ -290,7 +330,7 @@ export default class GameCreatorService {
           currentWord: null,
           sequenceOfMasterPlayers: [],
           oldWords: [],
-          statisticId: '',
+          gameStatistic: new GameStatistic(),
         },
 
         invoke: [
@@ -313,7 +353,12 @@ export default class GameCreatorService {
             on: {
               CREATE: {
                 target: 'prepareGame',
-                actions: [this.initWordSets, this.initSequenceOfMasterPlayers, 'onCreateGame'],
+                actions: [
+                  this.initWordSets,
+                  this.initSequenceOfMasterPlayers,
+                  this.savePlayersToStatistic,
+                  'onCreateGame',
+                ],
               },
               ADD_PLAYER: {
                 target: 'waitPlayers',
@@ -342,7 +387,12 @@ export default class GameCreatorService {
           game: {
             initial: 'choiceWord',
             entry: [this.decreaseCountOfRounds, 'onStartGame'],
-            exit: [this.increaseCountOfWinIfWin, this.decreaseCountOfRoundsIfLosing, 'onEndGame'],
+            exit: [
+              this.saveRoundInfoToStatistic,
+              this.increaseCountOfWinIfWin,
+              this.decreaseCountOfRoundsIfLosing,
+              'onEndGame',
+            ],
 
             on: {
               NEXT_GAME: 'prepareGame',
@@ -396,7 +446,7 @@ export default class GameCreatorService {
                 },
               },
               answering: {
-                entry: [this.filterMarkedAssociations, 'onStartAnswering'],
+                entry: [this.filterMarkedAssociations, this.saveAssociationToStatistic, 'onStartAnswering'],
                 exit: ['onEndAnswering'],
                 on: {
                   CHECK_ANSWER: 'checkAnswer',

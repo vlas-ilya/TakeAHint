@@ -171,8 +171,9 @@ export const connect = (readonly) => (dispatch, getState, state = getState()) =>
   };
 
   const showResult = (response) => {
-    dispatch(changePage(constants.pages.finish));
+    debugger;
     window.history.replaceState(undefined, undefined, `/finish?id=${response.id}`);
+    dispatch(changePage(constants.pages.finish));
     return 'SHOW_RESULT';
   };
 

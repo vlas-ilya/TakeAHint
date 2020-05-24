@@ -131,7 +131,7 @@ export default class SocketService {
     context.players.forEach((player) => {
       player.client.emit('event', {
         type: 'SHOW_RESULT',
-        id: context.statisticId,
+        id: context.gameStatistic.id,
       });
     });
   }
@@ -236,7 +236,7 @@ export default class SocketService {
       },
 
       () => {
-        payload.statisticId = game.state.context.statisticId;
+        payload.statisticId = game.state.context.gameStatistic.id;
         return 'showResult';
       },
     ].find((item) => [game.state.value, game.state.value['game']].includes(item()));
