@@ -18,7 +18,7 @@ export default function Player({
         </strong>
       </div>
       <div className="master">
-        Слова (Угадано/Неугадано/Пропущено{' '}
+        Слова (Угадано/Не угадано/Пропущено{' '}
         <strong>
           {winCount}/{losingCount}/{skipCount}
         </strong>

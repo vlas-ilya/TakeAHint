@@ -11,6 +11,7 @@ import {
   selectMaster,
   selectModal,
   selectPage,
+  selectStatistic,
 } from './redux/reducer';
 import { selectGameId, selectLogin } from '../features/login/reducer';
 import { useDispatch, useSelector } from 'react-redux';
@@ -41,6 +42,7 @@ export default function App() {
   const modal = useSelector(selectModal);
   const page = useSelector(selectPage);
   const word = useSelector(selectCurrentWord);
+  const statistic = useSelector(selectStatistic);
 
   const menu = {
     countOfRounds,
@@ -51,7 +53,7 @@ export default function App() {
     login,
     master,
     word,
-    page,
+    statistic: page === constants.pages.finish ? statistic : {},
   };
 
   return (

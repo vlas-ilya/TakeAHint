@@ -1,7 +1,7 @@
 import './styles.scss';
 
 import React, { useEffect, useState } from 'react';
-import { changeIsGaming, changePage, selectIsGaming, selectPage } from '../../app/redux/reducer';
+import { changeIsGaming, changePage, changeStatistic, selectIsGaming, selectPage } from '../../app/redux/reducer';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Form from '../../components/Form/Form';
@@ -28,6 +28,7 @@ export default function FinishPage() {
         const statistic = await axios.get(`/game/statistic/${id}`);
         if (statistic && statistic.data) {
           setStatistic(statistic.data);
+          dispatch(changeStatistic(statistic.data));
         }
       })();
     }
@@ -37,18 +38,10 @@ export default function FinishPage() {
     return <Page className="finish" />;
   }
 
-  const countOfLosingRounds = statistic.words.length - statistic.countOfSkippedRounds - statistic.countOfWinRounds;
-
   return (
     <Page className="finish">
       <Form>
         <h2>Статистика игры</h2>
-        <div className="statistic">
-          Угадано/Неугадано/Пропущено/Всего:{' '}
-          <strong>
-            {statistic.countOfWinRounds}/{countOfLosingRounds}/{statistic.countOfSkippedRounds}/{statistic.words.length}
-          </strong>
-        </div>
         <List title="Слова" readonly>
           {statistic.words.map((word) => (
             <ListItem key={word.value}>

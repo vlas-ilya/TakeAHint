@@ -25,6 +25,7 @@ export const application = createSlice({
     countOfRounds: 0,
     master: '',
     modal: '',
+    statistic: {},
   },
   reducers: {
     changeWord: change('word'),
@@ -37,6 +38,7 @@ export const application = createSlice({
     changeAlert: change('alert'),
     changeMaster: change('master'),
     changeModal: change('modal'),
+    changeStatistic: change('statistic'),
   },
 });
 
@@ -51,6 +53,7 @@ export const {
   changeAlert,
   changeMaster,
   changeModal,
+  changeStatistic,
 } = application.actions;
 
 export const checkAnswer = (correct) => async (dispatch, getState, state = getState()) => {
@@ -226,5 +229,6 @@ export const selectIsGaming = (state) => state.application.isGaming;
 export const selectAlert = (state) => state.application.alert;
 export const selectMaster = (state) => state.application.master;
 export const selectModal = (state) => state.application.modal;
+export const selectStatistic = (state) => state.application.statistic;
 
 export default application.reducer;

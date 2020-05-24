@@ -9,7 +9,7 @@ export default function Word({ value, status, associations }) {
           <strong>{value}</strong>
         </div>
         <div className="status">
-          <span>{status === 'WIN' ? 'Угадано' : status === 'SKIP' ? 'Пропущено' : 'Неугадано'}</span>
+          <span>{status === 'WIN' ? 'Угадано' : status === 'SKIP' ? 'Пропущено' : 'Не угадано'}</span>
         </div>
       </div>
       <div className="associations">
