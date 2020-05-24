@@ -113,8 +113,8 @@ export default class SocketService {
             event.reason === 'WIN'
               ? 'Вы угадали слово!'
               : event.reason === 'LOSING'
-              ? `Вам не удалось угадать слово:( Это не ${event.word}`
-              : `Вам не удалось угадать слово. Загаданное слово было ${event.word}`,
+              ? `Вам не удалось угадать слово:( Это не ${event.word}, a ${context.currentWord}`
+              : `Вам не удалось угадать слово. Загаданное слово было ${context.currentWord}`,
         });
       });
     }
