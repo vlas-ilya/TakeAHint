@@ -12,18 +12,20 @@ export default function Player({
   return (
     <ListItem>
       <div className="player">
-        <div className="login">{login}</div>
-        <div className="associations">
-          Подсказки (Не удаленные/Удаленные):{' '}
-          <strong>
-            {goodAssociationsCount}/{badAssociationsCount}
-          </strong>
+        <div className="login">
+          <strong>{login}</strong>
         </div>
-        <div className="master">
-          Слова (Угадано/Не угадано/Пропущено):{' '}
-          <strong>
-            {winCount}/{losingCount}/{skipCount}
-          </strong>
+        <div className="player-statistic">
+          <div className="associations" title="Не удаленные/Удаленные">
+            <strong>
+              {goodAssociationsCount} / {badAssociationsCount}
+            </strong>
+          </div>
+          <div className="master" title="Угадано/Не угадано/Пропущено">
+            <strong>
+              {winCount} / {losingCount} / {skipCount}
+            </strong>
+          </div>
         </div>
       </div>
     </ListItem>

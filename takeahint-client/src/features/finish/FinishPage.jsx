@@ -46,11 +46,28 @@ export default function FinishPage() {
             <Word key={word.value} {...word} />
           ))}
         </List>
-        <List title="Игроки" readonly>
+        <List
+          title={
+            <div className="players-header">
+              <div className="title">Игроки</div>
+              <div className="players-statistic-header">
+                <div title="Не удаленные/Удаленные">Подсказки (НУ / У)</div>
+                <div title="Угадано/Не угадано/Пропущено">Слова (У / НУ / П)</div>
+              </div>
+            </div>
+          }
+          readonly
+        >
           {statistic.players.map((player) => (
             <Player key={player.id} {...player} />
           ))}
         </List>
+        <p className="right">
+          <strong>Подсказки:</strong> Не удаленные/Удаленные
+        </p>
+        <p className="right">
+          <strong>Слова:</strong> Угадано/Не угадано/Пропущено
+        </p>
         <FormButton onClick={() => (window.location.href = '/')}>Сыграть еще раз</FormButton>
       </Form>
     </Page>

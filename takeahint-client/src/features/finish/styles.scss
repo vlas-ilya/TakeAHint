@@ -48,14 +48,45 @@
     }
   }
 
+  .players-header {
+    display: flex;
+    justify-content: space-between;
+
+    .title {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .players-statistic-header {
+      text-align: right;
+      font-size: 12px;
+    }
+  }
+
   .player {
+    display: flex;
+    justify-content: space-between;
+
     .login {
       font-size: 20px;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
     }
-    .associations,
-    .master {
-      text-transform: uppercase;
-      font-size: 10px;
+    .player-statistic {
+      text-align: right;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      margin-left: 10px;
+
+      .associations,
+      .master {
+        white-space: nowrap;
+        text-transform: uppercase;
+        font-size: 15px;
+      }
     }
   }
 }

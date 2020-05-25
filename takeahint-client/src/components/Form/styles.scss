@@ -34,6 +34,9 @@
     &:last-child {
       margin-bottom: 0;
     }
+    &.right {
+      text-align: right;
+    }
   }
 
   h2 {
