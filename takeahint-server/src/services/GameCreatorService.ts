@@ -292,6 +292,8 @@ export default class GameCreatorService {
         return statisticAssociation;
       },
     );
+    const master = context.players.find((player) => player.isMaster);
+    statisticWord.master = master.login;
     context.gameStatistic.words.push(statisticWord);
   };
 

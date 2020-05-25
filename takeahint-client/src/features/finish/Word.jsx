@@ -2,7 +2,7 @@ import ListItem from '../../components/List/ListItem';
 import React from 'react';
 import classNames from 'classnames';
 
-export default function Word({ value, status, associations }) {
+export default function Word({ value, status, associations, master }) {
   return (
     <ListItem>
       <div className="word-block">
@@ -26,6 +26,9 @@ export default function Word({ value, status, associations }) {
               {index !== associations.length - 1 && ','}
             </span>
           ))}
+        </div>
+        <div className="master">
+          <strong>Угадывал:</strong> {master}
         </div>
       </div>
     </ListItem>

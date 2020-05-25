@@ -20,6 +20,7 @@ export class StatisticAssociation {
 export class StatisticWord {
   value: string;
   status: StatisticWordStatus;
+  master: string;
   associations: Array<StatisticAssociation>;
 }
 
