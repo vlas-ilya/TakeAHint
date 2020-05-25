@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 
 import Form from '../Form/Form';
 import { default as axios } from 'axios';
+import { copyToClipboard } from '../../utils/copy.utils';
 
 const cache = (() => {
   let oldImageUrl = '';
@@ -20,6 +21,7 @@ const cache = (() => {
 
 export default function GrCode({ noBorder, gameId }) {
   const [dataUrl, setDataUrl] = useState('');
+  const [copied, setCopied] = useState(false);
   const [url, setUrl] = useState('');
 
   useEffect(() => {
@@ -36,9 +38,30 @@ export default function GrCode({ noBorder, gameId }) {
     })();
   }, [gameId]);
 
+  useEffect(() => {
+    let timeout = 0;
+    if (copied) {
+      timeout = setTimeout(() => {
+        setCopied(false);
+      }, 1000);
+    }
+    return () => clearTimeout(timeout);
+  }, [copied]);
+
   if (noBorder) {
     return (
-      <div className="qr-code">
+      <div
+        className="qr-code"
+        onClick={() => {
+          copyToClipboard(url);
+          setCopied(true);
+        }}
+      >
+        {copied && (
+          <div className="copied">
+            <span>Скопировано</span>
+          </div>
+        )}
         {dataUrl && <img src={dataUrl} alt="QR Code" />} {url && <div className="url">{url}</div>}
       </div>
     );
