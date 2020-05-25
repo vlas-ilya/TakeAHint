@@ -1,3 +1,4 @@
+import ListItem from '../../components/List/ListItem';
 import React from 'react';
 
 export default function Player({
@@ -9,20 +10,22 @@ export default function Player({
   goodAssociationsCount,
 }) {
   return (
-    <div className="player">
-      <div className="login">{login}</div>
-      <div className="associations">
-        Подсказки (Удачные/Удаленные):{' '}
-        <strong>
-          {goodAssociationsCount}/{badAssociationsCount}
-        </strong>
+    <ListItem>
+      <div className="player">
+        <div className="login">{login}</div>
+        <div className="associations">
+          Подсказки (Не удаленные/Удаленные):{' '}
+          <strong>
+            {goodAssociationsCount}/{badAssociationsCount}
+          </strong>
+        </div>
+        <div className="master">
+          Слова (Угадано/Не угадано/Пропущено):{' '}
+          <strong>
+            {winCount}/{losingCount}/{skipCount}
+          </strong>
+        </div>
       </div>
-      <div className="master">
-        Слова (Угадано/Не угадано/Пропущено{' '}
-        <strong>
-          {winCount}/{losingCount}/{skipCount}
-        </strong>
-      </div>
-    </div>
+    </ListItem>
   );
 }

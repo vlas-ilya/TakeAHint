@@ -65,14 +65,18 @@ export const checkAnswer = (correct) => async (dispatch, getState, state = getSt
   });
 };
 
+let socket;
+let reconnect;
+
 export const connect = (readonly) => (dispatch, getState, state = getState()) => {
+  reconnect = true;
   const payload = {
     gameId: state.login.gameId,
     login: readonly ? '' : state.login.login,
   };
 
   dispatch(changeGameIdValid(payload.gameId));
-  dispatch(changeLoginValid(readonly || payload.login));
+  dispatch(changeLoginValid(readonly || !!payload.login));
 
   if (!(payload.gameId && (readonly || payload.login))) {
     return;
@@ -82,7 +86,7 @@ export const connect = (readonly) => (dispatch, getState, state = getState()) =>
   const host = window.location.host.endsWith('3000')
     ? window.location.host.replace('3000', '8080')
     : window.location.host;
-  const socket = io(`${protocol}://${host}`);
+  socket = io(`${protocol}://${host}`);
 
   setParam('gameId', payload.gameId);
   setParam('player', payload.login);
@@ -106,9 +110,11 @@ export const connect = (readonly) => (dispatch, getState, state = getState()) =>
   });
 
   socket.on('disconnect', () => {
-    socket.emit('connection', payload);
-    connectInterval = setInterval(() => socket.open(), 1000);
-    socket.open();
+    if (reconnect) {
+      socket.emit('connection', payload);
+      connectInterval = setInterval(() => socket.open(), 1000);
+      socket.open();
+    }
   });
 
   const addPlayer = (response) => {
@@ -217,6 +223,14 @@ export const connect = (readonly) => (dispatch, getState, state = getState()) =>
         console.log(response);
     }
   });
+};
+
+export const logout = () => (dispatch) => {
+  dispatch(changePage(constants.pages.login));
+  reconnect = false;
+  if (socket) {
+    socket.close();
+  }
 };
 
 export const selectPage = (state) => state.application.page;

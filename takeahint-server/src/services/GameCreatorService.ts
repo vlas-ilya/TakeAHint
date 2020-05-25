@@ -118,7 +118,7 @@ export default class GameCreatorService {
     { to: 'chooseWordService' },
   );
 
-  private tryChooseWord = () => (cb: Sender<GameEvent>, onReceive: Receiver<GameEvent>) => {
+  private chooseWordService = () => (cb: Sender<GameEvent>, onReceive: Receiver<GameEvent>) => {
     onReceive((event: GameEvent) => {
       if (event.type !== 'TRY_CHOOSE_WORD') {
         return;
@@ -179,7 +179,7 @@ export default class GameCreatorService {
     { to: 'filterAssociationsService' },
   );
 
-  private tryFilterAssociations = () => (cb: Sender<GameEvent>, onReceive: Receiver<GameEvent>) =>
+  private filterAssociationsService = () => (cb: Sender<GameEvent>, onReceive: Receiver<GameEvent>) =>
     onReceive((event: GameEvent) => {
       if (event.type !== 'TRY_FILTER_ASSOCIATIONS') {
         return;
@@ -246,7 +246,7 @@ export default class GameCreatorService {
     { to: 'toAnsweringService' },
   );
 
-  private tryToAnsweringService = () => (cb: Sender<GameEvent>, onReceive: Receiver<GameEvent>) =>
+  private toAnsweringService = () => (cb: Sender<GameEvent>, onReceive: Receiver<GameEvent>) =>
     onReceive((event: GameEvent) => {
       if (event.type !== 'TRY_TO_ANSWERING') {
         return;
@@ -336,15 +336,15 @@ export default class GameCreatorService {
         invoke: [
           {
             id: 'chooseWordService',
-            src: this.tryChooseWord,
+            src: this.chooseWordService,
           },
           {
             id: 'filterAssociationsService',
-            src: this.tryFilterAssociations,
+            src: this.filterAssociationsService,
           },
           {
             id: 'toAnsweringService',
-            src: this.tryToAnsweringService,
+            src: this.toAnsweringService,
           },
         ],
 

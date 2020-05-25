@@ -6,7 +6,6 @@ import { changeIsGaming, changePage, changeStatistic } from '../../app/redux/red
 import Form from '../../components/Form/Form';
 import FormButton from '../../components/FormButton/FormButton';
 import List from '../../components/List/List';
-import ListItem from '../../components/List/ListItem';
 import Page from '../../components/Page/Page';
 import Player from './Player';
 import Word from './Word';
@@ -24,7 +23,7 @@ export default function FinishPage() {
     if (id) {
       (async () => {
         dispatch(changeIsGaming(false));
-        constants.pages.finish && dispatch(changePage(constants.pages.finish));
+        dispatch(changePage(constants.pages.finish));
         const statistic = await axios.get(`/game/statistic/${id}`);
         if (statistic && statistic.data) {
           setStatistic(statistic.data);
@@ -44,16 +43,12 @@ export default function FinishPage() {
         <h2>Статистика игры</h2>
         <List title="Слова" readonly>
           {statistic.words.map((word) => (
-            <ListItem key={word.value}>
-              <Word {...word} />
-            </ListItem>
+            <Word key={word.value} {...word} />
           ))}
         </List>
         <List title="Игроки" readonly>
           {statistic.players.map((player) => (
-            <ListItem key={player.id}>
-              <Player {...player} />
-            </ListItem>
+            <Player key={player.id} {...player} />
           ))}
         </List>
         <FormButton onClick={() => (window.location.href = '/')}>Сыграть еще раз</FormButton>
