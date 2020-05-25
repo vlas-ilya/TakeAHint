@@ -26,8 +26,8 @@ export default class GameFactory {
         if (interval > GameFactory.GAME_LIVE_INTERVAL) {
           this.games.delete(key);
           this.gameTimeUpdates.delete(key);
-          console.log(`GameFactory | removed game ${key}`);
-          console.log(`GameFactory | total games ${this.games.size}`);
+          console.log(`${new Date()} | GameFactory | removed game ${key}`);
+          console.log(`${new Date()} | GameFactory | total games ${this.games.size}`);
         }
       }
     }, 1000 * 10);
@@ -60,8 +60,8 @@ export default class GameFactory {
       const interpreter = interpret<GameContext, GameStateSchema, GameEvent, Typestate<GameContext>>(stateNode).start();
       this.games.set(id, interpreter);
       this.gameTimeUpdates.delete(gameId);
-      console.log(`GameFactory | created game ${id}`);
-      console.log(`GameFactory | total games ${this.games.size}`);
+      console.log(`${new Date()} | GameFactory | created game ${id}`);
+      console.log(`${new Date()} | GameFactory | total games ${this.games.size}`);
     }
     return this.games.get(id);
   }
