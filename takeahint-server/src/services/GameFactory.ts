@@ -48,6 +48,8 @@ export default class GameFactory {
       onRemoveGame: () => {
         this.games.delete(gameId);
         this.gameTimeUpdates.delete(gameId);
+        console.log(`${new Date()} | GameFactory | removed game ${gameId}`);
+        console.log(`${new Date()} | GameFactory | total games ${this.games.size}`);
       },
     },
   });
