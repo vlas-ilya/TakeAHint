@@ -21,6 +21,7 @@ import CheckAnswer from '../components/CheckAnswer/CheckAnswer';
 import Footer from '../components/Footer/Footer';
 import FormButton from '../components/FormButton/FormButton';
 import GrCode from '../components/QrCode/GrCode';
+import GrCodeReader from '../components/GrCodeReader/GrCodeReader';
 import MainMenu from '../components/MainMenu/MainMenu';
 import Modal from '../components/Modal/Modal';
 import React from 'react';
@@ -116,6 +117,21 @@ export default function App() {
         ]}
       >
         <CheckAnswer answer={answer} word={word} master={master} isMaster={isMaster} />
+      </Modal>
+
+      <Modal
+        id="qrCode"
+        show={modal === constants.modals.qrCodeReader}
+        className="width-auto"
+        onClose={() => dispatch(changeModal(''))}
+        noPadding
+        actions={[
+          <FormButton key="close" className="grey" onClick={() => dispatch(changeModal(''))}>
+            Закрыть
+          </FormButton>,
+        ]}
+      >
+        <GrCodeReader />
       </Modal>
     </div>
   );

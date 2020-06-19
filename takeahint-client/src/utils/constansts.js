@@ -12,6 +12,7 @@ const constants = {
     rules: 'RULES',
     qrCode: 'QR_CODE',
     checkAnswer: 'CHECK_ANSWER',
+    qrCodeReader: 'QR_CODE_READER',
   },
 };
 

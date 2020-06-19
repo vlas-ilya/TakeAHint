@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { changeGameId, changeLogin, selectGameId, selectGameIdValid, selectLogin, selectLoginValid } from './reducer';
+import { changeModal, connect } from '../../app/redux/reducer';
 import { useDispatch, useSelector } from 'react-redux';
 
 import LoginForm from './LoginForm';
 import Page from '../../components/Page/Page';
-import { connect } from '../../app/redux/reducer';
+import constants from '../../utils/constansts';
 import { setParam } from '../../utils/url.utils';
 
 export default function Login() {
@@ -36,6 +37,9 @@ export default function Login() {
             setParam('userId', '');
           }
           dispatch(connect(readonly));
+        }}
+        onQRCodeReader={() => {
+          dispatch(changeModal(constants.modals.qrCodeReader));
         }}
       />
     </Page>

@@ -3,7 +3,16 @@ import FormButton from '../../components/FormButton/FormButton';
 import FormInput from '../../components/FormInput/FormInput';
 import React from 'react';
 
-export default function LoginForm({ gameId, gameIdValid, onGameIdChange, login, loginValid, onLoginChange, onLogin }) {
+export default function LoginForm({
+  gameId,
+  gameIdValid,
+  onGameIdChange,
+  onQRCodeReader,
+  login,
+  loginValid,
+  onLoginChange,
+  onLogin,
+}) {
   return (
     <Form className="small">
       <div>
@@ -27,6 +36,12 @@ export default function LoginForm({ gameId, gameIdValid, onGameIdChange, login, 
         />
 
         <FormButton onClick={() => onLogin()}>Подключиться</FormButton>
+
+        {window.navigator.mediaDevices && (
+          <FormButton className="grey" onClick={() => onQRCodeReader()}>
+            Подключиться по QR коду
+          </FormButton>
+        )}
 
         <FormButton className="grey" onClick={() => onLogin(true)}>
           Readonly
