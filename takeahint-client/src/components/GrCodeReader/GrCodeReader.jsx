@@ -1,13 +1,22 @@
 import React, { Suspense } from 'react';
+import { changeAlert, changeModal } from '../../app/redux/reducer';
+import { getParam, setParam, validUrl } from '../../utils/url.utils';
 
-import { validUrl } from '../../utils/url.utils';
+import { changeGameId } from '../../features/login/reducer';
+import { useDispatch } from 'react-redux';
 
 const QrReader = React.lazy(() => import('react-qr-reader'));
 
 export default function GrCodeReader() {
-  function handleScan(data) {
-    if (data && validUrl(data) && data.includes(window.location.hostname)) {
-      window.location.href = data;
+  const dispatch = useDispatch();
+
+  function handleScan(url) {
+    if (url && validUrl(url)) {
+      const gameId = getParam('gameId', '', url);
+      setParam('gameId', gameId);
+      dispatch(changeGameId(gameId));
+      dispatch(changeModal(''));
+      dispatch(changeAlert(`Вы перешли в комнату ${gameId}`));
     }
   }
 

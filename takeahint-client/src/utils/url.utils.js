@@ -12,13 +12,13 @@ export function validUrl(str) {
   return !!pattern.test(str);
 }
 
-export function getParam(name, defaultValue = '') {
-  const url = new URL(window.location.href);
+export function getParam(name, defaultValue = '', urlString = window.location.href) {
+  const url = new URL(urlString);
   return url.searchParams.get(name) || defaultValue;
 }
 
-export function setParam(name, value) {
-  const url = new URL(window.location.href);
+export function setParam(name, value, urlString = window.location.href) {
+  const url = new URL(urlString);
   url.searchParams.set(name, value);
   window.history.replaceState(undefined, undefined, url.search);
 }

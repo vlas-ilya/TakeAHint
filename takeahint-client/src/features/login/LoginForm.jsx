@@ -39,7 +39,7 @@ export default function LoginForm({
 
         {window.navigator.mediaDevices && (
           <FormButton className="grey" onClick={() => onQRCodeReader()}>
-            Подключиться по QR коду
+            Подключиться по QR-коду
           </FormButton>
         )}
 

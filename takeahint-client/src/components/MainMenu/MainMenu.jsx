@@ -82,7 +82,7 @@ export default function MainMenu({
           </div>
           {!isGaming && (
             <div className="menu-item" role="button" onClick={onQrCode}>
-              <span>Пригласить людей</span>
+              <span>QR-код игры</span>
             </div>
           )}
         </div>
