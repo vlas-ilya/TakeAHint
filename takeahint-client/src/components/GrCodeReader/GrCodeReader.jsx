@@ -1,4 +1,5 @@
 import React, { Suspense } from 'react';
+import { changeAlert, changeModal } from '../../app/redux/reducer';
 import { getParam, setParam, validUrl } from '../../utils/url.utils';
 
 import { changeGameId } from '../../features/login/reducer';
