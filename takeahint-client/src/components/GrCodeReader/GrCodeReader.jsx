@@ -1,5 +1,4 @@
 import React, { Suspense } from 'react';
-import { changeAlert, changeModal } from '../../app/redux/reducer';
 import { getParam, setParam, validUrl } from '../../utils/url.utils';
 
 import { changeGameId } from '../../features/login/reducer';
@@ -11,7 +10,7 @@ export default function GrCodeReader() {
   const dispatch = useDispatch();
 
   function handleScan(url) {
-    if (url && validUrl(url)) {
+    if (url && validUrl(url) && url.includes(window.location.hostname)) {
       const gameId = getParam('gameId', '', url);
       setParam('gameId', gameId);
       dispatch(changeGameId(gameId));
