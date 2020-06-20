@@ -13,7 +13,7 @@
       position: absolute;
       transition: all 0.1s;
 
-      transform: scale(0.6) translate(0, -24px);
+      transform: scale(0.5) translate(0, -30px);
       font-weight: bold;
       color: #505050;
     }
@@ -24,9 +24,9 @@
     transition: all 0.2s;
     font-family: 'Roboto', sans-serif;
     position: absolute;
-    font-size: 14px;
-    top: 15px;
-    left: 15px;
+    font-size: 16px;
+    top: 16px;
+    left: 16px;
     color: #909090;
     cursor: auto;
   }
@@ -41,9 +41,12 @@
     background: #f2f2f2;
     width: 100%;
     border: 1px solid $input-border-color;
-    padding: 14px;
+    padding: 15px 15px 13px;
     box-sizing: border-box;
-    font-size: 14px;
+    font-size: 16px;
+
+    border-radius: 0;
+    -webkit-appearance: none;
 
     &:hover,
     &:active,
