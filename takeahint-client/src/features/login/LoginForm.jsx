@@ -2,6 +2,7 @@ import Form from '../../components/Form/Form';
 import FormButton from '../../components/FormButton/FormButton';
 import FormInput from '../../components/FormInput/FormInput';
 import React from 'react';
+import { generateCode } from '../../utils/generate.utils';
 
 export default function LoginForm({
   gameId,
@@ -23,6 +24,7 @@ export default function LoginForm({
           value={gameId}
           onEnter={() => onLogin()}
           onChange={onGameIdChange}
+          onSync={() => onGameIdChange(generateCode())}
         />
 
         <FormInput

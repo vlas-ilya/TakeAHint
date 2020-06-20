@@ -1,5 +1,14 @@
 @import '../../app/theme';
 
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-180deg);
+  }
+}
+
 .form-input {
   position: relative;
   margin: 0 0 15px;
@@ -19,6 +28,22 @@
     }
   }
 
+  .sync {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    right: 13px;
+    top: 13px;
+    cursor: pointer;
+
+    &.rotation {
+      animation-name: rotation;
+      animation-duration: 0.3s;
+      animation-iteration-count: infinite;
+      animation-timing-function: cubic-bezier(0.52, 0.5, 0.25, 1);
+    }
+  }
+
   label {
     transform-origin: left;
     transition: all 0.2s;
@@ -33,6 +58,12 @@
 
   .validMessage {
     color: #bd1d1d;
+  }
+
+  &.sync {
+    input[type='text'] {
+      padding-right: 45px;
+    }
   }
 
   input[type='text'] {
