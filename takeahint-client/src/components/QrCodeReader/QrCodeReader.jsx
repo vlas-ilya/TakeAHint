@@ -22,6 +22,10 @@ export default function QrCodeReader() {
       if (window.navigator.vibrate) {
         window.navigator.vibrate(200);
       }
+    } else if (url != null) {
+      if (window.navigator.vibrate) {
+        window.navigator.vibrate([10, 1, 10, 1, 10, 1, 10]);
+      }
     }
   }
 

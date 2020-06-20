@@ -7,7 +7,8 @@ export default function Footer() {
     <div className="footer">
       <div className="content">
         <p>
-          Неофициальная веб-весия игры <strong>«Намек понял»</strong>. Веб-версия нe связана с официальной версией
+          Неофициальная веб-весия настольной игры <strong>«Намек понял»</strong>. Веб-версия нe связана с официальной
+          версией
         </p>
         <p>
           <strong>Нравится сервис?</strong> Поддержите{' '}
