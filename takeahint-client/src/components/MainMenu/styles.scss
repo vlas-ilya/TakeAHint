@@ -31,6 +31,12 @@
       font-size: 25px;
       color: #2d2d2d;
       padding: 10px;
+      width: 100%;
+
+      span {
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
 
       @media only screen and (max-width: 479px) {
         text-align: center;

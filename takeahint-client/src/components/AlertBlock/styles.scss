@@ -20,6 +20,8 @@
       transition: all 0.3s;
       box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
       margin-top: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 }
