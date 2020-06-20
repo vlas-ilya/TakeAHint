@@ -20,7 +20,7 @@ export default function LoginForm({
         <FormInput
           name="gameId"
           label="Номер комнаты"
-          validMessage={gameIdValid ? '' : 'Необходимо указать номер комнаты'}
+          validMessage={gameIdValid ? '' : 'Введите номер комнаты'}
           value={gameId}
           onEnter={() => onLogin()}
           onChange={onGameIdChange}
@@ -30,7 +30,7 @@ export default function LoginForm({
         <FormInput
           name="login"
           label="Логин"
-          validMessage={loginValid ? '' : 'Необходимо указать логин'}
+          validMessage={loginValid ? '' : 'Введите логин'}
           value={login}
           autoComplete={'on'}
           onEnter={() => onLogin()}
