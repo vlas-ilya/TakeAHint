@@ -1,3 +1,5 @@
+import './styles.scss';
+
 import React, { Suspense } from 'react';
 import { changeAlert, changeModal } from '../../app/redux/reducer';
 import { getParam, setParam, validUrl } from '../../utils/url.utils';
@@ -7,7 +9,7 @@ import { useDispatch } from 'react-redux';
 
 const QrReader = React.lazy(() => import('react-qr-reader'));
 
-export default function GrCodeReader() {
+export default function QrCodeReader() {
   const dispatch = useDispatch();
 
   function handleScan(url) {
@@ -17,6 +19,9 @@ export default function GrCodeReader() {
       dispatch(changeGameId(gameId));
       dispatch(changeModal(''));
       dispatch(changeAlert(`Вы перешли в комнату ${gameId}`));
+      if (window.navigator.vibrate) {
+        window.navigator.vibrate(200);
+      }
     }
   }
 
@@ -28,7 +33,7 @@ export default function GrCodeReader() {
   };
 
   return (
-    <div>
+    <div className="qr-code-reader">
       <Suspense fallback={<div style={styles} />}>
         <QrReader style={styles} onError={handleError} onScan={handleScan} />
       </Suspense>

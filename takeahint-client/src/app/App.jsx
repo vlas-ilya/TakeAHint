@@ -20,10 +20,10 @@ import AlertBlock from '../components/AlertBlock/AlertBlock';
 import CheckAnswer from '../components/CheckAnswer/CheckAnswer';
 import Footer from '../components/Footer/Footer';
 import FormButton from '../components/FormButton/FormButton';
-import GrCode from '../components/QrCode/GrCode';
-import GrCodeReader from '../components/GrCodeReader/GrCodeReader';
 import MainMenu from '../components/MainMenu/MainMenu';
 import Modal from '../components/Modal/Modal';
+import QrCode from '../components/QrCode/QrCode';
+import QrCodeReader from '../components/QrCodeReader/QrCodeReader';
 import React from 'react';
 import Router from './Router';
 import Rules from '../components/Rules/Rules';
@@ -100,7 +100,7 @@ export default function App() {
           </FormButton>,
         ]}
       >
-        <GrCode noBorder gameId={gameId} />
+        <QrCode noBorder gameId={gameId} />
       </Modal>
 
       <Modal
@@ -131,7 +131,7 @@ export default function App() {
           </FormButton>,
         ]}
       >
-        <GrCodeReader />
+        <QrCodeReader />
       </Modal>
     </div>
   );

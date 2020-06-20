@@ -1,0 +1,14 @@
+@import '../../app/theme';
+
+.qr-code-reader {
+  background: $color1;
+  section {
+    section {
+      div {
+        border: none !important;
+        box-shadow: none !important;
+        background: url('./qrcode.svg') no-repeat;
+      }
+    }
+  }
+}

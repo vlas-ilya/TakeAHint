@@ -19,7 +19,7 @@ const cache = (() => {
   };
 })();
 
-export default function GrCode({ noBorder, gameId }) {
+export default function QrCode({ noBorder, gameId }) {
   const [dataUrl, setDataUrl] = useState('');
   const [copied, setCopied] = useState(false);
   const [url, setUrl] = useState('');

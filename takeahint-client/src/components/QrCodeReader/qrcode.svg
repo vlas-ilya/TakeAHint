@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="300px" height="300px" viewBox="0 0 300 300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Group</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group">
+            <path d="M300,0 L300,300 L0,300 L0,0 L300,0 Z M248,52 L52,52 L52,248 L248,248 L248,52 Z" id="Combined-Shape" fill-opacity="0.4" fill="#000000"></path>
+            <path d="M54,225 L54,246 L75,246 L75,250 L50,250 L50,225 L54,225 Z M250,225 L250,250 L225,250 L225,246 L246,246 L246,225 L250,225 Z M75,50 L75,54 L54,54 L54,75 L50,75 L50,50 L75,50 Z M250,50 L250,75 L246,75 L246,54 L225,54 L225,50 L250,50 Z" id="Combined-Shape" fill="#1a936f"></path>
+        </g>
+    </g>
+</svg>
