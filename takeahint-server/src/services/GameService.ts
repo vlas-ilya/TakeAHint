@@ -9,7 +9,8 @@ import SocketService from './SocketService';
 export default class GameService {
   constructor(private readonly gameFactory: GameFactory, private readonly socketService: SocketService) {}
 
-  send(gameId: string, event: GameEvent, game = this.gameFactory.get(gameId)) {
+  async send(gameId: string, event: GameEvent) {
+    const game = await this.gameFactory.get(gameId);
     if (event.type === 'ANSWER') {
       GameService.answer(event, game);
       return;
@@ -54,7 +55,8 @@ export default class GameService {
     });
   }
 
-  connect(gameId: string, player: Player, game = this.gameFactory.get(gameId)) {
+  async connect(gameId: string, player: Player) {
+    const game = await this.gameFactory.get(gameId);
     const foundPlayer = game.state.context.players.filter((item) => item.id === player.id)[0];
     if (foundPlayer) {
       foundPlayer.client = player.client;
@@ -62,7 +64,7 @@ export default class GameService {
       return;
     }
 
-    this.send(gameId, {
+    await this.send(gameId, {
       type: 'ADD_PLAYER',
       player,
     });

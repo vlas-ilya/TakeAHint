@@ -40,10 +40,6 @@ export default class GameCreatorService {
       event.type === 'REMOVE_PLAYER' ? context.players.filter((item) => item !== event.player) : context.players,
   });
 
-  private initWordSets = assign({
-    wordSets: (context: GameContext) => this.wordSetsService.createWordSets(context.countOfRounds),
-  });
-
   private initSequenceOfMasterPlayers = assign({
     sequenceOfMasterPlayers: (context: GameContext) =>
       this.sequenceOfMasterService.generate(context.players, context.countOfRounds),
@@ -316,7 +312,10 @@ export default class GameCreatorService {
     };
   });
 
-  public create = (): StateMachine<GameContext, GameStateSchema, GameEvent, Typestate<GameContext>> => {
+  public create = async (): Promise<StateMachine<GameContext, GameStateSchema, GameEvent, Typestate<GameContext>>> => {
+    const countOfRounds = 13;
+    const wordSets = await this.wordSetsService.createWordSets(countOfRounds);
+
     return Machine<GameContext, GameStateSchema, GameEvent>(
       {
         key: 'game',
@@ -324,10 +323,10 @@ export default class GameCreatorService {
 
         context: {
           answer: '',
-          countOfRounds: 13,
+          countOfRounds,
           countOfWin: 0,
           players: [],
-          wordSets: [],
+          wordSets,
           currentWordSet: null,
           currentWord: null,
           sequenceOfMasterPlayers: [],
@@ -355,12 +354,7 @@ export default class GameCreatorService {
             on: {
               CREATE: {
                 target: 'prepareGame',
-                actions: [
-                  this.initWordSets,
-                  this.initSequenceOfMasterPlayers,
-                  this.savePlayersToStatistic,
-                  'onCreateGame',
-                ],
+                actions: [this.initSequenceOfMasterPlayers, this.savePlayersToStatistic, 'onCreateGame'],
               },
               ADD_PLAYER: {
                 target: 'waitPlayers',

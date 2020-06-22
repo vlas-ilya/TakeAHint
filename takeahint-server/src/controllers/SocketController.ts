@@ -17,10 +17,10 @@ export default class SocketController implements OnGatewayDisconnect {
   constructor(private readonly gameService: GameService) {}
 
   @SubscribeMessage('connection')
-  handleMessage(client: Socket, { login, gameId, id = uuid() }: SocketPayload): void {
+  async handleMessage(client: Socket, { login, gameId, id = uuid() }: SocketPayload): Promise<void> {
     const player = login ? new ActivePlayer(id, login, client) : new ObserverPlayer(id, client);
     client.emit('connected', { id });
-    this.gameService.connect(gameId, player);
+    await this.gameService.connect(gameId, player);
   }
 
   handleDisconnect(client: Socket) {

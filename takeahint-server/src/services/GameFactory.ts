@@ -17,6 +17,7 @@ export default class GameFactory {
     Interpreter<GameContext, GameStateSchema, GameEvent, Typestate<GameContext>>
   > = new Map();
   private readonly gameTimeUpdates: Map<String, Date> = new Map<String, Date>();
+  private readonly startingGames: Map<string, Promise<void>> = new Map();
 
   constructor(private readonly gameCreatorService: GameCreatorService, private readonly socketService: SocketService) {
     setInterval(() => {
@@ -54,18 +55,26 @@ export default class GameFactory {
     },
   });
 
-  get(gameId: string, id = gameId.toLowerCase()) {
+  async get(gameId: string, id = gameId.toLowerCase()) {
     this.gameTimeUpdates.set(id, new Date());
+    await this.startingGames.get(id);
+
     if (!this.games.has(id)) {
-      const game = this.gameCreatorService.create();
-      const stateNode = game.withConfig(this.getGameConfig(id));
-      const interpreter = interpret<GameContext, GameStateSchema, GameEvent, Typestate<GameContext>>(stateNode).start();
-      this.games.set(id, interpreter);
-      this.gameTimeUpdates.delete(gameId);
-      console.log(`${new Date()} | GameFactory | created game ${id}`);
-      console.log(`${new Date()} | GameFactory | total games ${this.games.size}`);
+      this.startingGames.set(id, this.createGame(id));
+      await this.startingGames.get(id);
+      this.startingGames.delete(id);
     }
     return this.games.get(id);
+  }
+
+  private async createGame(id: string): Promise<void> {
+    const game = await this.gameCreatorService.create();
+    const stateNode = game.withConfig(this.getGameConfig(id));
+    const interpreter = interpret<GameContext, GameStateSchema, GameEvent, Typestate<GameContext>>(stateNode).start();
+    this.games.set(id, interpreter);
+    this.gameTimeUpdates.delete(id);
+    console.log(`${new Date()} | GameFactory | created game ${id}`);
+    console.log(`${new Date()} | GameFactory | total games ${this.games.size}`);
   }
 
   getGames() {

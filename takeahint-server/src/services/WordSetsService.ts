@@ -1,26 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import WordSet from '../classes/wordSet/WordSet';
+import WordsService from './WordsService';
 import { pick } from '../utils/stream.utils';
 import { uniqueRandomIndexes } from '../utils/random.utils';
-import { words } from '../utils/words';
 
 @Injectable()
 export default class WordSetsService {
-  createWordSets(countOfRounds: number): Array<WordSet> {
-    const indexes = uniqueRandomIndexes(countOfRounds * 5, words.length);
+  constructor(private readonly wordsService: WordsService) {}
+
+  async createWordSets(countOfRounds: number): Promise<Array<WordSet>> {
+    const wordsLength = await this.wordsService.count();
+    const indexes = uniqueRandomIndexes(countOfRounds * 5, wordsLength);
+    const words = await this.wordsService.getWords(indexes);
     return [...Array(countOfRounds).keys()]
       .map(() => new WordSet())
       .map(
-        pick(
-          (item) =>
-            (item.words = [
-              words[indexes.shift()],
-              words[indexes.shift()],
-              words[indexes.shift()],
-              words[indexes.shift()],
-              words[indexes.shift()],
-            ]),
-        ),
+        pick((item) => {
+          item.words = [words.shift(), words.shift(), words.shift(), words.shift(), words.shift()];
+        }),
       );
   }
 }

@@ -21,9 +21,9 @@ export class GameController {
   constructor(private readonly gameService: GameService, private readonly gameStatisticService: GameStatisticService) {}
 
   @Post(':gameId/command')
-  onMessage(@Param('gameId') gameId: string, @Body() event: GameEvent) {
+  async onMessage(@Param('gameId') gameId: string, @Body() event: GameEvent) {
     throwIf(!GameController.commandValid(event), 'Invalid');
-    this.gameService.send(gameId, event);
+    await this.gameService.send(gameId, event);
   }
 
   private static commandValid(event: GameEvent): boolean {
